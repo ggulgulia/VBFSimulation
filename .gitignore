@@ -1,0 +1,8 @@
+bullet3-master/
+*.o
+*.text
+*.txt
+*.log
+*.pdf
+*.swap
+*.swo
