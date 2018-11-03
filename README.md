@@ -21,6 +21,15 @@ The Simulation makes use of Bullet Physics Engine. Version-3 of this engine is p
 Follow the steps below to build the Bullet Physics engine on a linux system:
 * Unzip the file to a suitable location
 * On the terminal type:
-    * cmake . -G "Unix Makefiles"
+    * mkdir build
+    * cd build
+    * cmake .. -G "Unix Makefiles"
     * make
+    * make install - this installs the pyhsics engine to your "usr/local/lib" and "usr/local/include" directories
+
+# IMPORTANT LINKS
+* https://www3.ntu.edu.sg/home/ehchua/programming/cpp/gcc_make.html
+* https://cmake.org/documentation/
+* http://www.network-theory.co.uk/docs/gccintro/
+* 
 

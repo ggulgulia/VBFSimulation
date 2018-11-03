@@ -1,7 +1,9 @@
 bullet3-master/
+**/build/*
 *.o
 *.text
 *.txt
+!CMakeLists.txt
 *.log
 *.pdf
 *.swap
