@@ -7,12 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
-INCLUDE_DIRECTORIES(
-${BULLET_PHYSICS_SOURCE_DIR}/src 
-)
+
 
 LINK_LIBRARIES(
-    GL GLU glut OpenGLSupport BulletDynamics BulletCollision LinearMath 
+    OpenGLSupport GL GLU glut BulletDynamics BulletCollision LinearMath 
 )
 
 IF (WIN32)
@@ -27,11 +25,6 @@ ELSE()
     ADD_EXECUTABLE(AppBasicDemo
 	    main.cpp 
 		BasicDemo.cpp
-        DemoApplication.h
-        DemoApplication.cpp
-        GlutDemoApplication.cpp
-        GlutDemoApplication.h
-		BasicDemo.h
 
         )
 	

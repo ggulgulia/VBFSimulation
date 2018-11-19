@@ -5,26 +5,28 @@ project(libtest_project CXX)
 #set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
-set(CMAKE_CXX_FLAGS "-std=c++11 -g")
+set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 INCLUDE_DIRECTORIES(
 ${BULLET_PHYSICS_SOURCE_DIR}/src 
 )
 
 LINK_LIBRARIES(
-OpenGLSupport glut GL GLEW BulletDynamics BulletCollision LinearMath 
+    GL GLU glut OpenGLSupport BulletDynamics BulletCollision LinearMath 
 )
 
 IF (WIN32)
-	ADD_EXECUTABLE(vbfsim
-        test.cpp
+	ADD_EXECUTABLE(AppBasicDemo
+		main.cpp 
 		${BULLET_PHYSICS_SOURCE_DIR}/build3/bullet.rc
 	)
 ELSE()
-	ADD_EXECUTABLE(test.out
-        test.cpp 
-	)
+    ADD_EXECUTABLE(AppBasicDemo
+        BasicDemoPhysicsSetup.cpp
+	    main.cpp 
+
+        )
+	
 ENDIF()
 
 

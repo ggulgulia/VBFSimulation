@@ -16,7 +16,7 @@ subject to the following restrictions:
 #include "BasicDemo.h"
 #include <bullet/btBulletDynamicsCommon.h>
 #include <bullet/LinearMath/btHashMap.h>
-#include "DemoApplication.h"
+#include <OpenGL/DemoApplication.h>
 #include <OpenGL/GlutStuff.h>
 	
 int main(int argc,char** argv)

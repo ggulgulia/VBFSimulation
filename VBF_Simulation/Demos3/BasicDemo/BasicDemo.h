@@ -19,7 +19,7 @@ subject to the following restrictions:
 #include "Win32DemoApplication.h"
 #define PlatformDemoApplication Win32DemoApplication
 #else
-#include "GlutDemoApplication.h"
+#include <OpenGL/GlutDemoApplication.h>
 #define PlatformDemoApplication GlutDemoApplication
 #endif
 

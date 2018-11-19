@@ -41,21 +41,28 @@ Follow the steps below to build the Bullet Physics engine on a linux system:
 
 # What is Running (IMPORTANT, ALL the sub-headings below are related to this heading)
 * VBF_Simulation/HelloWorld program
-* VBF_Simulation/Demos3/BasicDemo
+* VBF_Simulation/Demos3/BasicDemo/
+* VBF_Simulation/Demos3/BasicDemoConsole/ (not helpful since there's no gui mode)
+* VBF_Simulation/Demos3/BasicDemoCustomOpenGL2/ (looks like one of the videos that Cosima showed me)
+* VBF_Simulation/Demos3/VehicleDemo/
 
 ## Fixes Done to Library for above program to run
-* all the fixes done were tested against the Demo3 in bullet until the Demos in bullet-3-master/Deom3/ ran
-* note the include paths of demos are completely shitty. The relative include paths of header files and libraries makes the life worse. This requires us to remember the relative paths of all inlude files in the bullet library. I loathe the programmer of this bullet library.
+* all the fixes done were tested against the Demos mentioned above in bullet until the they ran.
+* most of the fixes needed were to create the correct openGL, glut, GL, GLEW libraries and the respective header files in correct location. This is suppose to be done automatically by the CMake. 
+* Check the above demos for the kind of structure we need in CMake file
+
 ### Bullet Library
 
 
 ### OpenGL Library
 * OpenGL associtated with bullet3 physics engine did not build when bullet itself was built. The OpenGL library : libOpenGLSupport.a had to be built from scratch and installed on the locations "usr/local/include/" and "usr/local/lib"
+* Update 18th November: Some more modeifications to the OpenGL library. The DemoApplication.cxx and GlutDemoApplication.cxx have been packed as a part of libOpenGLSupport.a to avoid it's inclusion in all demo folders. These two files supposedly pack the example of how a visualization framework in bullet could be used, but I'm yet to figure out how. 
+
 
 ### Glut/GL/GLU Library
 * Linkers to above library in CMake File shipped with bullet are missing in many places.
 * as again relative paths to include had to be repaired in many files, I don't remember exactly which ones but it makes sense to pack the repaired library and push it to githb. In future it will be needed to make a good unit test and build system so that Cosima and others can use it easily.
-* For now one Demos3/BasicDemo/ program compiles. Look at the CMakelists.txt
+* Updaate 18th November: For now one Demos3/BasicDemo/ program compiles. Look at the CMakelists.txt . Check the ../Demos3/BasicDemoCustomOpenGL2/ cmake file and order of the linker flags in the cmake file
 
 
 # IMPORTANT LINKS
@@ -64,4 +71,5 @@ Follow the steps below to build the Bullet Physics engine on a linux system:
 * http://www.network-theory.co.uk/docs/gccintro/
 * https://www.ode-wiki.org/wiki/index.php?title=Manual:_Install_and_Use 
 * https://stackoverflow.com and google.com --> my saviour at the (beginning, middle and) end of day
+* https://studiofreya.com/game-maker/bullet-physics/debug-triangles-in-bullet-physics/ (mentions something about irrlicht which was used in older version of VBF_Simulations too)
 

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <OpenGL/GLDebugDrawer.h>
 
 
 //overloading the priting operator
@@ -41,6 +42,11 @@ int main(int argc, char *argv[])
     // initialize the world with the above properties
     btDiscreteDynamicsWorld* world = new btDiscreteDynamicsWorld(dispatcher, interface, solver, collisionConfiguration);
     world->setGravity(btVector3(0.0, -9.81, 0));
+    
+    //initialize visualization framework
+    GLDebugDrawer *debugDraw = new GLDebugDrawer;
+    debugDraw->setDebugMode(1); //what does 1 mean and what are the other options?
+    world->setDebugDrawer(debugDraw); 
     
    
     //create placeholder for shapes, some kind of array
@@ -89,11 +95,11 @@ int main(int argc, char *argv[])
     }
 
     //do some simulation
-    for (size_t i = 0; i < 100; ++i) {
+    for (size_t i = 0; i < 20; ++i) {
         world->stepSimulation(1.f/60.f, 10);
 
         //print positions of all objects
-        for (int j = 0; j<world->getNumCollisionObjects()-1; ++j){
+        for (int j = 0; j<world->getNumCollisionObjects(); ++j){
 
             btCollisionObject *obj = world->getCollisionObjectArray()[j];
             btRigidBody* bdy = btRigidBody::upcast(obj);
