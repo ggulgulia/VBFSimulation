@@ -82,7 +82,7 @@ void BasicDemo::displayCallback(void) {
 
 
 
-void	BasicDemo::initPhysics()
+void BasicDemo::initPhysics()
 {
 	setTexturing(true);
 	setShadows(true);

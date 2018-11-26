@@ -39,6 +39,8 @@ Follow the steps below to build the Bullet Physics engine on a linux system:
     * if the draw stuff is not header files and libraries are not included in proper locations, do it manually
 * by default this configures the ODE as a static library. Need to figure out how to build a shared library from this
 
+Update 25/11/18: ODE-Draw stuff is incompatible with bullet and moreover bullet has its own inbuilt visualization framework based on OpenGL which needs some kind of bridging. Hence I'll discontinue using ODE draw stuff for the time being 
+
 # What is Running (IMPORTANT, ALL the sub-headings below are related to this heading)
 * VBF_Simulation/HelloWorld program
 * VBF_Simulation/Demos3/BasicDemo/
@@ -46,11 +48,14 @@ Follow the steps below to build the Bullet Physics engine on a linux system:
 * VBF_Simulation/Demos3/BasicDemoCustomOpenGL2/ (looks like one of the videos that Cosima showed me)
 * VBF_Simulation/Demos3/VehicleDemo/
 
+* Upadate 25/11/18 : ../VBF_Simulation/SimFile/test.cpp is running with a blank OpenGL window. Need to bridge this window to the bullet physics simulation that's happening within the code
+
 ## Fixes Done to Library for above program to run
 * all the fixes done were tested against the Demos mentioned above in bullet until the they ran.
 * most of the fixes needed were to create the correct openGL, glut, GL, GLEW libraries and the respective header files in correct location. This is suppose to be done automatically by the CMake. 
 * Check the above demos for the kind of structure we need in CMake file
 
+* Update 25/11/18: All the demos use the codes Demos/btgui/ directory which is some sort of framework based around openGL and brideed using DebugDrawer class. Hence I created another library (ofcourse to avoid culttering of our soruce code directory with the code that will never be changed). This library is called libOpenGLWindow.a and the headers are placed in ../../usr/local/includes/ and library is placed in ../../usr/local/lib/
 ### Bullet Library
 
 

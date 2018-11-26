@@ -1,9 +1,8 @@
 #include <bullet/btBulletDynamicsCommon.h>
+#include <bullet/LinearMath/btIDebugDraw.h>
 #include <iostream>
 #include <vector>
-#include <memory>
-#include <OpenGL/GLDebugDrawer.h>
-
+#include "helper.hpp"
 
 //overloading the priting operator
 std::ostream operator<<(std::ostream &out, const btTransform &trans){
@@ -34,15 +33,30 @@ int main(int argc, char *argv[])
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
     //create the properties of the world
-    btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+    btDefaultCollisionConfiguration* collisonConfig = new btDefaultCollisionConfiguration();
+    btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisonConfig);
     btBroadphaseInterface* interface = new btDbvtBroadphase();
     btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
     
     // initialize the world with the above properties
-    btDiscreteDynamicsWorld* world = new btDiscreteDynamicsWorld(dispatcher, interface, solver, collisionConfiguration);
+    btDiscreteDynamicsWorld* world = new btDiscreteDynamicsWorld(dispatcher, interface, solver, collisonConfig);
     world->setGravity(btVector3(0.0, -9.81, 0));
     
+    //create OpenGL Window
+
+    b3gDefaultOpenGLWindow* window = new b3gDefaultOpenGLWindow();
+    b3gWindowConstructionInfo wci;
+    wci.m_openglVersion = 2;
+    wci.m_width = sWidth;
+    wci.m_height = sHeight;
+
+    window->createWindow(wci);
+    window->setResizeCallback(MyResizeCallback);
+    window->setMouseButtonCallback(MyMouseButtonCallback);
+    window->setMouseMoveCallback(MyMouseMoveCallback);
+    window->setKeyboardCallback(MyKeyboardCallback);
+    window->setWindowTitle("iwb TUM");
+
     //initialize visualization framework
     GLDebugDrawer *debugDraw = new GLDebugDrawer;
     debugDraw->setDebugMode(1); //what does 1 mean and what are the other options?
@@ -95,7 +109,7 @@ int main(int argc, char *argv[])
     }
 
     //do some simulation
-    for (size_t i = 0; i < 20; ++i) {
+    for (size_t i = 0; i < 100000; ++i) {
         world->stepSimulation(1.f/60.f, 10);
 
         //print positions of all objects
@@ -107,6 +121,7 @@ int main(int argc, char *argv[])
             if(bdy && bdy->getMotionState()){
                 btTransform trans;
                 bdy->getMotionState()->getWorldTransform(trans);
+                world->debugDrawWorld();
                 std::cout << "world pos: " << trans.getOrigin().getX() <<"\nY: " << trans.getOrigin().getY() << "\nZ:" << trans.getOrigin().getZ() << "\n";
             }
         }
@@ -114,13 +129,6 @@ int main(int argc, char *argv[])
     }
 
     releaseResources(collisionShapes, rbody, myMotionstate);
-
-    //releasing resources
-    for (size_t i = 0; i < collisionShapes.size(); ++i) {
-
-
-        
-    }
 
     return 0;
 }

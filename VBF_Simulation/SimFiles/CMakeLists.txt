@@ -13,7 +13,7 @@ ${BULLET_PHYSICS_SOURCE_DIR}/src
 )
 
 LINK_LIBRARIES(
-OpenGLSupport glut GL GLEW BulletDynamics BulletCollision LinearMath 
+    OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath 
 )
 
 IF (WIN32)
