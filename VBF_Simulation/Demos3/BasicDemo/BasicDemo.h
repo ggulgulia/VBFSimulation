@@ -58,14 +58,14 @@ class BasicDemo : public PlatformDemoApplication
 	{
 		exitPhysics();
 	}
-	void	initPhysics();
+	void initPhysics();
 
-	void	exitPhysics();
+	void exitPhysics();
 
 	virtual void clientMoveAndDisplay();
 
 	virtual void displayCallback();
-	virtual void	clientResetScene();
+	virtual void clientResetScene();
 	
 	static DemoApplication* Create()
 	{
