@@ -2,6 +2,7 @@
 #define VBF_RIGID_BODIES_H 
 
 #include <bullet/btBulletDynamicsCommon.h>
+#include <string>
 
 typedef btDefaultMotionState MotionState;
 typedef btRigidBody::btRigidBodyConstructionInfo btRbConstrInfo;
@@ -30,24 +31,11 @@ namespace VBF{
 
             //user constructor
             explicit RigidBody(std::string name, VBF_Shape* shape, btVector3 origin,
-                               double mass, btVector3 inertia, size_t index):
-                m_name(name), m_shape(shape), m_origin(origin), m_mass(mass),
-                m_inertia(inertia), m_index(index)
-                {
-                    m_shape->calculateLocalInertia(m_mass, m_inertia);
-                    btTransform shapeTransform;
-                    MotionState *motionState;
-                    shapeTransform.setIdentity();
-                    shapeTransform.setOrigin(m_origin);
-                    motionState = new MotionState(shapeTransform);
-                    
-                    btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
-                    m_rbody = new btRigidBody(rbinfo);
-                }
+                               double mass, btVector3 inertia, size_t index);
 
-            btRigidBody* get_rbody(){ return m_rbody; }
+            btRigidBody* get_rbody();
+            virtual std::string get_name();
     };
-
     class Cube : public RigidBody{
 
         private:
@@ -55,13 +43,10 @@ namespace VBF{
 
         public:
 
-            explicit Cube(double length, btVector3 origin, btVector3 inertia, double mass, size_t index)
-                :m_length(length), RigidBody(std::string("Cube"),
-                                            (new btBoxShape(btVector3(length, length, length))),
-                                            origin, mass, inertia, index)
-                {
-                    //empty constructor body
-                }
+            explicit Cube(double length, btVector3 origin, btVector3 inertia, double mass, size_t index);
+
+            ~Cube();
+            virtual std::string get_name();
     };
 
     class Sphere: public RigidBody{
@@ -71,13 +56,10 @@ namespace VBF{
 
         public:
 
-            explicit Sphere(double radius, btVector3 origin, btVector3 inertia, double mass, size_t index)
-                :m_radius(radius), RigidBody(std::string("Sphere"),
-                                            (new btSphereShape(radius)),
-                                            origin, mass, inertia, index)
-                {
-                    //empty constructor body
-                }
+            explicit Sphere(double radius, btVector3 origin, btVector3 inertia, double mass, size_t index);
+            ~Sphere();
+
+            virtual std::string get_name();
     };
 
 }//end of name space
