@@ -55,7 +55,7 @@ namespace VBF{
             void set_interface(btInterface *interface);
             void set_solver(btSolver *solver);
             void set_debug_drawer(GLDebugDrawer* debugDraw);
-            void add_rigid_bodies_to_world(std::vector<btRigidBody*>& rbody);
+            void add_rigid_bodies_to_world(btRigidBody* rbody);
     
             //getters
             btWorld*          get_World() const;

@@ -1,4 +1,4 @@
-#include "vbf_world.hpp"
+#include "VBF_World.hpp"
 
 //destrutor
 VBF::World::~World(){
@@ -81,11 +81,9 @@ void VBF::World::set_debug_drawer(GLDebugDrawer* debugDraw){
 }
 
 
-void VBF::World::add_rigid_bodies_to_world(std::vector<btRigidBody*>& rbody){
+void VBF::World::add_rigid_bodies_to_world(btRigidBody* rbody){
     
-    for(size_t i = 0; i<rbody.size(); ++i){
-        m_world->addRigidBody(rbody[i]);
-    }
+        m_world->addRigidBody(rbody);
 }
 
 

@@ -23,8 +23,9 @@ IF (WIN32)
 	)
 ELSE()
 	ADD_EXECUTABLE(test.out
-        test.cpp
-        vbf_world.cpp
+        main.cpp
+        VBF_World.cpp
+        VBF_RigidBodies.cpp
 	)
 ENDIF()
 
