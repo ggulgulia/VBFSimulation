@@ -55,6 +55,7 @@ namespace VBF{
             void set_interface(btInterface *interface);
             void set_solver(btSolver *solver);
             void set_debug_drawer(GLDebugDrawer* debugDraw);
+            void set_debug_drawer(GLDebugDrawer& debugDraw); //overloaded function
             void add_rigid_bodies_to_world(btRigidBody* rbody);
     
             //getters
@@ -63,6 +64,7 @@ namespace VBF{
             btDispatcher_iwb* get_dispatcher() const;
             btInterface*      get_broadphaseInterface() const;
             btSolver*         get_solver() const;
+            btIDebugDraw*     get_debug_drawer() const;
     
             void step_simulation(double deltaT1, double deltaT2) const;
             void print_updated_positions() const;
