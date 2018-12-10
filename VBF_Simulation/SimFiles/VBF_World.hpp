@@ -26,6 +26,7 @@ namespace VBF{
             btDispatcher_iwb*    m_dispatcher;
             btInterface*     m_interface;
             btSolver*        m_solver;
+            bool m_is_initialized;
     
         public:
             virtual ~World();
@@ -47,7 +48,9 @@ namespace VBF{
             //assumption that the world is empty
             //if not all its existing properties will be lost
             void intialize_new_world();
-    
+        
+            bool is_initialized() const;
+            
             //setters
             void set_world(btWorld *world);
             void set_collisionConfig(btCollConfig *collConfig);
@@ -59,7 +62,7 @@ namespace VBF{
             void add_rigid_bodies_to_world(btRigidBody* rbody);
     
             //getters
-            btWorld*          get_World() const;
+            btWorld*          get_world() const;
             btCollConfig*     get_collisionConfig() const;
             btDispatcher_iwb* get_dispatcher() const;
             btInterface*      get_broadphaseInterface() const;
@@ -67,6 +70,7 @@ namespace VBF{
             btIDebugDraw*     get_debug_drawer() const;
     
             void step_simulation(double deltaT1, double deltaT2) const;
+            void step_simulation(double deltaT1) const;
             void print_updated_positions() const;
     };
 
