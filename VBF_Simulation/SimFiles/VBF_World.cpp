@@ -24,7 +24,8 @@ VBF::World::World():
     m_collisionConfig(nullptr),
     m_dispatcher(nullptr),
     m_interface(nullptr),
-    m_solver(nullptr)
+    m_solver(nullptr),
+    m_is_initialized(false)
 {
     //empty constructor body
 }
@@ -40,7 +41,7 @@ VBF::World::World(btWorld* world,
     m_interface(interface),
     m_solver(solver)
 {
-    //empty constructor body
+    m_is_initialized = true;
 }
 
 //new world is shaped on the implicit this object
@@ -53,6 +54,11 @@ void  VBF::World::intialize_new_world(){
     m_solver          = new btSolver;
     m_world           = new btWorld(m_dispatcher, m_interface, m_solver, m_collisionConfig);
     m_world->setGravity(btVector3(0.0, -9.81, 0.0));
+    m_is_initialized = true;
+}
+
+bool VBF::World::is_initialized() const{
+return m_is_initialized;
 }
 
 void VBF::World::set_world(btWorld* world){
@@ -88,7 +94,7 @@ void VBF::World::add_rigid_bodies_to_world(btRigidBody* rbody){
         m_world->addRigidBody(rbody);
 }
 
-btWorld* VBF::World::get_World() const{
+btWorld* VBF::World::get_world() const{
     return m_world;
 }
 btCollConfig* VBF::World::get_collisionConfig() const{
@@ -110,6 +116,10 @@ btIDebugDraw* VBF::World::get_debug_drawer() const{
 
 void VBF::World::step_simulation(double deltaT1, double deltaT2) const{
     m_world->stepSimulation(deltaT1, deltaT2);
+}
+
+void VBF::World::step_simulation(double deltaT1) const{
+    m_world->stepSimulation(deltaT1);
 }
 
 void VBF::World::print_updated_positions() const

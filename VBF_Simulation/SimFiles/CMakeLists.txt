@@ -22,7 +22,7 @@ IF (WIN32)
 		${BULLET_PHYSICS_SOURCE_DIR}/build3/bullet.rc
 	)
 ELSE()
-	ADD_EXECUTABLE(test.out
+	ADD_EXECUTABLE(vbf_test.out
         main.cpp
         VBF_World.cpp
         VBF_RigidBodies.cpp
