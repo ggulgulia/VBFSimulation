@@ -4,7 +4,7 @@
 #include <OpenGL/DemoApplication.h>
 
 
-int sWidth(400), sHeight(400);
+int sWidth(800), sHeight(600);
 DemoApplication* gApp = 0;
 bool isShiftPressed = false;
 bool isCtrlPressed = false;
