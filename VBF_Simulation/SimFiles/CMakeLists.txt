@@ -5,8 +5,8 @@ project(libtest_project CXX)
 #set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
-#set(CMAKE_CXX_FLAGS "-std=c++11 -g")
+#set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g")
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 INCLUDE_DIRECTORIES(
 ${BULLET_PHYSICS_SOURCE_DIR}/src 
