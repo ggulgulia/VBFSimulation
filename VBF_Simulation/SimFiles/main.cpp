@@ -1,4 +1,4 @@
-#include "helper.hpp"
+//#include "helper.hpp"
 #include "VBF_World.hpp"
 #include "VBF_RigidBodies.hpp"
 #include "VBF_CommonPhysics.hpp"
@@ -59,6 +59,26 @@ void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
     }
 }
 
+void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
+    
+    double sphereRad = 1.0;
+    double sphereMass = 1.0;
+    size_t sphereIndex = 44;
+    btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
+    size_t array_size = 5;
+       for(size_t k=0; k<array_size; ++k){ 
+           for (size_t i = 0; i < array_size; ++i) {
+               for (size_t j = 0; j < array_size; ++j) {
+                   
+                   btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
+                   sphereIndex += j + array_size*i + array_size*k;
+                   VBF::Sphere *sph = new VBF::Sphere(sphereRad, sphereOrigin, sphereInertia, sphereMass, sphereIndex);
+                   sphere_vector.push_back(sph);
+               } 
+            }
+        }
+
+}
 
 int main(int argc, char *argv[])
 {
@@ -70,34 +90,24 @@ int main(int argc, char *argv[])
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
 
-    //create OpenGL Window
-    b3gDefaultOpenGLWindow* window = new b3gDefaultOpenGLWindow();
-    b3gWindowConstructionInfo wci;
-    wci.m_openglVersion = 2;
-    wci.m_width = sWidth;
-    wci.m_height = sHeight;
-    window->createWindow(wci);
-    window->setResizeCallback(MyResizeCallback);
-    window->setMouseButtonCallback(MyMouseButtonCallback);
-    window->setMouseMoveCallback(MyMouseMoveCallback);
-    window->setKeyboardCallback(MyKeyboardCallback);
-    window->setWindowTitle("iwb TUM");
-
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
     VBF::RigidBody *ground;
     get_ground(ground);
     ground->get_shape();
-    get_cubes(rigid_bodies);
+    //get_cubes(rigid_bodies);
+    get_spheres(rigid_bodies);
 
     //CommonPhysics phy(vbf_world);
     VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
     phy.initPhysics();
     
     //visualization bridge
+    VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
+    vbf_window->create_window();
     VBF_Vis vis_bridge;
-    vis_bridge.setDynamicsWorld(phy.get_world());
-    vis_bridge.reshape(sWidth, sHeight);
+    vis_bridge.setDynamicsWorld(vbf_world->get_world());
+    vis_bridge.reshape(800, 600);
     vis_bridge.setShadows(true);
     gApp = &vis_bridge;
 
@@ -110,14 +120,14 @@ int main(int argc, char *argv[])
              phy.stepSimulation((currTime - prevTime)/1000.);
          }
          prevTime = currTime;
-         window->startRendering();
+         vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
-         window->endRendering();
-        }while(!window->requestedExit());
+         vbf_window->end_rendering();
+        }while(!vbf_window->requested_exit());
         
-    window->closeWindow();
-    delete window;
+    vbf_window->close_window();
+    //delete window;
    
     return 0;
 }
