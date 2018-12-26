@@ -68,8 +68,8 @@ void MyMouseButtonCallback(int button, int state, float x, float y)
 
 void MyResizeCallback(float width, float height)
 {
-	sWidth = width;
-	sHeight = height;
+	//sWidth = width;
+	//sHeight = height;
 	if (gApp)
 	{
 		gApp->reshape(width,height);
