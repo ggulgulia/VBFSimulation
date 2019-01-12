@@ -26,6 +26,7 @@ ELSE()
         ImportSTLSetup.cpp
         GraphicsApp.cpp
         X11OpenGLWindow.cpp
+        VBF_World.cpp
 	)
 
 ENDIF()

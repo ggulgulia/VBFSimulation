@@ -7,11 +7,13 @@
 #include <OpenGLWindow/SimpleOpenGL3App.h>
 
 
-ImportSTLSetup::ImportSTLSetup(std::string fileName,
+
+ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
                               int width, 
                               int height):
-                              m_filename(fileName),
-                              m_app(new GraphicsApp(fileName.c_str(),width, height)){
+                              m_filename(fileName)
+                              //m_app(new GraphicsApp(fileName.c_str(),width, height))
+{
 
 }
 
@@ -28,12 +30,8 @@ ImportSTLSetup::~ImportSTLSetup()
 }
 
 
-void ImportSTLSetup::initPhysics(GraphicsPhysicsBridge& gfxBridge)
+void ImportSTLSetup::initPhysics()
 {
-	gfxBridge.setUpAxis(2);
-	this->createEmptyDynamicsWorld();
-	gfxBridge.createPhysicsDebugDrawer(m_dynamicsWorld);
-
     //this line is causing segmentation fault
     //the member m_dynamicsWorld doesn't have any method getDebugDrawer()
 	//m_dynamicsWorld->getDebugDrawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe);
@@ -67,18 +65,19 @@ void ImportSTLSetup::initPhysics(GraphicsPhysicsBridge& gfxBridge)
 	btVector3 position = trans.getOrigin();
 	btQuaternion orn = trans.getRotation();
 	btVector3 color(0,0,1);
-	int shapeId = m_app->m_renderer->registerShape(&gfxShape->m_vertices->at(0).xyzw[0], gfxShape->m_numvertices, &gfxShape->m_indices->at(0), gfxShape->m_numIndices);
-	m_app->m_renderer->registerGraphicsInstance(shapeId,position,orn,color,scaling);
+	int shapeId = m_app->get_renderer_interface()->registerShape(&gfxShape->m_vertices->at(0).xyzw[0], gfxShape->m_numvertices, &gfxShape->m_indices->at(0), gfxShape->m_numIndices);
+	m_app->get_renderer_interface()->registerGraphicsInstance(shapeId,position,orn,color,scaling);
 
 	
 }
 
 int main(int argc, char *argv[]){
 
-    GraphicsPhysicsBridge grfx;
+    VBF::World* vbf_world = new VBF::World();
+    vbf_world->initialize_new_world();
     std::string fileName("l_finger_tip.stl");
     ImportSTLSetup* stl_body = new ImportSTLSetup(fileName);    
-    stl_body->initPhysics(grfx);
+    stl_body->initPhysics();
 
     return 0;
 }

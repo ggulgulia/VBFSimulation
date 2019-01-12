@@ -5,12 +5,11 @@
 #include <OpenGLWindow/GLPrimitiveRenderer.h>
 #include <OpenGLWindow/b3gWindowInterface.h>
 #include "CommonGraphicsApp.h"
-#include "X11OpenGLWindow.h"
 
 
 class GraphicsApp : public CommonGraphicsApp{
 
-    public:
+    private:
         class SimpleInternalData* m_data;
         class GLPrimitiveRenderer*	m_primRenderer;
         class GLInstancingRenderer* m_instancingRenderer;
