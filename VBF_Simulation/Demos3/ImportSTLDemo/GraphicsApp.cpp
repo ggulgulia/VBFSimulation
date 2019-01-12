@@ -1,7 +1,3 @@
-//#include "OpenGLWindow/GlewWindows/GL/glew.h"
-
-//let's cross the fingers it is Linux/X11
-
 #include <stdio.h>
 #include <assert.h>
 
@@ -37,23 +33,6 @@ class SimpleInternalData{
 	    int m_upAxis;//y=1 or z=2 is supported
 };
 
-static GraphicsApp* gApp=nullptr;
-static void SimpleResizeCallback( float widthf, float heightf){
-	int width = (int)widthf;
-	int height = (int)heightf;
-	gApp->m_instancingRenderer->resize(width,height);
-	gApp->m_primRenderer->setScreenSize(width,height);
-}
-
-static void SimpleKeyboardCallback(int key, int state){
-    if (key==B3G_ESCAPE && gApp && gApp->m_window){
-        gApp->m_window->setRequestExit();
-    } 
-    else{
-        b3DefaultKeyboardCallback(key,state);
-    }
-}
-
 static GLuint BindFont(const CTexFont *_Font){
     GLuint TexID = 0;
     glGenTextures(1, &TexID);
@@ -76,67 +55,31 @@ static GLuint BindFont(const CTexFont *_Font){
 
 extern char OpenSansData[];
 
-GraphicsApp::GraphicsApp(const char* title, int width,int height){
-	//gApp = this;
-	m_data = new SimpleInternalData;
+GraphicsApp::GraphicsApp(const char* title, int width,int height):
+    CommonGraphicsApp(title, width, height),
+    m_data(new SimpleInternalData),
+    m_primRenderer(new GLPrimitiveRenderer(width,height)),
+    m_instancingRenderer(new GLInstancingRenderer(128*1024,64*1024*1024))
+    {
 	m_data->m_frameDumpPngFileName = 0;
 	m_data->m_renderTexture = 0;
 	m_data->m_ffmpegFile = 0;
 	m_data->m_userPointer = 0;
 	m_data->m_upAxis = 1;
 
-	m_window = new b3gDefaultOpenGLWindow();
-	b3gWindowConstructionInfo ci;
-	ci.m_title = title;
-	ci.m_width = width;
-	ci.m_height = height;
-
-    m_window->createWindow(ci);
-	m_window->setWindowTitle(title);
 
 	b3Assert(glGetError() ==GL_NO_ERROR);
 
 	glClearColor(0.9,0.9,1,1);
-	m_window->startRendering();
 	b3Assert(glGetError() ==GL_NO_ERROR);
-
-#ifndef __APPLE__
-#ifndef _WIN32
-//some Linux implementations need the 'glewExperimental' to be true
-    glewExperimental = GL_TRUE;
-#endif
-
-
-    if (glewInit() != GLEW_OK)
-        exit(1); // or handle the error in a nicer way
-    if (!GLEW_VERSION_2_1)  // check that the machine supports the 2.1 API.
-        exit(1); // or handle the error in a nicer way
-
-#endif
     glGetError();//don't remove this call, it is needed for Ubuntu
-
     b3Assert(glGetError() ==GL_NO_ERROR);
-
-	m_primRenderer = new GLPrimitiveRenderer(width,height);
-	m_parameterInterface = 0;
-
     b3Assert(glGetError() ==GL_NO_ERROR);
-
-	m_instancingRenderer = new GLInstancingRenderer(128*1024,64*1024*1024);
-	m_renderer = m_instancingRenderer ;
+    set_renderer_interface(m_instancingRenderer);
 	m_instancingRenderer->init();
 	m_instancingRenderer->resize(width,height);
-
 	b3Assert(glGetError() ==GL_NO_ERROR);
-
 	m_instancingRenderer->InitShaders();
-
-	m_window->setMouseMoveCallback(b3DefaultMouseMoveCallback);
-	m_window->setMouseButtonCallback(b3DefaultMouseButtonCallback);
-    m_window->setKeyboardCallback(SimpleKeyboardCallback);
-    m_window->setWheelCallback(b3DefaultWheelCallback);
-	m_window->setResizeCallback(SimpleResizeCallback);
-
 	TwGenerateDefaultFonts();
 	m_data->m_fontTextureId = BindFont(g_DefaultNormalFont);
 	m_data->m_largeFontTextureId = BindFont(g_DefaultLargeFont);
@@ -201,7 +144,7 @@ void GraphicsApp::drawText3D( const char* txt, float worldPosX, float worldPosY,
 		float fontSize= 32;//64;//512;//128;
 		sth_draw_text(m_data->m_fontStash,
                     m_data->m_droidRegular,fontSize,posX,posY,
-					txt,&dx, this->m_instancingRenderer->getScreenWidth(),this->m_instancingRenderer->getScreenHeight(),measureOnly,m_window->getRetinaScale());
+					txt,&dx, this->m_instancingRenderer->getScreenWidth(),this->m_instancingRenderer->getScreenHeight(),measureOnly,get_window()->getRetinaScale());
 		sth_end_draw(m_data->m_fontStash);
 		sth_flush_draw(m_data->m_fontStash);
 	}
@@ -281,7 +224,7 @@ void GraphicsApp::drawText( const char* txt, int posXi, int posYi){
 					txt,&dx, this->m_instancingRenderer->getScreenWidth(),
 					this->m_instancingRenderer->getScreenHeight(),
 					measureOnly,
-					m_window->getRetinaScale());
+					get_window()->getRetinaScale());
 					
 		sth_end_draw(m_data->m_fontStash);
 		sth_flush_draw(m_data->m_fontStash);
@@ -502,10 +445,8 @@ void GraphicsApp::drawGrid(DrawGridData data){
 }
 
 GraphicsApp::~GraphicsApp(){
+	get_window()->closeWindow();
 	delete m_primRenderer ;
-
-	m_window->closeWindow();
-	delete m_window;
 	delete m_data ;
 }
 
@@ -574,30 +515,13 @@ static void writeTextureToFile(int textureWidth, int textureHeight, const char* 
 
 
 void GraphicsApp::swapBuffer(){
-	m_window->endRendering();
+    get_window()->endRendering();
 	if (m_data->m_frameDumpPngFileName){
-        writeTextureToFile((int)m_window->getRetinaScale()*m_instancingRenderer->getScreenWidth(),
-                          (int) m_window->getRetinaScale()*this->m_instancingRenderer->getScreenHeight(),m_data->m_frameDumpPngFileName,
+        writeTextureToFile((int)get_window()->getRetinaScale()*m_instancingRenderer->getScreenWidth(),
+                          (int) get_window()->getRetinaScale()*this->m_instancingRenderer->getScreenHeight(),m_data->m_frameDumpPngFileName,
                           m_data->m_ffmpegFile);
     }
-	m_window->startRendering();
-}
-
-// see also http://blog.mmacklin.com/2013/06/11/real-time-video-capture-with-ffmpeg/
-void GraphicsApp::dumpFramesToVideo(const char* mp4FileName){
-    int width = (int)m_window->getRetinaScale()*m_instancingRenderer->getScreenWidth();
-    int height = (int)m_window->getRetinaScale()*m_instancingRenderer->getScreenHeight();
-    char cmd[8192];
-
-    sprintf(cmd,"ffmpeg -r 60 -f rawvideo -pix_fmt rgba -s %dx%d -i - "
-                 "-threads 0 -y -crf 0 -b 50000k -vf vflip %s",width,height,mp4FileName);
-    if (m_data->m_ffmpegFile)
-    {
-        pclose(m_data->m_ffmpegFile);
-    }
-    m_data->m_ffmpegFile = popen(cmd, "w");
-
-    m_data->m_frameDumpPngFileName = mp4FileName;
+	get_window()->startRendering();
 }
 
 void GraphicsApp::dumpNextFrameToPng(const char* filename){
