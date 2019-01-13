@@ -19,7 +19,6 @@ class MySTLTriangle
 static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileName)
 {
 	GLInstanceGraphicsShape* shape;
-	
 	FILE* file = fopen(relativeFileName.c_str(),"rb");
 	if (file)
 	{
@@ -47,11 +46,6 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
 				    		}
 
 				    		shape = new GLInstanceGraphicsShape;
-//				    		b3AlignedObjectArray<GLInstanceVertex>*	m_vertices;
-//				    		int				m_numvertices;
-//				    		b3AlignedObjectArray<int>* 		m_indices;
-//				    		int				m_numIndices;
-//				    		float			m_scaling[4];
 				    		shape->m_scaling[0] = 1;
 				    		shape->m_scaling[1] = 1;
 				    		shape->m_scaling[2] = 1;

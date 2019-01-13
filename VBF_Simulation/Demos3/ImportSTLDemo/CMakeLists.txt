@@ -25,6 +25,7 @@ ELSE()
 	ADD_EXECUTABLE(import_test.out
         ImportSTLSetup.cpp
         VBF_World.cpp
+        main.cpp
 	)
 
 ENDIF()
