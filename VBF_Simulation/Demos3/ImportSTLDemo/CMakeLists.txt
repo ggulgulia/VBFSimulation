@@ -24,8 +24,6 @@ IF (WIN32)
 ELSE()
 	ADD_EXECUTABLE(import_test.out
         ImportSTLSetup.cpp
-        GraphicsApp.cpp
-        X11OpenGLWindow.cpp
         VBF_World.cpp
 	)
 
