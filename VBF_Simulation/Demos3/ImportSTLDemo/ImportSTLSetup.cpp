@@ -1,5 +1,7 @@
 #include "ImportSTLSetup.hpp"
 #include "LoadMeshFromSTL.hpp"
+#include "fstream"
+#include <iostream>
 
 VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
                               int width, 
@@ -8,12 +10,28 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 {
 	btVector3 shift(0,0,0);
 	btVector3 scaling(10,10,10);
-	m_mesh = LoadMeshFromSTL(m_filename);
+    std::fstream file;
+
+    try{
+        file.open(fileName);
+        if(!file.is_open())
+            throw "Fil not found. Please check the file path";
+
+        else
+            std::cout << "Reading mesh data from file: " << fileName << "\n";
+            m_mesh = LoadMeshFromSTL(m_filename);
+    }
+    catch(const char* exception){
+        std::cerr << "Error: " << exception << "\n";
+        std::cerr << "Force exiting the program\n";
+        exit(0);
+    }
+
 	btTransform trans;
 	trans.setIdentity();
-	trans.setRotation(btQuaternion(btVector3(1,0,0),SIMD_HALF_PI));
-	btVector3 position = trans.getOrigin();
-	btQuaternion orn = trans.getRotation();
+	//trans.setRotation(btQuaternion(btVector3(1,0,0),SIMD_HALF_PI));
+	//btVector3 position = trans.getOrigin();
+	//btQuaternion orn = trans.getRotation();
 	btVector3 color(0,0,1);
 
     btTriangleMesh* trimeshData = new btTriangleMesh();
