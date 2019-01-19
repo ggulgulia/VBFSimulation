@@ -24,6 +24,9 @@ IF (WIN32)
 ELSE()
 	ADD_EXECUTABLE(import_test.out
         ImportSTLSetup.cpp
+        VBF_RigidBodies.cpp
+        VBF_CommonPhysics.cpp
+        VBF_Cube.cpp
         VBF_World.cpp
         main.cpp
 	)
