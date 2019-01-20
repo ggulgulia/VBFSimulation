@@ -4,7 +4,7 @@
 #include "VBF_Cube.hpp"
 #include "VBF_CommonPhysics.hpp"
 
-void get_ground(VBF::RigidBody*& ground){
+VBF::Cube* get_ground(){
 
         //create a ground
         double grLength = 400; 
@@ -12,7 +12,8 @@ void get_ground(VBF::RigidBody*& ground){
         btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
         double grMass = 0.0; //ground is static object, doesn't interact
         size_t grIndex = 23; 
-        ground = new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
+        VBF::Cube *ground = new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
+        return ground;
 }
 
 
@@ -23,8 +24,7 @@ int main(int argc, char *argv[]){
     vbf_world->initialize_new_world();
     
     //create a ground reference
-    VBF::RigidBody *ground;
-    get_ground(ground);
+    VBF::RigidBody *ground = get_ground(); 
 
      //import the stl file    
     //std::string fileName("l_finger_tip.stl");
@@ -61,6 +61,10 @@ int main(int argc, char *argv[]){
     }while(!vbf_window->requested_exit());
 
     vbf_window->close_window();
+    phy.~CommonPhysics();
+    stl_body->~ImportSTLSetup();
+    ground->~RigidBody();
+
 
     return 0;
 }

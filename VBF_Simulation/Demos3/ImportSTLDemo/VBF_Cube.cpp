@@ -23,5 +23,5 @@ VBF::Cube::Cube(const Cube& cube, btVector3 origin):
 //destructor
 VBF::Cube::~Cube(){};
 
-std::string VBF::Cube::get_name(){ return "Cube"; }
+std::string VBF::Cube::get_name() const { return "Cube"; }
 

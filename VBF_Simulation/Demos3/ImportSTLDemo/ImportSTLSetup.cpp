@@ -13,29 +13,21 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
     std::fstream file;
 
     try{
-        file.open(fileName);
-        if(!file.is_open())
-            throw "Fil not found. Please check the file path";
 
-        else
-            std::cout << "Reading mesh data from file: " << fileName << "\n";
-            m_mesh = LoadMeshFromSTL(m_filename);
+        std::cout << "Attempting to read mesh data from file: " << fileName << "\n";
+        m_mesh = LoadMeshFromSTL(m_filename);
     }
     catch(const char* exception){
         std::cerr << "Error: " << exception << "\n";
         std::cerr << "Force exiting the program\n";
-        exit(0);
+        exit(-1);
     }
 
 	btTransform trans;
 	trans.setIdentity();
-	//trans.setRotation(btQuaternion(btVector3(1,0,0),SIMD_HALF_PI));
-	//btVector3 position = trans.getOrigin();
-	//btQuaternion orn = trans.getRotation();
 	btVector3 color(0,0,1);
 
     btTriangleMesh* trimeshData = new btTriangleMesh();
-
 	for (int i=0;i<m_mesh->m_numvertices;i++)
 	{
 		for (int j=0;j<3;j++)
@@ -87,10 +79,14 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 
 VBF::ImportSTLSetup::~ImportSTLSetup(){
    delete m_mesh;
+   delete m_VBF_rbody;
    m_mesh = nullptr;
+   m_VBF_rbody = nullptr; //don't delete the resources 
+                          // as it might be referred to by
+                          // some other object
 }
 
-VBF_Mesh* VBF::ImportSTLSetup::get_mesh() {return m_mesh;}
-std::string VBF::ImportSTLSetup::get_file_name(){return m_filename;}
-btVector3 VBF::ImportSTLSetup::get_mesh_origin()const{return m_origin;}
-VBF::RigidBody* VBF::ImportSTLSetup::get_vbf_rbody(){return m_VBF_rbody;}
+VBF_Mesh* VBF::ImportSTLSetup::get_mesh() const {return m_mesh;}
+std::string VBF::ImportSTLSetup::get_file_name() const {return m_filename;}
+btVector3 VBF::ImportSTLSetup::get_mesh_origin()const {return m_origin;}
+VBF::RigidBody* VBF::ImportSTLSetup::get_vbf_rbody() const {return m_VBF_rbody;}
