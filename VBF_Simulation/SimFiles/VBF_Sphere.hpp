@@ -23,7 +23,7 @@ namespace VBF{
             Sphere(const Sphere& sphere, btVector3 origin);             
             ~Sphere();
 
-            virtual std::string get_name();
+            virtual std::string get_name() const override final;
             double get_radius() const { return m_radius;}
     };
 

@@ -24,7 +24,7 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
-void get_ground(VBF::RigidBody*& ground){
+VBF::Cube* get_ground(){
 
     //create a ground
     double grLength = 50;
@@ -32,7 +32,8 @@ void get_ground(VBF::RigidBody*& ground){
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
     double grMass = 0.0; //ground is static object, doesn't interact
     size_t grIndex = 23;
-    ground = new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
+    
+    return new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
  
 }
 
@@ -92,9 +93,8 @@ int main(int argc, char *argv[])
 
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
-    VBF::RigidBody *ground;
-    get_ground(ground);
-    ground->get_shape();
+    VBF::RigidBody *ground = get_ground();
+
     //get_cubes(rigid_bodies);
     get_spheres(rigid_bodies);
 

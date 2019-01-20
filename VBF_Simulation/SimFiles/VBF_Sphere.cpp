@@ -15,4 +15,4 @@ VBF::Sphere::Sphere(const Sphere& sphere, btVector3 origin):
                     }
              
 VBF::Sphere::~Sphere() {};
-std::string VBF::Sphere::get_name(){ return "Sphere"; }
+std::string VBF::Sphere::get_name() const { return "Sphere"; }
