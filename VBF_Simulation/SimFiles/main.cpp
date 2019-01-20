@@ -129,5 +129,5 @@ int main(int argc, char *argv[])
     vbf_window->close_window();
     //delete window;
    
-    return 0;
+return 0;
 }

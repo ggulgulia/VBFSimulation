@@ -24,7 +24,7 @@ namespace VBF{
             Cube(const Cube& cube, btVector3 origin);
 
             ~Cube();
-            virtual std::string get_name();
+            virtual std::string get_name() const override final;
             double get_length() const { return m_length;}
     };
 

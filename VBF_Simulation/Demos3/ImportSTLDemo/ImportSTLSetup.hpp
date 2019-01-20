@@ -22,10 +22,10 @@ namespace VBF{
         public:
             ImportSTLSetup(const std::string &fileName, int width=640, int height=480);
             virtual ~ImportSTLSetup();
-            virtual VBF_Mesh* get_mesh();
-            virtual std::string get_file_name();
-            virtual btVector3 get_mesh_origin()const;
-            virtual VBF::RigidBody* get_vbf_rbody();
+            virtual VBF_Mesh* get_mesh() const;
+            virtual std::string get_file_name() const;
+            virtual btVector3 get_mesh_origin() const;
+            virtual VBF::RigidBody* get_vbf_rbody() const;
     };
 }
 #endif //IMPORT_STL_SETUP_H

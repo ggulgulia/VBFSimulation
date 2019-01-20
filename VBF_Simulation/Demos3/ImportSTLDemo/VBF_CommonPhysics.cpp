@@ -56,13 +56,18 @@ VBF::CommonPhysics::CommonPhysics(VBF::World* vbf_world, VBF::RigidBody* vbf_rbo
                         
 //destructor                           
 VBF::CommonPhysics::~CommonPhysics(){
-    delete m_VBF_world;
     
     for (size_t i=0; i < m_VBF_rbody.size(); ++i){
-    delete m_VBF_rbody[i];
+    //don't delete the rigid bodies since
+    //the member m_VBF_rbody refers to the bodies
+    //that are externally passed to the constructor
+    //delete m_VBF_rbody[i];
     m_VBF_rbody[i] = nullptr;
     }
     
+    //same reason for not freeing the resources
+    //held by m_VBF_World
+    //delete m_VBF_world;
     m_VBF_world = nullptr;
 }
   
