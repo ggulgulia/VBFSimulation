@@ -20,7 +20,7 @@ namespace VBF{
             VBF::RigidBody* m_VBF_rbody;
             btVector3 m_origin;
         public:
-            ImportSTLSetup(const std::string &fileName, int width=640, int height=480);
+            ImportSTLSetup(const std::string &fileName, int width=640, int height=480, btVector3 origin = btVector3(0.0, 0.0, 0.0));
             virtual ~ImportSTLSetup();
             virtual VBF_Mesh* get_mesh() const;
             virtual std::string get_file_name() const;

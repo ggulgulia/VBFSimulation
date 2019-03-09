@@ -5,8 +5,9 @@
 
 VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
                               int width, 
-                              int height):
-                              m_filename(fileName)
+                              int height, btVector3 origin):
+                              m_filename(fileName), 
+                              m_origin(origin)
 {
 	btVector3 shift(0,0,0);
 	btVector3 scaling(10,10,10);
@@ -59,8 +60,10 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 		trimeshData->addTriangle(v0,v1,v2);
 	}
 	btBvhTriangleMeshShape* shape = new btBvhTriangleMeshShape(trimeshData,true);//meshInterface);
-    btTransform startTrans;
-    startTrans.setIdentity();
+    btVector3 xAxis(1,0,0);
+    btQuaternion qt1(xAxis, -20);
+    btTransform startTrans(qt1);
+    //startTrans.setIdentity();
     
     //get the origin (should be 0,0,0);
     int indOrigin;
@@ -69,16 +72,18 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
     x0 = m_mesh->m_vertices->at(indOrigin).xyzw[0];
     y0 = m_mesh->m_vertices->at(indOrigin).xyzw[1];
     z0 = m_mesh->m_vertices->at(indOrigin).xyzw[2];
-    m_origin = btVector3(x0,y0,z0);
+    //m_origin = btVector3(0.0, 0.0, 0.0);
     btVector3 meshInertia = btVector3(0.0, 0.0, 0.0);
-    double meshMass(0.1);
+    double meshMass(1);
     //btRigidBody* body = this->createRigidBody(0,startTrans,shape);
     m_VBF_rbody = new VBF::RigidBody(m_filename, shape, m_origin,
-                                    meshMass, meshInertia);
+                                    startTrans, meshMass, meshInertia);
+//m_VBF_rbody->getWorldTransform().setRotation(qt); 
 }
 
+
 VBF::ImportSTLSetup::~ImportSTLSetup(){
-   delete m_mesh;
+delete m_mesh;
    delete m_VBF_rbody;
    m_mesh = nullptr;
    m_VBF_rbody = nullptr; //don't delete the resources 

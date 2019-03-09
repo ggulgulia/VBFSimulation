@@ -34,7 +34,8 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
 		        	char* memoryBuffer = new char[size+1];
 		        	int actualBytesRead = fread(memoryBuffer,1,size,file);
 		        	if (actualBytesRead!=size){
-		        		printf("Error reading from file %s",relativeFileName.c_str());
+		        		//printf("Error reading from file %s",relativeFileName.c_str());
+                        throw "Error reading from file";
 		        	} 
                     else{
 				    int numTriangles = *(int*)&memoryBuffer[80];
@@ -47,37 +48,45 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
 			    		}
 
 			    		shape = new GLInstanceGraphicsShape;
-			    		shape->m_scaling[0] = 1;
-			    		shape->m_scaling[1] = 1;
-			    		shape->m_scaling[2] = 1;
-			    		shape->m_scaling[3] = 1;
+			    		shape->m_scaling[0] = 0.01;
+			    		shape->m_scaling[1] = 0.01;
+			    		shape->m_scaling[2] = 0.01;
+			    		shape->m_scaling[3] = 0.01;
 			    		int index = 0;
 			    		shape->m_indices = new b3AlignedObjectArray<int>();
 			    		shape->m_vertices = new b3AlignedObjectArray<GLInstanceVertex>();
-			    		for (int i=0;i<numTriangles;i++)
-			    		{
-			    			char* curPtr = &memoryBuffer[84+i*50];
+
+			    		for (int tri_num=0; tri_num<numTriangles; tri_num++){
+			    			char* curPtr = &memoryBuffer[84+tri_num*50];
 			    			MySTLTriangle* tri = (MySTLTriangle*) curPtr;
 			    			
-			    			GLInstanceVertex v0,v1,v2;
-			    			if (i==numTriangles-2)
+			    			GLInstanceVertex temp_vert0,temp_vert1,temp_vert2;
+
+                            //initialzie the coordinates of the vertices
+                            //by setting every data to zero
+                            for (int vv = 0; vv < 3; ++vv) {
+                               temp_vert0.xyzw[vv] = 0.0; temp_vert1.xyzw[vv] = 0.0; temp_vert2.xyzw[vv] = 0.0; 
+                               temp_vert0.normal[vv] = 0.0; temp_vert1.normal[vv] = 0.0; temp_vert2.normal[vv] = 0.0;
+                            }
+                            temp_vert0.xyzw[3] = 0.0; temp_vert1.xyzw[3] = 0.0; temp_vert2.xyzw[3] = 0.0; 
+			    			temp_vert0.uv[0] = temp_vert1.uv[0] = temp_vert2.uv[0] = 0.5;
+			    			temp_vert0.uv[1] = temp_vert1.uv[1] = temp_vert2.uv[1] = 0.5; 
+
+			    			if (tri_num == numTriangles-2)
 			    			{
 			    				printf("!\n");
 			    			}
-			    			v0.uv[0] = v1.uv[0] = v2.uv[0] = 0.5;
-			    			v0.uv[1] = v1.uv[1] = v2.uv[1] = 0.5;
-			    			for (int v=0;v<3;v++)
-			    			{
-			    				v0.xyzw[v] = tri->vertex0[v];
-			    				v1.xyzw[v] = tri->vertex1[v];
-			    				v2.xyzw[v] = tri->vertex2[v];
-			    				v0.normal[v] = v1.normal[v] = v2.normal[v] = tri->normal[v];
+                            
+			    			for (int v=0;v<3;v++){
+			    				temp_vert0.xyzw[v] = tri->vertex0[v] ;
+			    				temp_vert1.xyzw[v] = tri->vertex1[v] ;
+			    				temp_vert2.xyzw[v] = tri->vertex2[v] ;
+			    				temp_vert0.normal[v] = temp_vert1.normal[v] = temp_vert2.normal[v] = tri->normal[v];
 			    			}
-			    			v0.xyzw[3] = v1.xyzw[3] = v2.xyzw[3] = 0.f;
-			    			
-			    			shape->m_vertices->push_back(v0);
-			    			shape->m_vertices->push_back(v1);
-			    			shape->m_vertices->push_back(v2);
+
+			    			shape->m_vertices->push_back(temp_vert0);
+			    			shape->m_vertices->push_back(temp_vert1);
+			    			shape->m_vertices->push_back(temp_vert2);
 			    			
 			    			shape->m_indices->push_back(index++);
 			    			shape->m_indices->push_back(index++);

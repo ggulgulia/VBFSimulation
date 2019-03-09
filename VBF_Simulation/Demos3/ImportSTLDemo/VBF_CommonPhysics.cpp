@@ -1,14 +1,6 @@
 
 #include "VBF_CommonPhysics.hpp"
 
-// a Physics Object should have a VBF::World and the related objects (Physical Bodies) in it
-// it should have a bridge with the graphics to visualize and 
-//it should be optional to speed up the calculations  when needed
-
-//FOR VBF Simulations, we would like to have a world, a ground referece and objects in it
-//ofcourse physics can be simulated without a ground but I don't think this is going to 
-//make my life easier as it is, the documentations are missing 
-
 //defualt constructor0, the pointers point to uninitialized 
 //member objects
 
@@ -62,7 +54,7 @@ VBF::CommonPhysics::~CommonPhysics(){
     //the member m_VBF_rbody refers to the bodies
     //that are externally passed to the constructor
     //delete m_VBF_rbody[i];
-    m_VBF_rbody[i] = nullptr;
+    //m_VBF_rbody[i] = nullptr;
     }
     
     //same reason for not freeing the resources
