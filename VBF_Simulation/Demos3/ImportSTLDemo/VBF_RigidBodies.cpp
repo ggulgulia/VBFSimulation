@@ -66,4 +66,5 @@ btVector3 VBF::RigidBody::get_origin()   const { return m_origin; }
 double VBF::RigidBody::get_mass()        const { return m_mass;   }
 btVector3 VBF::RigidBody::get_inertia()  const { return m_inertia;}
 size_t VBF::RigidBody::get_index()       const { return m_index;  }
-//void set_gravity(const double gravity){ m_rbody->setGravity(gravity); }
+void VBF::RigidBody::set_gravity(const btVector3 gravity){ m_rbody->setGravity(gravity); }
+const btVector3& VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPosition();}

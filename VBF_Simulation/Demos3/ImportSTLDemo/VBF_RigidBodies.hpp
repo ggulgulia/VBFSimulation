@@ -52,7 +52,8 @@ namespace VBF{
             virtual double get_mass()        const;
             virtual btVector3 get_inertia()  const;
             virtual size_t get_index()       const;
-            //virtual void set_gravity(const double gravity=9.81);
+            virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));
+            virtual const btVector3& get_cog_position();
     };
 }//end of name space
 
