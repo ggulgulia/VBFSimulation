@@ -32,6 +32,9 @@ int main(int argc, char *argv[]){
     std::string fileName("StufeFein150x30x100.stl");
     VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName); 
     
+    const btVector3 bodyOrigin = stl_body->get_vbf_rbody()->get_cog_position();
+    std::cout << "Body Origin is at x:" << bodyOrigin[0] << ", y:" << bodyOrigin[1] << ", z:" << bodyOrigin[2] <<"\n" ;
+
      //create physics
     VBF::CommonPhysics phy(vbf_world, ground, stl_body->get_vbf_rbody());
     phy.initPhysics();
