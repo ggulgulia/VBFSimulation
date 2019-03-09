@@ -10,10 +10,11 @@ VBF::Cube* get_ground(){
         double grLength = 400; 
         btVector3 grOrigin = btVector3(0.0, -400.0, 0.0);
         btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
+        btTransform shapeTrans;
+        shapeTrans.setIdentity();
         double grMass = 0.0; //ground is static object, doesn't interact
         size_t grIndex = 23; 
-        VBF::Cube *ground = new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
-        return ground;
+        return new VBF::Cube(grLength, grOrigin, shapeTrans, grInertia, grMass, grIndex);
 }
 
 

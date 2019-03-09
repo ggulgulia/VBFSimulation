@@ -7,19 +7,19 @@ VBF::RigidBody::RigidBody():
                 {  }
 
 //user constructor
-VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin, double mass, btVector3 inertia, size_t index):
+VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin, btTransform shapeTransform , double mass, btVector3 inertia, size_t index):
 m_name(name), m_shape(shape), m_origin(origin), 
-m_mass(mass), m_inertia(inertia), m_index(index)
+m_shapeTransform(shapeTransform), m_mass(mass), 
+m_inertia(inertia), m_index(index)
 {
     //beautiful process in bullet to create a rigid body
     if(m_mass >0.0){
         m_shape->calculateLocalInertia(m_mass, m_inertia);
     }
-    btTransform shapeTransform;
+    //btTransform shapeTransform;
     MotionState *motionState;
-    shapeTransform.setIdentity();
-    shapeTransform.setOrigin(m_origin);
-    motionState = new MotionState(shapeTransform);
+    m_shapeTransform.setOrigin(m_origin);
+    motionState = new MotionState(m_shapeTransform);
     
     btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
     m_rbody = new btRigidBody(rbinfo);
@@ -66,3 +66,4 @@ btVector3 VBF::RigidBody::get_origin()   const { return m_origin; }
 double VBF::RigidBody::get_mass()        const { return m_mass;   }
 btVector3 VBF::RigidBody::get_inertia()  const { return m_inertia;}
 size_t VBF::RigidBody::get_index()       const { return m_index;  }
+//void set_gravity(const double gravity){ m_rbody->setGravity(gravity); }

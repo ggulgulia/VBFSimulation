@@ -6,7 +6,7 @@
 //#include "CommonParameterInterface.h"
 #include "VBF_World.hpp"
 #include "VBF_RigidBodies.hpp"
-
+#include <functional>
 
 // a Physics Object should have a VBF::World and the related objects (Physical Bodies) in it
 // it should have a bridge with the graphics to visualize and 
@@ -21,7 +21,7 @@ namespace VBF{
         private:
                VBF::World* m_VBF_world;
                VBF::RigidBody *m_ground;
-               std::vector<VBF::RigidBody*> m_VBF_rbody;
+               std::vector<std::reference_wrapper<VBF::RigidBody*>> m_VBF_rbody;
                std::vector<CollShape*> m_shape;
                //bool m_is_visualization_on;
         public:
