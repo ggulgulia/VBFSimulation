@@ -16,6 +16,7 @@ namespace VBF{
             std::string m_name;
             CollShape* m_shape;
             btVector3 m_origin;
+            btTransform m_shapeTransform;
             double m_mass;
             btVector3 m_inertia;
             size_t m_index; //might be helpful for book keeping 
@@ -31,7 +32,7 @@ namespace VBF{
             explicit RigidBody();
             //user constructor
             explicit RigidBody(std::string name, CollShape* shape, btVector3 origin,
-                               double mass, btVector3 inertia, size_t index);
+                               btTransform shapeTransform, double mass, btVector3 inertia, size_t index);
             
             //copy Constructor
             RigidBody(const RigidBody& vbf_rb);
@@ -51,6 +52,8 @@ namespace VBF{
             virtual double get_mass()        const;
             virtual btVector3 get_inertia()  const;
             virtual size_t get_index()       const;
+            virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));
+            virtual const btVector3& get_cog_position();
     };
 }//end of name space
 

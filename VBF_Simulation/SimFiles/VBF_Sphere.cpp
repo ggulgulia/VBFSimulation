@@ -1,10 +1,10 @@
 #include "VBF_Sphere.hpp"
 
 
-VBF::Sphere::Sphere(double radius, btVector3 origin, btVector3 inertia, double mass, size_t index):
+VBF::Sphere::Sphere(double radius, btVector3 origin, btTransform shapeTrans, btVector3 inertia, double mass, size_t index):
                     RigidBody(std::string("Sphere"),
                     (new btSphereShape(radius)),
-                    origin, mass, inertia, index),
+                    origin, shapeTrans, mass, inertia, index),
                     m_radius(radius){
                         //empty constructor body
                     }

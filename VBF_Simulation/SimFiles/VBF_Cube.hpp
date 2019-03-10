@@ -19,7 +19,7 @@ namespace VBF{
 
         public:
 
-            explicit Cube(double length, btVector3 origin, btVector3 inertia, double mass, size_t index);
+            explicit Cube(double length, btVector3 origin, btTransform shapeTrans, btVector3 inertia, double mass, size_t index);
             
             Cube(const Cube& cube, btVector3 origin);
 

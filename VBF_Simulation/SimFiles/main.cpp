@@ -29,11 +29,13 @@ VBF::Cube* get_ground(){
     //create a ground
     double grLength = 50;
     btVector3 grOrigin = btVector3(0.0, -50.0, 0.0);
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
     double grMass = 0.0; //ground is static object, doesn't interact
     size_t grIndex = 23;
     
-    return new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
+    return new VBF::Cube(grLength, grOrigin, shapeTrans, grInertia, grMass, grIndex);
  
 }
 
@@ -46,6 +48,8 @@ void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
     size_t cubeIndex = 12;
     btVector3 cubeInertia= btVector3(0.0, 0.0, 0.0);
     size_t array_size = 5;
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
 
     for(size_t k=0; k<array_size; ++k){
         for (size_t i = 0; i < array_size; ++i) {
@@ -53,7 +57,7 @@ void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
                
                btVector3 cubeOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                cubeIndex += j + array_size*i + array_size*k;
-               VBF::Cube *cube = new VBF::Cube(cubeLen, cubeOrigin, cubeInertia, cubeMass, cubeIndex);
+               VBF::Cube *cube = new VBF::Cube(cubeLen, cubeOrigin, shapeTrans, cubeInertia, cubeMass, cubeIndex);
                rigid_bodies_vector.push_back(cube);
            } 
         }
@@ -66,6 +70,8 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
     double sphereMass = 1.0;
     size_t sphereIndex = 44;
     btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
     size_t array_size = 5;
        for(size_t k=0; k<array_size; ++k){ 
            for (size_t i = 0; i < array_size; ++i) {
@@ -73,7 +79,7 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
                    
                    btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                    sphereIndex += j + array_size*i + array_size*k;
-                   VBF::Sphere *sph = new VBF::Sphere(sphereRad, sphereOrigin, sphereInertia, sphereMass, sphereIndex);
+                   VBF::Sphere *sph = new VBF::Sphere(sphereRad, sphereOrigin, shapeTrans, sphereInertia, sphereMass, sphereIndex);
                    sphere_vector.push_back(sph);
                } 
             }
