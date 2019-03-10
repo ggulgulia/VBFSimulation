@@ -7,7 +7,7 @@ VBF::RigidBody::RigidBody():
                 {  }
 
 //user constructor
-VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin, btTransform shapeTransform, double mass, btVector3 inertia, size_t index):
+VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin, btTransform shapeTransform , double mass, btVector3 inertia, size_t index):
 m_name(name), m_shape(shape), m_origin(origin), 
 m_shapeTransform(shapeTransform), m_mass(mass), 
 m_inertia(inertia), m_index(index)
@@ -16,6 +16,7 @@ m_inertia(inertia), m_index(index)
     if(m_mass >0.0){
         m_shape->calculateLocalInertia(m_mass, m_inertia);
     }
+    //btTransform shapeTransform;
     MotionState *motionState;
     m_shapeTransform.setOrigin(m_origin);
     motionState = new MotionState(m_shapeTransform);
@@ -65,5 +66,5 @@ btVector3 VBF::RigidBody::get_origin()   const { return m_origin; }
 double VBF::RigidBody::get_mass()        const { return m_mass;   }
 btVector3 VBF::RigidBody::get_inertia()  const { return m_inertia;}
 size_t VBF::RigidBody::get_index()       const { return m_index;  }
-void VBF::RigidBody::set_gravity(const btVector3 gravity){ m_rbody->setGravity(gravity);  }
+void VBF::RigidBody::set_gravity(const btVector3 gravity){ m_rbody->setGravity(gravity); }
 const btVector3& VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPosition();}

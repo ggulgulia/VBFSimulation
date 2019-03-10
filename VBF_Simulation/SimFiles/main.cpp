@@ -5,6 +5,7 @@
 #include "VBF_GraphicsBridge.hpp"
 #include "VBF_Cube.hpp"
 #include "VBF_Sphere.hpp"
+#include "VBF_InitializeSim.hpp"
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -24,15 +25,18 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
-void get_ground(VBF::RigidBody*& ground){
+VBF::Cube* get_ground(){
 
     //create a ground
     double grLength = 50;
     btVector3 grOrigin = btVector3(0.0, -50.0, 0.0);
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
     double grMass = 0.0; //ground is static object, doesn't interact
     size_t grIndex = 23;
-    ground = new VBF::Cube(grLength, grOrigin, grInertia, grMass, grIndex);
+    
+    return new VBF::Cube(grLength, grOrigin, shapeTrans, grInertia, grMass, grIndex);
  
 }
 
@@ -45,6 +49,8 @@ void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
     size_t cubeIndex = 12;
     btVector3 cubeInertia= btVector3(0.0, 0.0, 0.0);
     size_t array_size = 5;
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
 
     for(size_t k=0; k<array_size; ++k){
         for (size_t i = 0; i < array_size; ++i) {
@@ -52,7 +58,7 @@ void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
                
                btVector3 cubeOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                cubeIndex += j + array_size*i + array_size*k;
-               VBF::Cube *cube = new VBF::Cube(cubeLen, cubeOrigin, cubeInertia, cubeMass, cubeIndex);
+               VBF::Cube *cube = new VBF::Cube(cubeLen, cubeOrigin, shapeTrans, cubeInertia, cubeMass, cubeIndex);
                rigid_bodies_vector.push_back(cube);
            } 
         }
@@ -65,6 +71,8 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
     double sphereMass = 1.0;
     size_t sphereIndex = 44;
     btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
     size_t array_size = 5;
        for(size_t k=0; k<array_size; ++k){ 
            for (size_t i = 0; i < array_size; ++i) {
@@ -72,7 +80,7 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
                    
                    btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                    sphereIndex += j + array_size*i + array_size*k;
-                   VBF::Sphere *sph = new VBF::Sphere(sphereRad, sphereOrigin, sphereInertia, sphereMass, sphereIndex);
+                   VBF::Sphere *sph = new VBF::Sphere(sphereRad, sphereOrigin, shapeTrans, sphereInertia, sphereMass, sphereIndex);
                    sphere_vector.push_back(sph);
                } 
             }
@@ -84,17 +92,20 @@ int main(int argc, char *argv[])
 {
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
-    
+
+    //read input data from the input file
+    std::string inputFileName("input.txt");    
+    VBF::InitializeSim init(inputFileName);
+    VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
-
+    
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
-    VBF::RigidBody *ground;
-    get_ground(ground);
-    ground->get_shape();
+    VBF::RigidBody *ground = get_ground();
+
     //get_cubes(rigid_bodies);
     get_spheres(rigid_bodies);
 
@@ -127,7 +138,8 @@ int main(int argc, char *argv[])
         }while(!vbf_window->requested_exit());
         
     vbf_window->close_window();
+    init.~InitializeSim();
     //delete window;
    
-    return 0;
+return 0;
 }

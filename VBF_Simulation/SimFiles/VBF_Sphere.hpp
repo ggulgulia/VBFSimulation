@@ -19,11 +19,11 @@ namespace VBF{
 
         public:
 
-            explicit Sphere(double radius, btVector3 origin, btVector3 inertia, double mass, size_t index);         
+            explicit Sphere(double radius, btVector3 origin, btTransform shapeTrans, btVector3 inertia, double mass, size_t index);         
             Sphere(const Sphere& sphere, btVector3 origin);             
             ~Sphere();
 
-            virtual std::string get_name();
+            virtual std::string get_name() const override final;
             double get_radius() const { return m_radius;}
     };
 

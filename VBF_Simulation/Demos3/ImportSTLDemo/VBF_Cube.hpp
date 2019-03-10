@@ -11,15 +11,16 @@ typedef btCollisionShape CollShape;
 
 namespace VBF{
 
-    
-    class Cube : public RigidBody{
+   //final specifier says that VBF::Cube can't be inherited 
+   //further down the inheritance chain
+    class Cube final: public RigidBody{
 
         private:
             double m_length;
 
         public:
 
-            explicit Cube(double length, btVector3 origin, btTransform shapeTrans, btVector3 inertia, double mass, size_t index);
+            explicit Cube(double length, btVector3 origin, btTransform shapeTransform, btVector3 inertia, double mass, size_t index);
             
             Cube(const Cube& cube, btVector3 origin);
 
@@ -27,7 +28,6 @@ namespace VBF{
             virtual std::string get_name() const override final;
             double get_length() const { return m_length;}
     };
-
 
 }//end of name space
 

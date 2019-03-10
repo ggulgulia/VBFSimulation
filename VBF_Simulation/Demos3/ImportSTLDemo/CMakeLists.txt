@@ -6,14 +6,14 @@ project(libtest_project CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -fno-elide-constructors")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g")
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 INCLUDE_DIRECTORIES(
 ${BULLET_PHYSICS_SOURCE_DIR}/src 
 )
 
 LINK_LIBRARIES(
-    OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath 
+    OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath Bullet3Common 
 )
 
 IF (WIN32)
@@ -22,14 +22,15 @@ IF (WIN32)
 		${BULLET_PHYSICS_SOURCE_DIR}/build3/bullet.rc
 	)
 ELSE()
-	ADD_EXECUTABLE(vbf_test.out
-        main.cpp
-        VBF_World.cpp
+	ADD_EXECUTABLE(import_test.out
+        ImportSTLSetup.cpp
         VBF_RigidBodies.cpp
         VBF_CommonPhysics.cpp
         VBF_Cube.cpp
-        VBF_Sphere.cpp
+        VBF_World.cpp
+        main.cpp
 	)
+
 ENDIF()
 
 
