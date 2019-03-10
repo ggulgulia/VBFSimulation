@@ -29,6 +29,7 @@ ELSE()
         VBF_CommonPhysics.cpp
         VBF_Cube.cpp
         VBF_Sphere.cpp
+        VBF_InitializeSim.cpp
 	)
 ENDIF()
 
