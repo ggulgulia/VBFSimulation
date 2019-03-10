@@ -3,10 +3,10 @@
 
 
 //Cube Class Definitions
-VBF::Cube::Cube(double length, btVector3 origin, btVector3 inertia, double mass, size_t index):
+VBF::Cube::Cube(double length, btVector3 origin, btTransform shapeTrans, btVector3 inertia, double mass, size_t index):
                RigidBody(std::string("Cube"),
                (new btBoxShape(btVector3(length, length, length))),
-               origin, mass, inertia, index),
+               origin, shapeTrans, mass, inertia, index),
                m_length(length){
                         
                 //empty constructor body
