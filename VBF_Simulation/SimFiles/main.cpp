@@ -92,13 +92,16 @@ int main(int argc, char *argv[])
 {
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
+
+    //read input data from the input file
     std::string inputFileName("input.txt");    
     VBF::InitializeSim init(inputFileName);
+    VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
-
+    
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
     VBF::RigidBody *ground = get_ground();
@@ -135,6 +138,7 @@ int main(int argc, char *argv[])
         }while(!vbf_window->requested_exit());
         
     vbf_window->close_window();
+    init.~InitializeSim();
     //delete window;
    
 return 0;

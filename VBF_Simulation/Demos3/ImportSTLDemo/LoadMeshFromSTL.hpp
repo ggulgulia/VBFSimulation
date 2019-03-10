@@ -34,7 +34,6 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
 		        	char* memoryBuffer = new char[size+1];
 		        	int actualBytesRead = fread(memoryBuffer,1,size,file);
 		        	if (actualBytesRead!=size){
-		        		//printf("Error reading from file %s",relativeFileName.c_str());
                         throw "Error reading from file";
 		        	} 
                     else{
@@ -69,8 +68,8 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
                                temp_vert0.normal[vv] = 0.0; temp_vert1.normal[vv] = 0.0; temp_vert2.normal[vv] = 0.0;
                             }
                             temp_vert0.xyzw[3] = 0.0; temp_vert1.xyzw[3] = 0.0; temp_vert2.xyzw[3] = 0.0; 
-			    			temp_vert0.uv[0] = temp_vert1.uv[0] = temp_vert2.uv[0] = 0.5;
-			    			temp_vert0.uv[1] = temp_vert1.uv[1] = temp_vert2.uv[1] = 0.5; 
+			    			temp_vert0.uv[0] = temp_vert1.uv[0] = temp_vert2.uv[0] = 0.;
+			    			temp_vert0.uv[1] = temp_vert1.uv[1] = temp_vert2.uv[1] = 0.; 
 
 			    			if (tri_num == numTriangles-2)
 			    			{
