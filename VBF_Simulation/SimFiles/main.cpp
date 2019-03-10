@@ -5,6 +5,7 @@
 #include "VBF_GraphicsBridge.hpp"
 #include "VBF_Cube.hpp"
 #include "VBF_Sphere.hpp"
+#include "VBF_InitializeSim.hpp"
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -91,7 +92,8 @@ int main(int argc, char *argv[])
 {
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
-    
+    std::string inputFileName("input.txt");    
+    VBF::InitializeSim init(inputFileName);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
