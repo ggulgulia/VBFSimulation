@@ -60,25 +60,24 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 		trimeshData->addTriangle(v0,v1,v2);
 	}
 	btBvhTriangleMeshShape* shape = new btBvhTriangleMeshShape(trimeshData,true);//meshInterface);
-    btVector3 xAxis(1,0,0);
-    btQuaternion qt1(xAxis, -20);
+    btVector3 xAxis(-1,0.25,0.2);
+    btQuaternion qt1(xAxis, -30);
     btTransform startTrans(qt1);
+    //btTransform startTrans;
     //startTrans.setIdentity();
     
-    //get the origin (should be 0,0,0);
     int indOrigin;
     double x0, y0, z0;
     indOrigin = m_mesh->m_indices->at(0);
     x0 = m_mesh->m_vertices->at(indOrigin).xyzw[0];
     y0 = m_mesh->m_vertices->at(indOrigin).xyzw[1];
     z0 = m_mesh->m_vertices->at(indOrigin).xyzw[2];
-    //m_origin = btVector3(0.0, 0.0, 0.0);
     btVector3 meshInertia = btVector3(0.0, 0.0, 0.0);
     double meshMass(1);
     //btRigidBody* body = this->createRigidBody(0,startTrans,shape);
     m_VBF_rbody = new VBF::RigidBody(m_filename, shape, m_origin,
                                     startTrans, meshMass, meshInertia);
-//m_VBF_rbody->getWorldTransform().setRotation(qt); 
+    m_VBF_rbody->set_gravity();
 }
 
 
