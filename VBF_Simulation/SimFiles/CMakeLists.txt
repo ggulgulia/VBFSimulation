@@ -13,7 +13,7 @@ ${BULLET_PHYSICS_SOURCE_DIR}/src
 )
 
 LINK_LIBRARIES(
-    OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath 
+    OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath Bullet3Common 
 )
 
 IF (WIN32)
@@ -23,12 +23,14 @@ IF (WIN32)
 	)
 ELSE()
 	ADD_EXECUTABLE(vbf_test.out
-        main.cpp
+        ImportSTLSetup.cpp
         VBF_World.cpp
         VBF_RigidBodies.cpp
         VBF_CommonPhysics.cpp
         VBF_Cube.cpp
         VBF_Sphere.cpp
+        VBF_InitializeSim.cpp
+        main.cpp
 	)
 ENDIF()
 

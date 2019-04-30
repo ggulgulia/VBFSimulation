@@ -1,6 +1,5 @@
-//#include "helper.hpp"
+#include "ImportSTLSetup.hpp"
 #include "VBF_World.hpp"
-#include "VBF_RigidBodies.hpp"
 #include "VBF_CommonPhysics.hpp"
 #include "VBF_GraphicsBridge.hpp"
 #include "VBF_Cube.hpp"
@@ -88,8 +87,7 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
 
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
@@ -98,12 +96,19 @@ int main(int argc, char *argv[])
     VBF::InitializeSim init(inputFileName);
     VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
 
+    //create a placeholder for rigid boides
+    std::vector<VBF::RigidBody*> rigid_bodies;
+
+    //import the stl file
+    std::string fileName("StufeFein150x30x100.stl");
+    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName);
+    
+    rigid_bodies.push_back(stl_body->get_vbf_rbody());
+
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
     
-    //create a placeholder for rigid boides
-    std::vector<VBF::RigidBody*> rigid_bodies;
     VBF::RigidBody *ground = get_ground();
 
     //get_cubes(rigid_bodies);
@@ -138,6 +143,8 @@ int main(int argc, char *argv[])
         }while(!vbf_window->requested_exit());
         
     vbf_window->close_window();
+    //stl_body->~ImportSTLSetup();
+    ground->~RigidBody();
     init.~InitializeSim();
     //delete window;
    

@@ -32,7 +32,7 @@ namespace VBF{
             explicit RigidBody();
             //user constructor
             explicit RigidBody(std::string name, CollShape* shape, btVector3 origin,
-                               btTransform shapeTransform, double mass, btVector3 inertia, size_t index);
+                               btTransform shapeTransform, double mass, btVector3 inertia, size_t index=0);
             
             //copy Constructor
             RigidBody(const RigidBody& vbf_rb);
