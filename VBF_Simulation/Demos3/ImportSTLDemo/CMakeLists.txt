@@ -28,6 +28,7 @@ ELSE()
         VBF_CommonPhysics.cpp
         VBF_Cube.cpp
         VBF_World.cpp
+        VBF_InitializeSim.cpp
         main.cpp
 	)
 

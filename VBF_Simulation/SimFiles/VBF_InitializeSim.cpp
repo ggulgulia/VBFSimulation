@@ -1,5 +1,4 @@
 #include "VBF_InitializeSim.hpp"
-#include <iostream>
 
 VBF::InitializeSim::InitializeSim(){  }
 

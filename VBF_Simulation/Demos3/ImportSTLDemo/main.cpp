@@ -3,6 +3,7 @@
 #include "VBF_GraphicsBridge.hpp"
 #include "VBF_Cube.hpp"
 #include "VBF_CommonPhysics.hpp"
+#include "VBF_InitializeSim.hpp"
 
 VBF::Cube* get_ground(){
 
@@ -20,6 +21,11 @@ VBF::Cube* get_ground(){
 
 int main(int argc, char *argv[]){
     
+    //read input data from the input file
+    std::string inputFileName("input.txt");
+    VBF::InitializeSim init(inputFileName); 
+    VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
+
     //create a world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->initialize_new_world();
@@ -28,15 +34,16 @@ int main(int argc, char *argv[]){
     VBF::RigidBody *ground = get_ground(); 
 
      //import the stl file    
-    //std::string fileName("l_finger_tip.stl");
     std::string fileName("StufeFein150x30x100.stl");
     VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName); 
     
+    std::vector<VBF::RigidBody*> vbf_body_vect;
+    vbf_body_vect.push_back(stl_body->get_vbf_rbody());
     const btVector3 bodyOrigin = stl_body->get_vbf_rbody()->get_cog_position();
     std::cout << "Body Origin is at x:" << bodyOrigin[0] << ", y:" << bodyOrigin[1] << ", z:" << bodyOrigin[2] <<"\n" ;
 
      //create physics
-    VBF::CommonPhysics phy(vbf_world, ground, stl_body->get_vbf_rbody());
+    VBF::CommonPhysics phy(vbf_world, ground, vbf_body_vect);
     phy.initPhysics();
     
     //vis bridge
@@ -64,10 +71,12 @@ int main(int argc, char *argv[]){
         vbf_window->end_rendering();
     }while(!vbf_window->requested_exit());
 
+    //freeing resources
     vbf_window->close_window();
     phy.~CommonPhysics();
     stl_body->~ImportSTLSetup();
     ground->~RigidBody();
+    init.~InitializeSim();
 
 
     return 0;
