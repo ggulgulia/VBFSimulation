@@ -94,7 +94,9 @@ int main(int argc, char *argv[]){
     //read input data from the input file
     std::string inputFileName("input.txt");    
     VBF::InitializeSim init(inputFileName);
+
     VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
+    std::cout << init3;
 
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
@@ -111,8 +113,8 @@ int main(int argc, char *argv[]){
     
     VBF::RigidBody *ground = get_ground();
 
-    //get_cubes(rigid_bodies);
-    get_spheres(rigid_bodies);
+    ////get_cubes(rigid_bodies);
+    //get_spheres(rigid_bodies);
 
     //CommonPhysics phy(vbf_world);
     VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);

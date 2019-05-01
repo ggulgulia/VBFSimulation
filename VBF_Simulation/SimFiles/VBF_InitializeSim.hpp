@@ -38,7 +38,6 @@ namespace VBF{
             //overloaded operator<<  to print the paramter list
             friend std::ostream& operator<<(std::ostream& out, const InitializeSim& init ){
     const std::vector<std::pair<std::string, double>>::iterator itr;
-    int num(0);
     const std::vector<std::pair<std::string, double>> *paramList = init.get_parameter_list() ;
 
     out << "printing the paramters list that was read from input file: \n";
@@ -46,6 +45,8 @@ namespace VBF{
     for (const auto pair : *paramList){
         std::cout << pair.first << ":" << pair.second << "\n";
     } 
+
+    return out;
 }
     };//end class definition
 
