@@ -7,7 +7,11 @@ VBF::RigidBody::RigidBody():
                 {  }
 
 //user constructor
-VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin, btTransform shapeTransform, double mass, btVector3 inertia, size_t index):
+VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin,
+                          btTransform shapeTransform, double mass, btVector3 inertia, 
+                          double linFriction, double rollingFriction, 
+                          double restitution, double linDamping, 
+                          double angularDamping, size_t index):
 m_name(name), m_shape(shape), m_origin(origin), 
 m_shapeTransform(shapeTransform), m_mass(mass), 
 m_inertia(inertia), m_index(index)
@@ -21,6 +25,11 @@ m_inertia(inertia), m_index(index)
     motionState = new MotionState(m_shapeTransform);
     
     btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
+    rbinfo.m_friction = linFriction;
+    rbinfo.m_rollingFriction = rollingFriction;
+    rbinfo.m_restitution = restitution;
+    rbinfo.m_linearDamping = linDamping;
+    rbinfo.m_angularDamping = angularDamping;
     m_rbody = new btRigidBody(rbinfo);
 }
 
@@ -47,6 +56,8 @@ VBF::RigidBody::RigidBody(const RigidBody& rbody, btVector3 origin):
                     shapeTransform.setOrigin(m_origin);
                     MotionState *motionState = new MotionState(shapeTransform);
                     btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
+                    rbinfo.m_rollingFriction = 0.5;
+                    rbinfo.m_friction = 0.8;
                     m_rbody = new btRigidBody(rbinfo);
                 }
 //desturctor
