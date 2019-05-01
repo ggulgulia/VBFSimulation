@@ -23,6 +23,13 @@ namespace VBF{
                             //when there are many rigid bodies
             btRigidBody *m_rbody;
 
+            //dynamic properties of the rigid body
+            //they go in rbconstrinfo
+            double m_frictionCoeff;
+            double m_rollingFriction;
+            double m_restitutionCoeff;
+            double m_linearDamping;
+            double m_angularDamping;
         public:
 
             //default constructor
@@ -32,7 +39,10 @@ namespace VBF{
             explicit RigidBody();
             //user constructor
             explicit RigidBody(std::string name, CollShape* shape, btVector3 origin,
-                               btTransform shapeTransform, double mass, btVector3 inertia, size_t index=0);
+                               btTransform shapeTransform, double mass, btVector3 inertia, 
+                               double linFriction=0.5, double rollingFriction=0.5, 
+                               double restitution=0.2, double linDamping=0.0, 
+                               double angularDamping=0.0, size_t index=0);
             
             //copy Constructor
             RigidBody(const RigidBody& vbf_rb);
