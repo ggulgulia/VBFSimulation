@@ -27,8 +27,8 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
 VBF::Cube* get_ground(){
 
     //create a ground
-    double grLength = 50;
-    btVector3 grOrigin = btVector3(0.0, -50.0, 0.0);
+    double grLength = 45;
+    btVector3 grOrigin = btVector3(0.0, -10.05-grLength*0.5, 0.0);
     btTransform shapeTrans;
     shapeTrans.setIdentity();
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
@@ -87,6 +87,18 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
 
 }
 
+void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector){
+    
+    double sphereRad = 1.0;
+    size_t sphereIndex = 44;
+    btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
+    VBF::Sphere *sph = new VBF::Sphere(sphereRad, btVector3(0.01, 0.02, 0.0), shapeTrans, sphereInertia, 0.0, sphereIndex);
+    sphere_vector.push_back(sph);
+
+}
+
 int main(int argc, char *argv[]){
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
@@ -102,10 +114,16 @@ int main(int argc, char *argv[]){
     std::vector<VBF::RigidBody*> rigid_bodies;
 
     //import the stl file
-    std::string fileName("StufeFein150x30x100.stl");
-    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName);
+    double scale{0.1}, mass{0.0};
+    std::string fileName("StufeFein150x30x200.stl");
+    std::string file2{"Zylinder1_7x1_0.stl"};
+    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass);
     
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
+    //std::cout << "please input the file name: ";
+    //std::cin >> file2;
+    //VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1);
+    //rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
@@ -114,7 +132,8 @@ int main(int argc, char *argv[]){
     VBF::RigidBody *ground = get_ground();
 
     //get_cubes(rigid_bodies);
-    get_spheres(rigid_bodies);
+    //get_spheres(rigid_bodies);
+    get_sphere(rigid_bodies);
 
     //CommonPhysics phy(vbf_world);
     VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);

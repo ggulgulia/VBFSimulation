@@ -6,6 +6,7 @@
 #include <cstdio> //fopen
 #include <bullet/Bullet3Common/b3AlignedObjectArray.h>
 #include <string>
+#include <fstream>
 
 class MySTLTriangle
 {
