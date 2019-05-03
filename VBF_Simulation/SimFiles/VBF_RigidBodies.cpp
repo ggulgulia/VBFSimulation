@@ -26,8 +26,10 @@ m_inertia(inertia), m_index(index)
     
     btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
     rbinfo.m_friction = linFriction;
-    rbinfo.m_rollingFriction = rollingFriction;
-    rbinfo.m_restitution = restitution;
+
+    //this causes the loaded stl mesh to dissappear
+    //rbinfo.m_rollingFriction = rollingFriction;  //bug here
+    rbinfo.m_restitution = 0.0;
     rbinfo.m_linearDamping = linDamping;
     rbinfo.m_angularDamping = angularDamping;
     m_rbody = new btRigidBody(rbinfo);
