@@ -93,7 +93,11 @@ void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector){
     size_t sphereIndex = 44;
     btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
     btTransform shapeTrans;
-    shapeTrans.setIdentity();
+    btQuaternion qt;
+    double pi{3.14159265358};
+    qt.setEulerZYX(0,0,-0.5*pi);
+    shapeTrans.setRotation(qt);
+
     VBF::Sphere *sph = new VBF::Sphere(sphereRad, btVector3(0.01, 0.02, 0.0), shapeTrans, sphereInertia, 0.0, sphereIndex);
     sphere_vector.push_back(sph);
 
@@ -107,21 +111,23 @@ int main(int argc, char *argv[]){
     std::string inputFileName("input.txt");    
     VBF::InitializeSim init(inputFileName);
 
-    VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
-    //std::cout << init3;
-
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
     //import the stl file
-    double scale{0.1}, mass{0.0};
-    std::string fileName("StufeFein150x30x200.stl");
+    double scale{0.1}, mass{0.00};
+    std::string fileName("MeshFiles/StufeFein150x30x200.stl");
     std::string file2{"Zylinder1_7x1_0.stl"};
-    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass);
+    btVector3 meshOrigin = btVector3(-77.9, 125.0, 10.0);
+    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass, meshOrigin);
+    btVector3 position;
+
+    get_rigid_body_position(stl_body->get_vbf_rbody(), position);
+    std::cout << position[0] << " " << position[1] << " " << position[2] << "\n";
     
+    btVector3 position2 = stl_body->get_vbf_rbody()->get_cog_position();
+    std::cout << position2[0] << " " << position2[1] << " " << position2[2] << "\n";
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
-    //std::cout << "please input the file name: ";
-    //std::cin >> file2;
     //VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1);
     //rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
@@ -148,6 +154,7 @@ int main(int argc, char *argv[]){
     vis_bridge.setShadows(true);
     gApp = &vis_bridge;
 
+    //run_simulation_loop(vbf_world, phy)
     btClock timer;
     unsigned long prevTime = timer.getTimeMicroseconds();
 
@@ -161,6 +168,15 @@ int main(int argc, char *argv[]){
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
+
+         get_rigid_body_position(stl_body->get_vbf_rbody(), position);
+         std::cout << position[0] << " " << position[1] << " " << position[2] << "\n";
+         
+         btVector3 position1 = get_rigid_body_position(stl_body->get_vbf_rbody());
+         std::cout << position1[0] << " " << position1[1] << " " << position1[2] << "\n";
+
+         btVector3 position2 = stl_body->get_vbf_rbody()->get_cog_position();
+         std::cout << position2[0] << " " << position2[1] << " " << position2[2] << "\n\n";
         }while(!vbf_window->requested_exit());
         
     vbf_window->close_window();
