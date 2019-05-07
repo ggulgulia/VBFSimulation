@@ -79,7 +79,7 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 
 
 VBF::ImportSTLSetup::~ImportSTLSetup(){
-delete m_mesh;
+   delete m_mesh;
    delete m_VBF_rbody;
    m_mesh = nullptr;
    m_VBF_rbody = nullptr; //don't delete the resources 
