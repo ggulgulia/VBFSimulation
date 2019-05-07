@@ -8,12 +8,12 @@
 
 VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
                                     double scale, double mass,
+                                    btVector3 origin,
                                     int width, 
-                                    int height, btVector3 origin):
+                                    int height):
                                     m_filename(fileName), 
                                     m_scale(scale),
-                                    m_mass(mass),
-                                    m_origin(origin)
+                                    m_mass(mass)
 {
     std::fstream file;
 
@@ -27,10 +27,6 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
         std::cerr << "Force exiting the program\n";
         exit(-1);
     }
-
-	btTransform trans;
-	trans.setIdentity();
-	btVector3 color(0,0,1);
 
     btTriangleMesh* trimeshData = new btTriangleMesh();
 	double xV0{0.0}, yV0{0.0}, zV0{0.0};
@@ -65,12 +61,14 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 
 
 	btGImpactMeshShape* shape = new btGImpactMeshShape(trimeshData);
-    m_origin[0] = -7.79; m_origin[1] = 12.5; m_origin[2] = 1.0;
+    m_origin[0] = scale*origin[0]; 
+    m_origin[1] = scale*origin[1]; 
+    m_origin[2] = scale*origin[2];
     shape->updateBound();
     btTransform startTrans;
-    startTrans.setIdentity();
     btQuaternion qt;
-    qt.setEulerZYX(0,0,-1.57);
+    double pi{3.14159265358};
+    qt.setEulerZYX(0,0,-0.5*pi);
     startTrans.setRotation(qt);
     btVector3 meshInertia = btVector3(0.0, 0.0, 0.0);
     shape->calculateLocalInertia(m_mass, meshInertia);
