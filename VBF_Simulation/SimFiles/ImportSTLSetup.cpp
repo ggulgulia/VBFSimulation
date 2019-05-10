@@ -4,7 +4,11 @@
 #include <iostream>
 #include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
 #include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+#include <valarray> //for sin/cos functions
 
+
+//forward declaration of function
+btGImpactMeshShape* triMeshToRigidBody(const VBF_Mesh*const mesh);
 
 VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
                                     double scale, double mass,
@@ -28,16 +32,52 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
         exit(-1);
     }
 
+	btGImpactMeshShape* shape = triMeshToRigidBody(m_mesh);
+    m_origin[0] = scale*origin[0]; 
+    m_origin[1] = scale*origin[1]; 
+    m_origin[2] = scale*origin[2];
+    double colMargin{0.005};
+    shape->setMargin(colMargin);
+    shape->updateBound();
+    btTransform startTrans;
+    startTrans.setIdentity();
+    btVector3 meshInertia = btVector3(0.0, 0.0, 0.0);
+    shape->calculateLocalInertia(m_mass, meshInertia);
+    m_VBF_rbody = new VBF::RigidBody(m_filename, shape, m_origin,
+                                    startTrans, m_mass, meshInertia);
+    m_VBF_rbody->set_gravity();
+
+}
+
+
+VBF::ImportSTLSetup::~ImportSTLSetup(){
+   delete m_mesh;
+   delete m_VBF_rbody;
+   m_mesh = nullptr;
+   m_VBF_rbody = nullptr; //don't delete the resources 
+                          // as it might be referred to by
+                          // some other object
+}
+
+VBF_Mesh* VBF::ImportSTLSetup::get_mesh() const noexcept {return m_mesh;}
+std::string VBF::ImportSTLSetup::get_file_name() const noexcept {return m_filename;}
+btVector3 VBF::ImportSTLSetup::get_mesh_origin()const noexcept {return m_origin;}
+VBF::RigidBody* VBF::ImportSTLSetup::get_vbf_rbody() const noexcept {return m_VBF_rbody;}
+
+
+//internal routine to convert tri mesh data to a sensible bullet rigid body
+btGImpactMeshShape* triMeshToRigidBody(const VBF_Mesh*const mesh){
+
     btTriangleMesh* trimeshData = new btTriangleMesh();
 	double xV0{0.0}, yV0{0.0}, zV0{0.0};
     double xV1{0.0}, yV1{0.0}, zV1{0.0};
     double xV2{0.0}, yV2{0.0}, zV2{0.0};
-    b3AlignedObjectArray<int>* meshIndices = m_mesh->m_indices;
-    b3AlignedObjectArray<GLInstanceVertex>* meshVertices = m_mesh->m_vertices;
+    b3AlignedObjectArray<int>* meshIndices = mesh->m_indices;
+    b3AlignedObjectArray<GLInstanceVertex>* meshVertices = mesh->m_vertices;
 
     //set the origin of the body as the 
     //coordinate of the first element
-    int numVertices = m_mesh->m_numvertices;
+    int numVertices = mesh->m_numvertices;
 	for (int ind0 = meshIndices->at(0), ind1 = meshIndices->at(1), ind2=meshIndices->at(2); ind2<numVertices; ind0+=3, ind1+=3, ind2+=3){
 
         xV0 = meshVertices->at(ind0).xyzw[0];
@@ -58,36 +98,6 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
 		
 		trimeshData->addTriangle(v0,v1,v2);
 	}
-
-
-	btGImpactMeshShape* shape = new btGImpactMeshShape(trimeshData);
-    m_origin[0] = scale*origin[0]; 
-    m_origin[1] = scale*origin[1]; 
-    m_origin[2] = scale*origin[2];
-    shape->updateBound();
-    btTransform startTrans;
-    btQuaternion qt;
-    double pi{3.14159265358};
-    qt.setEulerZYX(0,0,-0.5*pi);
-    startTrans.setRotation(qt);
-    btVector3 meshInertia = btVector3(0.0, 0.0, 0.0);
-    shape->calculateLocalInertia(m_mass, meshInertia);
-    m_VBF_rbody = new VBF::RigidBody(m_filename, shape, m_origin,
-                                    startTrans, m_mass, meshInertia);
-    m_VBF_rbody->set_gravity();
+    return new btGImpactMeshShape(trimeshData);
 }
 
-
-VBF::ImportSTLSetup::~ImportSTLSetup(){
-   delete m_mesh;
-   delete m_VBF_rbody;
-   m_mesh = nullptr;
-   m_VBF_rbody = nullptr; //don't delete the resources 
-                          // as it might be referred to by
-                          // some other object
-}
-
-VBF_Mesh* VBF::ImportSTLSetup::get_mesh() const noexcept {return m_mesh;}
-std::string VBF::ImportSTLSetup::get_file_name() const noexcept {return m_filename;}
-btVector3 VBF::ImportSTLSetup::get_mesh_origin()const noexcept {return m_origin;}
-VBF::RigidBody* VBF::ImportSTLSetup::get_vbf_rbody() const noexcept {return m_VBF_rbody;}
