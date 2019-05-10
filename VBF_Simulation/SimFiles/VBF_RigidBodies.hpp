@@ -56,6 +56,7 @@ namespace VBF{
             
             //helper functions
             virtual btRigidBody* get_rbody() const;
+            virtual btRigidBody* get_rbody();
             virtual std::string get_name()   const;
             virtual CollShape* get_shape()   const;
             virtual btVector3 get_origin()   const;
@@ -64,6 +65,9 @@ namespace VBF{
             virtual size_t get_index()       const;
             virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));
             virtual btVector3 get_cog_position();
+
+            virtual void set_linear_vel(const btVector3& pos, const btVector3& linVel);
+            //virtual void set_angular_vel(const btVector3& axis, const btVector3& angVel);
     };
 }//end of name space
 

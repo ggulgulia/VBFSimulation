@@ -1,4 +1,5 @@
 #include "VBF_RigidBodies.hpp"
+#include <cmath> //for sin/cos and math functions
 
 //default constructor
 VBF::RigidBody::RigidBody():
@@ -72,6 +73,7 @@ VBF::RigidBody::~RigidBody(){
             
 //helper functions                
 btRigidBody* VBF::RigidBody::get_rbody() const { return m_rbody; }
+btRigidBody* VBF::RigidBody::get_rbody() { return m_rbody; }
 std::string VBF::RigidBody::get_name()   const { return "incorrect name"; }
 CollShape* VBF::RigidBody::get_shape()   const { return m_shape;  } 
 btVector3 VBF::RigidBody::get_origin()   const { return m_origin; }
@@ -80,3 +82,14 @@ btVector3 VBF::RigidBody::get_inertia()  const { return m_inertia;}
 size_t VBF::RigidBody::get_index()       const { return m_index;  }
 void VBF::RigidBody::set_gravity(const btVector3 gravity){ m_rbody->setGravity(gravity);  }
 btVector3 VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPosition();}
+
+void VBF::RigidBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+    btRigidBody *rbody = this->get_rbody();
+    rbody->setActivationState(DISABLE_DEACTIVATION); //? don't know if this exists in bullet
+    btTransform trans;
+    rbody->getMotionState()->getWorldTransform(trans);
+    trans.setOrigin(pos);
+    //rbody->getMotionState()->setWorldTransform(trans);
+    rbody->setLinearVelocity(linVel);
+
+}

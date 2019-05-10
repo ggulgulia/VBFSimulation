@@ -27,8 +27,8 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
 VBF::Cube* get_ground(){
 
     //create a ground
-    double grLength = 45;
-    btVector3 grOrigin = btVector3(0.0, -10.05-grLength*0.5, 0.0);
+    double grLength = 50;
+    btVector3 grOrigin = btVector3(0.0, -1.999-100, 0.0);
     btTransform shapeTrans;
     shapeTrans.setIdentity();
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
@@ -87,20 +87,18 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
 
 }
 
-void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector){
+
+//this method adds a reference sphere at the axis of  the vbf component for visual check and 
+//debuggging 
+void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector, btVector3 &meshAxis, const double scale){
     
     double sphereRad = 1.0;
     size_t sphereIndex = 44;
-    double scale{0.1};
-    btVector3 meshAxis = btVector3(0.1*scale, -0.2*scale, 10.0*scale);
+    meshAxis[0] *= scale; meshAxis[1] *= scale; meshAxis[2] *= scale;
     btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
     btTransform shapeTrans;
-    btQuaternion qt;
-    double pi{3.14159265358};
-    qt.setEulerZYX(0,0,-0.5*pi);
-    shapeTrans.setRotation(qt);
-
-    VBF::Sphere *sph = new VBF::Sphere(sphereRad, meshAxis, shapeTrans, sphereInertia, 0.010, sphereIndex);
+    shapeTrans.setIdentity();
+    VBF::Sphere *sph = new VBF::Sphere(sphereRad, meshAxis, shapeTrans, sphereInertia, 0.0, sphereIndex);
     sphere_vector.push_back(sph);
 
 }
@@ -116,23 +114,26 @@ int main(int argc, char *argv[]){
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
+    VBF::RigidBody *ground = get_ground();
+    btVector3 groundOrigin = get_rigid_body_position(ground);
+    std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     //import the stl file
-    double scale{0.1}, mass{0.00};
+    double scale{0.1}, mass{0.01};
     std::string fileName("MeshFiles/StufeFein150x30x200.stl");
-    std::string file2{"Zylinder1_7x1_0.stl"};
-    btVector3 meshOrigin = btVector3(-77.9, 125.0, 10.0);
+    std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
+    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
     VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass, meshOrigin);
 
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
-    //VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1);
-    //rigid_bodies.push_back(stl_body2->get_vbf_rbody());
+    VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1);
+    rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
     
-    VBF::RigidBody *ground = get_ground();
-    get_sphere(rigid_bodies); //this is just a reference body
+    btVector3 meshAxis{btVector3(73.97719, 0.0, 132.03666)};
+    get_sphere(rigid_bodies, meshAxis, scale); //this is just a reference body
     
 
     //CommonPhysics phy(vbf_world);
@@ -151,12 +152,21 @@ int main(int argc, char *argv[]){
     btClock timer;
     unsigned long prevTime = timer.getTimeMicroseconds();
     btVector3 position;
+    VBF::RigidBody* vbf_meshRbody = stl_body->get_vbf_rbody();
+    btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
+
+    double Vy{};
+    auto velFun = [] (double time, double amplitude)->double{double pi{3.14159};
+                                  return amplitude*sin(4*pi*time);};
 
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime - prevTime)/1000.);
          }
+         Vy = velFun(currTime, 0.2);
+         btVector3 linVel{btVector3(0.0, Vy, 0.0)};
+         vbf_meshRbody->set_linear_vel(axis, linVel);
          prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
@@ -164,7 +174,7 @@ int main(int argc, char *argv[]){
          vbf_window->end_rendering();
 
          btVector3 position1 = get_rigid_body_position(stl_body->get_vbf_rbody());
-         std::cout << position1[0] << " " << position1[1] << " " << position1[2] << "\n";
+         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
 
         }while(!vbf_window->requested_exit());
         
