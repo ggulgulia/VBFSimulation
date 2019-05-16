@@ -2,10 +2,13 @@
 #include <OpenGLWindow/X11OpenGLWindow.h>
 #include <OpenGL/GLDebugDrawer.h>
 #include <OpenGL/DemoApplication.h>
+#include "VBF_GraphicsBridge.hpp"
+#include "VBF_CommonPhysics.hpp"
+#include "VBF_World.hpp"
 
 
 int sWidth(800), sHeight(600);
-DemoApplication* gApp = 0;
+DemoApplication* gApp {nullptr};
 bool isShiftPressed = false;
 bool isCtrlPressed = false;
 bool isAltPressed = false;
@@ -74,5 +77,23 @@ void MyResizeCallback(float width, float height)
 	{
 		gApp->reshape(width,height);
 	}
+}
+
+
+//returns the rigid body position based on motion state
+void get_rigid_body_position(const VBF::RigidBody *const vbf_rigid_body, btVector3& position){
+    btTransform trans;
+    vbf_rigid_body->get_rbody()->getMotionState()->getWorldTransform(trans);
+    position[0] = trans.getOrigin().getX();
+    position[1] = trans.getOrigin().getY();
+    position[2] = trans.getOrigin().getZ();
+}
+
+
+//returns the rigid body position based not on motion state
+const btVector3 get_rigid_body_position(const VBF::RigidBody *const vbf_rigid_body) noexcept{
+
+    btVector3 pos = vbf_rigid_body->get_rbody()->getWorldTransform().getOrigin();
+    return pos;
 }
 

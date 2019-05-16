@@ -1,4 +1,5 @@
 #include "VBF_RigidBodies.hpp"
+#include <cmath> //for sin/cos and math functions
 
 //default constructor
 VBF::RigidBody::RigidBody():
@@ -7,10 +8,15 @@ VBF::RigidBody::RigidBody():
                 {  }
 
 //user constructor
-VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin, btTransform shapeTransform, double mass, btVector3 inertia, size_t index):
+VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin,
+                          btTransform shapeTransform, double mass, 
+                          btVector3 inertia, bool isKinematic,
+                          double linFriction, double rollingFriction, 
+                          double restitution, double linDamping, 
+                          double angularDamping, size_t index):
 m_name(name), m_shape(shape), m_origin(origin), 
 m_shapeTransform(shapeTransform), m_mass(mass), 
-m_inertia(inertia), m_index(index)
+m_inertia(inertia), m_isKinematic(isKinematic), m_index(index)
 {
     //beautiful process in bullet to create a rigid body
     if(m_mass >0.0){
@@ -21,7 +27,19 @@ m_inertia(inertia), m_index(index)
     motionState = new MotionState(m_shapeTransform);
     
     btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
+    rbinfo.m_friction = linFriction;
+
+    //this causes the loaded stl mesh to dissappear
+    //rbinfo.m_rollingFriction = rollingFriction;  //bug here
+    rbinfo.m_restitution = 0.0;
+    rbinfo.m_linearDamping = linDamping;
+    rbinfo.m_angularDamping = angularDamping;
     m_rbody = new btRigidBody(rbinfo);
+    m_rbody->setActivationState(DISABLE_DEACTIVATION);
+
+    if(m_isKinematic && m_mass==0.0){
+        m_rbody->setCollisionFlags( m_rbody->getCollisionFlags()|btCollisionObject::CF_KINEMATIC_OBJECT);
+    }
 }
 
 //copy Constructor
@@ -47,6 +65,8 @@ VBF::RigidBody::RigidBody(const RigidBody& rbody, btVector3 origin):
                     shapeTransform.setOrigin(m_origin);
                     MotionState *motionState = new MotionState(shapeTransform);
                     btRbConstrInfo rbinfo(m_mass, motionState, m_shape, m_inertia);
+                    rbinfo.m_rollingFriction = 0.5;
+                    rbinfo.m_friction = 0.8;
                     m_rbody = new btRigidBody(rbinfo);
                 }
 //desturctor
@@ -59,6 +79,7 @@ VBF::RigidBody::~RigidBody(){
             
 //helper functions                
 btRigidBody* VBF::RigidBody::get_rbody() const { return m_rbody; }
+btRigidBody* VBF::RigidBody::get_rbody() { return m_rbody; }
 std::string VBF::RigidBody::get_name()   const { return "incorrect name"; }
 CollShape* VBF::RigidBody::get_shape()   const { return m_shape;  } 
 btVector3 VBF::RigidBody::get_origin()   const { return m_origin; }
@@ -66,4 +87,16 @@ double VBF::RigidBody::get_mass()        const { return m_mass;   }
 btVector3 VBF::RigidBody::get_inertia()  const { return m_inertia;}
 size_t VBF::RigidBody::get_index()       const { return m_index;  }
 void VBF::RigidBody::set_gravity(const btVector3 gravity){ m_rbody->setGravity(gravity);  }
-const btVector3& VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPosition();}
+btVector3 VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPosition();}
+
+void VBF::RigidBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+    btRigidBody *rbody = this->get_rbody();
+    //rbody->setActivationState(DISABLE_DEACTIVATION); //? don't know if this exists in bullet
+    btTransform trans;
+    rbody->getMotionState()->getWorldTransform(trans);
+    
+    trans.getOrigin() += linVel*0.166667;
+    rbody->getMotionState()->setWorldTransform(trans);
+    //rbody->setLinearVelocity(linVel);
+
+}

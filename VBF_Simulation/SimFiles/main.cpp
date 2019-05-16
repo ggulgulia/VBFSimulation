@@ -28,7 +28,7 @@ VBF::Cube* get_ground(){
 
     //create a ground
     double grLength = 50;
-    btVector3 grOrigin = btVector3(0.0, -50.0, 0.0);
+    btVector3 grOrigin = btVector3(0.0, -4-grLength, 0.0);
     btTransform shapeTrans;
     shapeTrans.setIdentity();
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
@@ -87,6 +87,22 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
 
 }
 
+
+//this method adds a reference sphere at the axis of  the vbf component for visual check and 
+//debuggging 
+void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector, btVector3 &meshAxis, const double scale){
+    
+    double sphereRad = 1.0;
+    size_t sphereIndex = 44;
+    meshAxis[0] *= scale; meshAxis[1] *= scale; meshAxis[2] *= scale;
+    btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
+    btTransform shapeTrans;
+    shapeTrans.setIdentity();
+    VBF::Sphere *sph = new VBF::Sphere(sphereRad, meshAxis, shapeTrans, sphereInertia, 0.0, sphereIndex);
+    sphere_vector.push_back(sph);
+
+}
+
 int main(int argc, char *argv[]){
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
@@ -94,25 +110,32 @@ int main(int argc, char *argv[]){
     //read input data from the input file
     std::string inputFileName("input.txt");    
     VBF::InitializeSim init(inputFileName);
-    VBF::InitializeSim init3 = VBF::InitializeSim(inputFileName);
 
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
+    VBF::RigidBody *ground = get_ground();
+    btVector3 groundOrigin = get_rigid_body_position(ground);
+    std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     //import the stl file
-    std::string fileName("StufeFein150x30x100.stl");
-    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName);
-    
+    double scale{0.1}, mass{0.0};
+    bool part1Kin{true}, part2Kin{false};
+    std::string fileName("MeshFiles/StufeFein150x30x200.stl");
+    std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
+    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
+    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass, part1Kin, meshOrigin);
+
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
+    VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1, part2Kin);
+    rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
     
-    VBF::RigidBody *ground = get_ground();
-
-    //get_cubes(rigid_bodies);
-    get_spheres(rigid_bodies);
+    btVector3 meshAxis{btVector3(73.97719, 0.0, 132.03666)};
+    get_sphere(rigid_bodies, meshAxis, scale); //this is just a reference body
+    
 
     //CommonPhysics phy(vbf_world);
     VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
@@ -129,17 +152,31 @@ int main(int argc, char *argv[]){
 
     btClock timer;
     unsigned long prevTime = timer.getTimeMicroseconds();
+    btVector3 position;
+    VBF::RigidBody* vbf_meshRbody = stl_body->get_vbf_rbody();
+    btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
+
+    double Vy{};
+    auto velFun = [] (double time, double amplitude)->double{double pi{3.14159};
+                                  return amplitude*sin(4*pi*time);};
 
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime - prevTime)/1000.);
          }
+         Vy = velFun(currTime, 2);
+         btVector3 linVel{btVector3(0.0, Vy, 0.0)};
+         vbf_meshRbody->set_linear_vel(axis, linVel);
          prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
+
+         btVector3 position1 = get_rigid_body_position(stl_body->get_vbf_rbody());
+         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
+
         }while(!vbf_window->requested_exit());
         
     vbf_window->close_window();
