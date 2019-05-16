@@ -12,12 +12,13 @@ btGImpactMeshShape* triMeshToRigidBody(const VBF_Mesh*const mesh);
 
 VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
                                     double scale, double mass,
-                                    btVector3 origin,
+                                    bool isKinematic, btVector3 origin,
                                     int width, 
                                     int height):
                                     m_filename(fileName), 
                                     m_scale(scale),
-                                    m_mass(mass)
+                                    m_mass(mass),
+                                    m_isKinematic(isKinematic)
 {
     std::fstream file;
 
@@ -44,7 +45,7 @@ VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
     btVector3 meshInertia = btVector3(0.0, 0.0, 0.0);
     shape->calculateLocalInertia(m_mass, meshInertia);
     m_VBF_rbody = new VBF::RigidBody(m_filename, shape, m_origin,
-                                    startTrans, m_mass, meshInertia);
+                                    startTrans, m_mass, meshInertia, m_isKinematic);
     m_VBF_rbody->set_gravity();
 
 }

@@ -28,7 +28,7 @@ VBF::Cube* get_ground(){
 
     //create a ground
     double grLength = 50;
-    btVector3 grOrigin = btVector3(0.0, -1.999-100, 0.0);
+    btVector3 grOrigin = btVector3(0.0, -4-grLength, 0.0);
     btTransform shapeTrans;
     shapeTrans.setIdentity();
     btVector3 grInertia = btVector3(0.0, 0.0, 0.0);
@@ -119,13 +119,14 @@ int main(int argc, char *argv[]){
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     //import the stl file
     double scale{0.1}, mass{0.01};
+    bool part1Kin{false}, part2Kin{false};
     std::string fileName("MeshFiles/StufeFein150x30x200.stl");
     std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
-    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass, meshOrigin);
+    VBF::ImportSTLSetup* stl_body = new VBF::ImportSTLSetup(fileName, scale, mass, part1Kin, meshOrigin);
 
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
-    VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1);
+    VBF::ImportSTLSetup* stl_body2 = new VBF::ImportSTLSetup(file2, 10*scale, 0.1, part2Kin);
     rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
     //create world for vbf simulation
@@ -164,7 +165,7 @@ int main(int argc, char *argv[]){
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime - prevTime)/1000.);
          }
-         Vy = velFun(currTime, 0.2);
+         Vy = velFun(currTime, 2.0);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
          vbf_meshRbody->set_linear_vel(axis, linVel);
          prevTime = currTime;
