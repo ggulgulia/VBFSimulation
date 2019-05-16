@@ -69,6 +69,7 @@ namespace VBF{
             btSolver*         get_solver() const;
             btIDebugDraw*     get_debug_drawer() const;
     
+            void step_simulation(double timeStep, double subStep, double fixedTimeStep);
             void step_simulation(double deltaT1, double deltaT2) const;
             void step_simulation(double deltaT1) const;
             void print_updated_positions() const;
