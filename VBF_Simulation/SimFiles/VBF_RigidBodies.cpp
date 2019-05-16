@@ -9,13 +9,14 @@ VBF::RigidBody::RigidBody():
 
 //user constructor
 VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin,
-                          btTransform shapeTransform, double mass, btVector3 inertia, 
+                          btTransform shapeTransform, double mass, 
+                          btVector3 inertia, bool isKinematic,
                           double linFriction, double rollingFriction, 
                           double restitution, double linDamping, 
                           double angularDamping, size_t index):
 m_name(name), m_shape(shape), m_origin(origin), 
 m_shapeTransform(shapeTransform), m_mass(mass), 
-m_inertia(inertia), m_index(index)
+m_inertia(inertia), m_isKinematic(isKinematic), m_index(index)
 {
     //beautiful process in bullet to create a rigid body
     if(m_mass >0.0){
@@ -34,6 +35,11 @@ m_inertia(inertia), m_index(index)
     rbinfo.m_linearDamping = linDamping;
     rbinfo.m_angularDamping = angularDamping;
     m_rbody = new btRigidBody(rbinfo);
+    m_rbody->setActivationState(DISABLE_DEACTIVATION);
+
+    if(m_isKinematic && m_mass>0.0){
+        m_rbody->setCollisionFlags( m_rbody->getCollisionFlags()|btCollisionObject::CF_KINEMATIC_OBJECT);
+    }
 }
 
 //copy Constructor
@@ -85,7 +91,7 @@ btVector3 VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPo
 
 void VBF::RigidBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
     btRigidBody *rbody = this->get_rbody();
-    rbody->setActivationState(DISABLE_DEACTIVATION); //? don't know if this exists in bullet
+    //rbody->setActivationState(DISABLE_DEACTIVATION); //? don't know if this exists in bullet
     btTransform trans;
     rbody->getMotionState()->getWorldTransform(trans);
     trans.setOrigin(pos);

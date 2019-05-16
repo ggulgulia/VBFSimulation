@@ -19,6 +19,7 @@ namespace VBF{
             btTransform m_shapeTransform;
             double m_mass;
             btVector3 m_inertia;
+            bool m_isKinematic;
             size_t m_index; //might be helpful for book keeping 
                             //when there are many rigid bodies
             btRigidBody *m_rbody;
@@ -39,7 +40,8 @@ namespace VBF{
             explicit RigidBody();
             //user constructor
             explicit RigidBody(std::string name, CollShape* shape, btVector3 origin,
-                               btTransform shapeTransform, double mass, btVector3 inertia, 
+                               btTransform shapeTransform, double mass, 
+                               btVector3 inertia, bool isKinematic=false,
                                double linFriction=0.5, double rollingFriction=0.5, 
                                double restitution=0.2, double linDamping=0.0, 
                                double angularDamping=0.0, size_t index=0);
