@@ -118,8 +118,8 @@ int main(int argc, char *argv[]){
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     //import the stl file
-    double scale{0.1}, mass{0.01};
-    bool part1Kin{false}, part2Kin{false};
+    double scale{0.1}, mass{0.0};
+    bool part1Kin{true}, part2Kin{false};
     std::string fileName("MeshFiles/StufeFein150x30x200.stl");
     std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime - prevTime)/1000.);
          }
-         Vy = velFun(currTime, 2.0);
+         Vy = velFun(currTime, 2);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
          vbf_meshRbody->set_linear_vel(axis, linVel);
          prevTime = currTime;

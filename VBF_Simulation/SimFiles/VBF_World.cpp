@@ -114,6 +114,10 @@ btIDebugDraw* VBF::World::get_debug_drawer() const{
     return m_world->getDebugDrawer();
 }
 
+void VBF::World::step_simulation(double timeStep, double subStep, double fixedTimeStep){
+    m_world->stepSimulation(fixedTimeStep, subStep, fixedTimeStep);
+}
+
 void VBF::World::step_simulation(double deltaT1, double deltaT2) const{
     m_world->stepSimulation(deltaT1, deltaT2);
 }

@@ -37,7 +37,7 @@ m_inertia(inertia), m_isKinematic(isKinematic), m_index(index)
     m_rbody = new btRigidBody(rbinfo);
     m_rbody->setActivationState(DISABLE_DEACTIVATION);
 
-    if(m_isKinematic && m_mass>0.0){
+    if(m_isKinematic && m_mass==0.0){
         m_rbody->setCollisionFlags( m_rbody->getCollisionFlags()|btCollisionObject::CF_KINEMATIC_OBJECT);
     }
 }
@@ -94,8 +94,9 @@ void VBF::RigidBody::set_linear_vel(const btVector3& pos, const btVector3& linVe
     //rbody->setActivationState(DISABLE_DEACTIVATION); //? don't know if this exists in bullet
     btTransform trans;
     rbody->getMotionState()->getWorldTransform(trans);
-    trans.setOrigin(pos);
-    //rbody->getMotionState()->setWorldTransform(trans);
-    rbody->setLinearVelocity(linVel);
+    
+    trans.getOrigin() += linVel*0.166667;
+    rbody->getMotionState()->setWorldTransform(trans);
+    //rbody->setLinearVelocity(linVel);
 
 }
