@@ -6,7 +6,7 @@ project(libtest_project CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
-set(CMAKE_CXX_FLAGS "-std=c++14 -g -Wall -Werror -fno-elide-constructors")
+set(CMAKE_CXX_FLAGS "-std=c++14 -g -fno-elide-constructors")
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 INCLUDE_DIRECTORIES(
 ${BULLET_PHYSICS_SOURCE_DIR}/src 
@@ -23,12 +23,15 @@ IF (WIN32)
 	)
 ELSE()
 	ADD_EXECUTABLE(vbf_test.out
-        ImportSTLSetup.cpp
+        #ImportSTLSetup.cpp
         VBF_World.cpp
         VBF_RigidBodies.cpp
+        VBF_StaticBody.cpp
+        VBF_KinematicBody.cpp
         VBF_CommonPhysics.cpp
-        VBF_Cube.cpp
-        VBF_Sphere.cpp
+        VBF_Static_Cube.cpp
+        VBF_Static_Sphere.cpp
+        VBF_ImportKinematicMesh.cpp
         VBF_InitializeSim.cpp
         main.cpp
 	)

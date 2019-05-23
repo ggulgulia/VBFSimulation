@@ -3,9 +3,9 @@
 #define COMMON_PHYSICS_H
 #include <bullet/LinearMath/btVector3.h>
 #include <OpenGL/GLDebugDrawer.h>
-//#include "CommonParameterInterface.h"
 #include "VBF_World.hpp"
 #include "VBF_RigidBodies.hpp"
+#include "VBF_Static_Cube.hpp"
 
 
 // a Physics Object should have a VBF::World and the related objects (Physical Bodies) in it

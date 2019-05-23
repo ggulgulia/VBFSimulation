@@ -3,6 +3,7 @@
 
 #include <bullet/btBulletDynamicsCommon.h>
 #include <string>
+#include <cmath>
 
 typedef btDefaultMotionState MotionState;
 typedef btRigidBody::btRigidBodyConstructionInfo btRbConstrInfo;
@@ -16,60 +17,38 @@ namespace VBF{
             std::string m_name;
             CollShape* m_shape;
             btVector3 m_origin;
-            btTransform m_shapeTransform;
-            double m_mass;
-            btVector3 m_inertia;
-            bool m_isKinematic;
-            size_t m_index; //might be helpful for book keeping 
-                            //when there are many rigid bodies
-            btRigidBody *m_rbody;
-
-            //dynamic properties of the rigid body
-            //they go in rbconstrinfo
-            double m_frictionCoeff;
-            double m_rollingFriction;
-            double m_restitutionCoeff;
-            double m_linearDamping;
-            double m_angularDamping;
+            MotionState* m_motionState;
+            size_t m_index;
+            btRigidBody* m_rbody;
         public:
 
-            //default constructor
-            //note right now call to this constructor
-            //creates hanging pointers, either resolve this
-            //or don't permit call to empty constructor
             explicit RigidBody();
             //user constructor
-            explicit RigidBody(std::string name, CollShape* shape, btVector3 origin,
-                               btTransform shapeTransform, double mass, 
-                               btVector3 inertia, bool isKinematic=false,
-                               double linFriction=0.5, double rollingFriction=0.5, 
-                               double restitution=0.2, double linDamping=0.0, 
-                               double angularDamping=0.0, size_t index=0);
+            explicit RigidBody(const std::string& name, CollShape* shape, 
+                               btVector3 origin = btVector3(0.0,0.0, 0.0) , size_t index=0);
             
-            //copy Constructor
-            RigidBody(const RigidBody& vbf_rb);
-            
-            //constructor that simply creates a copy of RigidBody 
-            //by transforming its position (and orientation)   
-            RigidBody(const RigidBody& rbody, btVector3 origin);
+            //preventing implicit copy Constructor
+            RigidBody(const RigidBody& vbf_rb) = delete;
             
             //destructor
             virtual ~RigidBody();
             
             //helper functions
-            virtual btRigidBody* get_rbody() const;
-            virtual btRigidBody* get_rbody();
-            virtual std::string get_name()   const;
-            virtual CollShape* get_shape()   const;
-            virtual btVector3 get_origin()   const;
-            virtual double get_mass()        const;
-            virtual btVector3 get_inertia()  const;
-            virtual size_t get_index()       const;
-            virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));
-            virtual btVector3 get_cog_position();
-
-            virtual void set_linear_vel(const btVector3& pos, const btVector3& linVel);
-            //virtual void set_angular_vel(const btVector3& axis, const btVector3& angVel);
+            virtual void setName(const std::string& name);
+            virtual void applyShape(CollShape *const shape);
+            void set_rbody(btRigidBody* rbody);
+            std::string get_name()   const;
+            CollShape* get_shape()   const;
+            CollShape* get_shape();
+            btVector3 get_origin()   const;
+            btRigidBody* get_rbody() const;
+            btRigidBody* get_rbody();
+            MotionState* get_motion_state() const;
+            MotionState* get_motion_state();
+            size_t get_index()       const;
+            virtual btVector3 get_position() = 0;
+            virtual double get_mass() const = 0;
+            virtual btVector3 get_inertia() const = 0;
     };
 }//end of name space
 
