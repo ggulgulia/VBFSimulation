@@ -8,7 +8,6 @@ namespace VBF{
     class StaticBody : public RigidBody{
 
         private:
-            btRigidBody *m_rbody;
 
         public:
 
