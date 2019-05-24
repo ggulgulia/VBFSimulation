@@ -1,7 +1,7 @@
 #ifndef VBF_KINEMATIC_BODY_H
 #define VBF_KINEMATIC_BODY_H 
 
-#include "VBF_RigidBody.hpp"
+#include <VBF_RigidBody.hpp>
 
 typedef btDefaultMotionState MotionState;
 typedef btRigidBody::btRigidBodyConstructionInfo btRbConstrInfo;
