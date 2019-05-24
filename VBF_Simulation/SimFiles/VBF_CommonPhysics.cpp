@@ -11,11 +11,11 @@
 
 //defualt constructor0
 VBF::CommonPhysics::CommonPhysics(): m_VBF_world(new VBF::World()),
-                                m_ground(new VBF::RigidBody()){   }
+                                m_ground(new VBF::Static_Cube()){   }
 
 //constructor1
 VBF::CommonPhysics::CommonPhysics(VBF::World* vbf_world,
-                             VBF::RigidBody* ground,
+                             VBF::StaticBody* ground,
                              std::vector<VBF::RigidBody*>& vbf_rbody_vect):
                                 m_VBF_world(vbf_world), m_ground(ground) {
         m_shape.push_back(m_ground->get_shape());
