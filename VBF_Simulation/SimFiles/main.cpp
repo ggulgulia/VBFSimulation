@@ -4,6 +4,7 @@
 #include <VBF_Static_Cube.hpp>
 #include <VBF_Kinematic_Cube.hpp>
 #include <VBF_KinematicMesh.hpp>
+#include <VBF_Static_Sphere.hpp>
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -59,28 +60,28 @@ VBF::Static_Cube* get_ground(){
 //    }
 //}
 //
-//void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
-//    
-//    double sphereRad = 1.0;
-//    double sphereMass = 1.0;
-//    size_t sphereIndex = 44;
-//    btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
-//    btTransform shapeTrans;
-//    shapeTrans.setIdentity();
-//    size_t array_size = 5;
-//       for(size_t k=0; k<array_size; ++k){ 
-//           for (size_t i = 0; i < array_size; ++i) {
-//               for (size_t j = 0; j < array_size; ++j) {
-//                   
-//                   btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
-//                   sphereIndex += j + array_size*i + array_size*k;
-//                   VBF::Sphere *sph = new VBF::Sphere(sphereRad, sphereOrigin, shapeTrans, sphereInertia, sphereMass, sphereIndex);
-//                   sphere_vector.push_back(sph);
-//               } 
-//            }
-//        }
-//
-//}
+void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
+    
+    double sphereRad = 1.0;
+   // double sphereMass = 1.0;
+    size_t sphereIndex = 44;
+   // btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
+   // btTransform shapeTrans;
+   // shapeTrans.setIdentity();
+    size_t array_size = 5;
+       for(size_t k=0; k<array_size; ++k){ 
+           for (size_t i = 0; i < array_size; ++i) {
+               for (size_t j = 0; j < array_size; ++j) {
+                   
+                   btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
+                   sphereIndex += j + array_size*i + array_size*k;
+                   VBF::Static_Sphere *sph = new VBF::Static_Sphere(sphereRad, sphereOrigin, sphereIndex);
+                   sphere_vector.push_back(sph);
+               } 
+            }
+        }
+
+}
 //
 //
 ////this method adds a reference sphere at the axis of  the vbf component for visual check and 
@@ -109,6 +110,7 @@ int main(int argc, char *argv[]){
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
 
+    get_spheres(rigid_bodies);
     //import the stl file
     std::string fileName("MeshFiles/StufeFein150x30x200.stl");
     std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
