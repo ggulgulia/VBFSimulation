@@ -1,7 +1,8 @@
 #include "VBF_World.hpp"
 #include "VBF_CommonPhysics.hpp"
 #include "VBF_GraphicsBridge.hpp"
-#include "VBF_Static_Cube.hpp"
+#include <VBF_Static_Cube.hpp>
+#include <VBF_Kinematic_Cube.hpp>
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -50,7 +51,7 @@ VBF::Static_Cube* get_ground(){
 //               
 //               btVector3 cubeOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
 //               cubeIndex += j + array_size*i + array_size*k;
-//               VBF::Static_Cube *cube = new VBF::Static_Cube(cubeLen, cubeOrigin, shapeTrans, cubeInertia, cubeMass, cubeIndex);
+//               VBF::Kinematic_Cube *cube = new VBF::Kinematic_Cube(cubeLen, cubeOrigin,  cubeIndex);
 //               rigid_bodies_vector.push_back(cube);
 //           } 
 //        }
@@ -103,10 +104,11 @@ int main(int argc, char *argv[]){
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
-    VBF::RigidBody *ground = get_ground();
+    VBF::StaticBody *ground = get_ground();
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     //import the stl file
+    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(4.0, btVector3(0.0, 10.0, 0.0), 10);
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
@@ -122,7 +124,14 @@ int main(int argc, char *argv[]){
     vis_bridge.setDynamicsWorld(vbf_world->get_world());
     vis_bridge.reshape(800, 600);
     vis_bridge.setShadows(true);
-    gApp = &vis_bridge;
+    gApp = &vis_bridge; 
+
+    double Vy{};
+    auto velFun = [] (double time, double amplitude)->double{double pi{3.14159};
+                                                            return amplitude*sin(4*pi*time);};
+    btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
+
+
 
     btClock timer;
     unsigned long prevTime = timer.getTimeMicroseconds();
@@ -133,11 +142,18 @@ int main(int argc, char *argv[]){
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime - prevTime)/1000.);
          }
+         Vy = velFun(currTime, 2);
+         btVector3 linVel{btVector3(0.0, Vy, 0.0)};
+         kinCube->set_linear_vel(axis, linVel);
+
          prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
+         btVector3 position1 = get_rigid_body_position(kinCube);
+        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
+
 
         }while(!vbf_window->requested_exit());
         

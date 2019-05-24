@@ -17,6 +17,12 @@ namespace VBF{
             double m_length;
 
         public:
+            Static_Cube(): StaticBody("Default Static Cube", 
+                          new btBoxShape(btVector3(10.0, 10.0, 10.0)),
+                          btVector3(0.0,0.0, 0.0), 23), 
+            m_length(10.0){
+                            //empty constructor body
+            }
 
             explicit Static_Cube(double length, btVector3 origin, size_t index);
             Static_Cube(const Static_Cube&) = delete;
