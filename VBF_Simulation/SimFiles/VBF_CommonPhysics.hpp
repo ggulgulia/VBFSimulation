@@ -7,7 +7,7 @@
 #include "VBF_World.hpp"
 #include <VBF_RigidBody.hpp>
 #include <VBF_Static_Cube.hpp>
-#include <VBF_KinematicBody.hpp>
+
 
 // a Physics Object should have a VBF::World and the related objects (Physical Bodies) in it
 // it should have a bridge with the graphics to visualize and 
@@ -21,14 +21,14 @@ namespace VBF{
     class CommonPhysics{
         private:
                VBF::World* m_VBF_world;
-               VBF::KinematicBody *m_ground; //ground is always a static body
+               VBF::StaticBody *m_ground; //ground is always a static body
                std::vector<VBF::RigidBody*> m_VBF_rbody;
                std::vector<CollShape*> m_shape;
         public:
             
             virtual ~CommonPhysics();
-//            CommonPhysics();
-            CommonPhysics(VBF::World* vbf_world, VBF::KinematicBody* ground, std::vector<VBF::RigidBody*>& vbf_rbody_vect);
+            CommonPhysics();
+            CommonPhysics(VBF::World* vbf_world, VBF::StaticBody* ground, std::vector<VBF::RigidBody*>& vbf_rbody_vect);
             CommonPhysics(VBF::World* vbf_world);
             CommonPhysics(VBF::World* vbf_world, VBF::RigidBody* vbf_rbody);
             CommonPhysics(const CommonPhysics& comPhy)=delete;
