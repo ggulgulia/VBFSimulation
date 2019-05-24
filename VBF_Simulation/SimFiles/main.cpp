@@ -3,6 +3,7 @@
 #include "VBF_GraphicsBridge.hpp"
 #include <VBF_Static_Cube.hpp>
 #include <VBF_Kinematic_Cube.hpp>
+#include <VBF_KinematicMesh.hpp>
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -25,7 +26,7 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
 VBF::Static_Cube* get_ground(){
 
     //create a ground
-    double grLength = 5;
+    double grLength = 50;
     btVector3 grOrigin = btVector3(0.0, -4-grLength, 0.0);
     size_t grIndex = 23;
     
@@ -107,7 +108,17 @@ int main(int argc, char *argv[]){
     VBF::StaticBody *ground = get_ground();
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
+
     //import the stl file
+    std::string fileName("MeshFiles/StufeFein150x30x200.stl");
+    std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
+    double scale{0.1};
+    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
+    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(fileName, scale, meshOrigin);
+    rigid_bodies.push_back(stl_body->get_vbf_rbody());
+    VBF::KinematicMeshBody* stl_body2 = new VBF::KinematicMeshBody(file2, 10*scale, meshOrigin);
+    rigid_bodies.push_back(stl_body2->get_vbf_rbody());
+
     VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
 
     rigid_bodies.push_back(kinCube);
@@ -137,7 +148,7 @@ int main(int argc, char *argv[]){
 
     btClock timer;
     unsigned long prevTime = timer.getTimeMicroseconds();
-
+    VBF::KinematicBody* stl_vbf_rbody = stl_body->get_vbf_rbody();
 
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
@@ -146,14 +157,14 @@ int main(int argc, char *argv[]){
          }
          Vy = velFun(currTime, 2);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
-         kinCube->set_linear_vel(axis, linVel);
+         stl_vbf_rbody->set_linear_vel(axis, linVel);
 
          prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
-         btVector3 position1 = get_rigid_body_position(kinCube);
+         btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
 
 
