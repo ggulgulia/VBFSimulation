@@ -8,7 +8,7 @@ VBF::RigidBody::RigidBody():
                 {  }
 
 //user constructor
-VBF::RigidBody::RigidBody(std::string name, CollShape* shape, btVector3 origin,
+VBF::RigidBody::RigidBody(const std::string& name, CollShape* shape, btVector3 origin,
                            size_t index):
 m_name(name), m_shape(shape), m_origin(origin), m_index(index)
 {

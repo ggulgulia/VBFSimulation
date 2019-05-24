@@ -29,7 +29,7 @@ namespace VBF{
             //or don't permit call to empty constructor
             explicit RigidBody();
             //user constructor
-            explicit RigidBody(std::string name, CollShape* shape, 
+            explicit RigidBody(const std::string& name, CollShape* shape, 
                                btVector3 origin, size_t index=0);
             
             //copy Constructor
