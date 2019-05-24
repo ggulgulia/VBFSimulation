@@ -107,7 +107,7 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
     }
 
     else
-        return nullptr;
+        throw("failed to create a bullet collision shape from the mesh\n");
 }
 
 #endif //LOAD_MESH_FROM_STL_H
