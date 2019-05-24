@@ -25,6 +25,7 @@ ELSE()
 	ADD_EXECUTABLE(vbf_test.out
         VBF_World.cpp
         VBF_RigidBodies.cpp
+        VBF_StaticBody.cpp
         VBF_CommonPhysics.cpp
         VBF_Static_Cube.cpp
         main.cpp
