@@ -23,13 +23,10 @@ IF (WIN32)
 	)
 ELSE()
 	ADD_EXECUTABLE(vbf_test.out
-        ImportSTLSetup.cpp
         VBF_World.cpp
         VBF_RigidBodies.cpp
         VBF_CommonPhysics.cpp
-        VBF_Cube.cpp
-        VBF_Sphere.cpp
-        VBF_InitializeSim.cpp
+        VBF_Static_Cube.cpp
         main.cpp
 	)
 ENDIF()
