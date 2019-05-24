@@ -1,5 +1,5 @@
-#ifndef VBF_RIGID_BODIES_H
-#define VBF_RIGID_BODIES_H 
+#ifndef VBF_RIGID_BODY_H
+#define VBF_RIGID_BODY_H 
 
 #include <bullet/btBulletDynamicsCommon.h>
 #include <string>
@@ -56,5 +56,5 @@ namespace VBF{
     };
 }//end of name space
 
-#endif /* ifndef VBF_RIGID_BODIES_H */
+#endif /* ifndef VBF_RIGID_BODY_H */
 

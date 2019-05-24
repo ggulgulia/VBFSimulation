@@ -8,35 +8,16 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 #set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
 set(CMAKE_CXX_FLAGS "-std=c++14 -g -Wall -Werror -fno-elide-constructors")
 message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
-INCLUDE_DIRECTORIES(
-${BULLET_PHYSICS_SOURCE_DIR}/src 
-)
+
+add_subdirectory(RigidBody)
 
 LINK_LIBRARIES(
     OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath Bullet3Common 
 )
 
-IF (WIN32)
-	ADD_EXECUTABLE(vbfsim
-        test.cpp
-		${BULLET_PHYSICS_SOURCE_DIR}/build3/bullet.rc
-	)
-ELSE()
-	ADD_EXECUTABLE(vbf_test.out
-        VBF_World.cpp
-        VBF_RigidBodies.cpp
-        VBF_StaticBody.cpp
-        VBF_CommonPhysics.cpp
-        VBF_Static_Cube.cpp
-        main.cpp
-	)
-ENDIF()
-
-
-
-
-IF (INTERNAL_ADD_POSTFIX_EXECUTABLE_NAMES)
-			SET_TARGET_PROPERTIES(AppHelloWorld PROPERTIES  DEBUG_POSTFIX "_Debug")
-			SET_TARGET_PROPERTIES(AppHelloWorld PROPERTIES  MINSIZEREL_POSTFIX "_MinsizeRel")
-			SET_TARGET_PROPERTIES(AppHelloWorld PROPERTIES  RELWITHDEBINFO_POSTFIX "_RelWithDebugInfo")
-ENDIF(INTERNAL_ADD_POSTFIX_EXECUTABLE_NAMES)
+ADD_EXECUTABLE(vbf_test.out
+              VBF_World.cpp
+              VBF_CommonPhysics.cpp
+              main.cpp
+              )
+target_link_libraries(vbf_test.out PRIVATE VBF_RigidBody)

@@ -1,4 +1,4 @@
-#include "VBF_RigidBodies.hpp"
+#include "VBF_RigidBody.hpp"
 #include <cmath> //for sin/cos and math functions
 
 //default constructor
