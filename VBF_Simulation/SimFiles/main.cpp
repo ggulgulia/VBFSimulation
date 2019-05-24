@@ -22,14 +22,14 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
-VBF::Static_Cube* get_ground(){
+VBF::KinematicBody* get_ground(){
 
     //create a ground
     double grLength = 50;
     btVector3 grOrigin = btVector3(0.0, -4-grLength, 0.0);
     size_t grIndex = 23;
-    
-    return new VBF::Static_Cube(grLength, grOrigin, grIndex);
+    CollShape* shape = new btBoxShape(btVector3(50.0, 50.0, 50.0));
+    return new VBF::KinematicBody("ground", shape, grOrigin, grIndex);
  
 }
 
@@ -104,11 +104,11 @@ int main(int argc, char *argv[]){
     //create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
-    VBF::StaticBody *ground = get_ground();
+    VBF::KinematicBody *ground = get_ground();
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     //import the stl file
-    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(4.0, btVector3(0.0, 10.0, 0.0), 10);
+    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(4.0, btVector3(0.0, 10.0, 0.0), 10);
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
@@ -144,14 +144,14 @@ int main(int argc, char *argv[]){
          }
          Vy = velFun(currTime, 2);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
-         kinCube->set_linear_vel(axis, linVel);
+         ground->set_linear_vel(axis, linVel);
 
          prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
-         btVector3 position1 = get_rigid_body_position(kinCube);
+         btVector3 position1 = get_rigid_body_position(ground);
         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
 
 
