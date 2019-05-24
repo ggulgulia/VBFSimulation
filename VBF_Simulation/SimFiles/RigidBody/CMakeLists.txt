@@ -11,6 +11,8 @@ add_library(
     VBF_KinematicBody.cpp
     VBF_Static_Cube.hpp
     VBF_Static_Cube.cpp
+    VBF_Static_Sphere.hpp
+    VBF_Static_Sphere.cpp
     VBF_Kinematic_Cube.hpp
     VBF_Kinematic_Cube.cpp
     LoadMeshFromSTL.hpp
