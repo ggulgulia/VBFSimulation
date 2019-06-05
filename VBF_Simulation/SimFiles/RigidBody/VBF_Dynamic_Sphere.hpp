@@ -1,5 +1,5 @@
-#ifndef DYNAMIC_CUBE_H
-#define DYNAMIC_CUBE_H 
+#ifndef DYNAMIC_SPHERE_H
+#define DYNAMIC_SPHERE_H 
 
 #include <VBF_DynamicBody.hpp>
 
@@ -10,26 +10,26 @@ typedef btCollisionShape CollShape;
 namespace VBF{
 
     
-    class Dynamic_Cube : public DynamicBody{
+    class Dynamic_Sphere : public DynamicBody{
 
         private:
-            double m_length;
+            double m_radius;
 
         public:
             
             //user constructor
-            explicit Dynamic_Cube(double length, btVector3 origin, 
+            explicit Dynamic_Sphere(double radius, btVector3 origin, 
                                   double mass, 
                                   double linFriction=0.5, double rollingFriction=0.5, 
                                   double restitution=0.2, double linDamping=0.0, 
                                   double angularDamping=0.0, size_t index=221);
 
             //below two lines prevent expensive copy semantics
-            Dynamic_Cube(const Dynamic_Cube&) = delete;
-            Dynamic_Cube& operator=(Dynamic_Cube&) = delete;
+            Dynamic_Sphere(const Dynamic_Sphere&) = delete;
+            Dynamic_Sphere& operator=(Dynamic_Sphere&) = delete;
 
             //Destructor
-            ~Dynamic_Cube();
+            ~Dynamic_Sphere();
             virtual std::string get_name() const override final;
 
     };

@@ -1,23 +1,23 @@
-#include <VBF_Dynamic_Cube.hpp>
+#include <VBF_Dynamic_Sphere.hpp>
 
 
 
-//Dynamic_Cube Class Definitions
-VBF::Dynamic_Cube::Dynamic_Cube(double length, btVector3 origin, 
+//Dynamic_Sphere Class Definitions
+VBF::Dynamic_Sphere::Dynamic_Sphere(double radius, btVector3 origin, 
                                 double mass, 
                                 double linFriction, double rollingFriction, 
                                 double restitution, double linDamping, 
                                 double angularDamping, size_t index):
-                                DynamicBody("Dynamic_Cube",
-                                new btBoxShape(btVector3(length, length, length)),
+                                DynamicBody("Dynamic_Sphere",
+                                new btSphereShape(radius),
                                 origin, mass, linFriction, rollingFriction, 
                                 restitution, linDamping, angularDamping, index),
-                                m_length(length){
+                                m_radius(radius){
                                     //empty constructor body
                                 }
 
 //destructor
-VBF::Dynamic_Cube::~Dynamic_Cube(){};
+VBF::Dynamic_Sphere::~Dynamic_Sphere(){};
 
-std::string VBF::Dynamic_Cube::get_name() const { return "Dynamic_Cube"; }
+std::string VBF::Dynamic_Sphere::get_name() const { return "Dynamic_Sphere"; }
 
