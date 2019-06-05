@@ -1,9 +1,6 @@
 #ifndef KINEMATIC_MESH_BODY_H
 #define KINEMATIC_MESH_BODY_H
 
-#include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
-#include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
-#include <OpenGLWindow/GLInstanceGraphicsShape.h>
 #include "../VBF_World.hpp"
 #include <VBF_KinematicBody.hpp>
 

@@ -3,6 +3,9 @@
 
 #include <bullet/btBulletDynamicsCommon.h>
 #include <string>
+#include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
+#include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+#include <OpenGLWindow/GLInstanceGraphicsShape.h>
 
 typedef btDefaultMotionState MotionState;
 typedef btRigidBody::btRigidBodyConstructionInfo btRbConstrInfo;

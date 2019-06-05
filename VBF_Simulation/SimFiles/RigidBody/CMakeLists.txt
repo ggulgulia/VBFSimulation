@@ -6,6 +6,7 @@ add_library(
     VBF_RigidBody SHARED #name of target library
     VBF_RigidBody.hpp
     VBF_RigidBody.cpp
+    VBF_StaticBody.hpp
     VBF_StaticBody.cpp
     VBF_KinematicBody.hpp
     VBF_KinematicBody.cpp
@@ -13,11 +14,13 @@ add_library(
     VBF_Static_Cube.cpp
     VBF_Static_Sphere.hpp
     VBF_Static_Sphere.cpp
+    LoadMeshFromSTL.hpp
     VBF_Kinematic_Cube.hpp
     VBF_Kinematic_Cube.cpp
-    LoadMeshFromSTL.hpp
     VBF_KinematicMesh.hpp
     VBF_KinematicMesh.cpp
+    VBF_StaticMesh.hpp
+    VBF_StaticMesh.cpp
     )
 
 #make the library PUBLIC
