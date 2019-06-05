@@ -16,7 +16,7 @@ LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDyn
 ADD_EXECUTABLE(vbf_test.out
               VBF_World.cpp
               VBF_CommonPhysics.cpp
-              RigidBody/VBF_KinematicMesh.cpp ##need to resolve circular dependency
+              RigidBody/KinematicBodies/VBF_KinematicMesh.cpp ##need to resolve circular dependency
               main.cpp
               )
 
