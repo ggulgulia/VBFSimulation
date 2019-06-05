@@ -1,11 +1,11 @@
-#include <VBF_KinematicMesh.hpp>
-#include <LoadMeshFromSTL.hpp>
+#include <VBF_StaticMesh.hpp>
+//#include <../LoadMeshFromSTL.hpp>
 #include <fstream>
 #include <iostream>
 #include <valarray> //for sin/cos functions
 
 
-VBF::KinematicMeshBody::KinematicMeshBody(const std::string &fileName,
+VBF::StaticMeshBody::StaticMeshBody(const std::string &fileName,
                                     double scale, btVector3 origin, size_t index):
                                     m_filename(fileName), m_scale(scale)
 {
@@ -18,6 +18,7 @@ VBF::KinematicMeshBody::KinematicMeshBody(const std::string &fileName,
     }
     catch(const char* exception){
         std::cerr << "Error: " << exception << "\n";
+        std::cerr << "Exception during construction of static mesh rigid body\n";
         std::cerr << "Force exiting the program\n";
         exit(-1);
     }
@@ -29,20 +30,20 @@ VBF::KinematicMeshBody::KinematicMeshBody(const std::string &fileName,
     double colMargin{0.005};
     shape->setMargin(colMargin);
     shape->updateBound();
-     m_VBF_kinematicBody = new KinematicBody(m_filename, shape, origin, index);
+     m_VBF_staticBody = new StaticBody(m_filename, shape, origin, index);
 }
 
 
-VBF::KinematicMeshBody::~KinematicMeshBody(){
+VBF::StaticMeshBody::~StaticMeshBody(){
    delete m_mesh;
-   delete m_VBF_kinematicBody;
+   delete m_VBF_staticBody;
    m_mesh = nullptr;
-   m_VBF_kinematicBody = nullptr; //don't delete the resources 
+   m_VBF_staticBody = nullptr; //don't delete the resources 
                           // as it might be referred to by
                           // some other object
 }
 
-VBF::KinematicBody* VBF::KinematicMeshBody::get_vbf_rbody() {return m_VBF_kinematicBody;}
-VBF_Mesh* VBF::KinematicMeshBody::get_mesh() const noexcept {return m_mesh;}
-std::string VBF::KinematicMeshBody::get_file_name() const noexcept {return m_filename;}
-btVector3 VBF::KinematicMeshBody::get_mesh_origin()const noexcept {return m_VBF_kinematicBody->get_origin();}
+VBF::StaticBody* VBF::StaticMeshBody::get_vbf_rbody() {return m_VBF_staticBody;}
+VBF_MeshShape* VBF::StaticMeshBody::get_mesh() const noexcept {return m_mesh;}
+std::string VBF::StaticMeshBody::get_file_name() const noexcept {return m_filename;}
+btVector3 VBF::StaticMeshBody::get_mesh_origin()const noexcept {return m_VBF_staticBody->get_origin();}

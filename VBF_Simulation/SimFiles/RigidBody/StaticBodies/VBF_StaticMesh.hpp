@@ -4,10 +4,9 @@
 #include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
 #include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 #include <OpenGLWindow/GLInstanceGraphicsShape.h>
-//#include "../VBF_World.hpp"
 #include <VBF_StaticBody.hpp>
 
-#include <LoadMeshFromSTL.hpp>
+#include <../LoadMeshFromSTL.hpp>
 
 namespace VBF{
 

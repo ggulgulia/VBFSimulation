@@ -1,7 +1,7 @@
 #ifndef VBF_DYNAMIC_BODY_H
 #define VBF_DYNAMIC_BODY_H 
 
-#include <VBF_RigidBody.hpp>
+#include <../VBF_RigidBody.hpp>
 
 namespace VBF{
 

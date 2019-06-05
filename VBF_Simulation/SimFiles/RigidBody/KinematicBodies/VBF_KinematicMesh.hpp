@@ -1,7 +1,6 @@
 #ifndef KINEMATIC_MESH_BODY_H
 #define KINEMATIC_MESH_BODY_H
 
-#include "../VBF_World.hpp"
 #include <VBF_KinematicBody.hpp>
 
 typedef GLInstanceGraphicsShape VBF_Mesh;
