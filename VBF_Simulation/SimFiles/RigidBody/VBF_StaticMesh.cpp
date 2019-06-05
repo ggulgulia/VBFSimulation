@@ -18,6 +18,7 @@ VBF::StaticMeshBody::StaticMeshBody(const std::string &fileName,
     }
     catch(const char* exception){
         std::cerr << "Error: " << exception << "\n";
+        std::cerr << "Exception during construction of static mesh rigid body\n";
         std::cerr << "Force exiting the program\n";
         exit(-1);
     }

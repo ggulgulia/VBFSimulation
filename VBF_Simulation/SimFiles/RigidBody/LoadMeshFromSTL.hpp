@@ -3,9 +3,9 @@
 #define LOAD_MESH_FROM_STL_H
 
 #include <OpenGLWindow/GLInstanceGraphicsShape.h>
-#include <cstdio> //fopen
 #include <bullet/Bullet3Common/b3AlignedObjectArray.h>
 #include <string>
+#include <cstdio> //fopen
 #include <fstream>
 #include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
 #include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
@@ -56,7 +56,7 @@ class MySTLTriangle
 	    float vertex2[3];
 };
 
-static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileName, double scaling_factor){
+inline GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileName, double scaling_factor){
 	GLInstanceGraphicsShape* shape;
 	FILE* file = fopen(relativeFileName.c_str(),"rb");
 	int size=0;

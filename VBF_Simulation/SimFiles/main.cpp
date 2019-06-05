@@ -5,6 +5,7 @@
 #include <VBF_Kinematic_Cube.hpp>
 #include <VBF_KinematicMesh.hpp>
 #include <VBF_Static_Sphere.hpp>
+#include <VBF_StaticMesh.hpp>
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -121,6 +122,8 @@ int main(int argc, char *argv[]){
     VBF::KinematicMeshBody* stl_body2 = new VBF::KinematicMeshBody(file2, 10*scale, meshOrigin);
     rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
+    VBF::StaticMeshBody* stl_body33 = new VBF::StaticMeshBody(fileName, 0.5*scale, btVector3(10.0, 0.0, 100.0));
+    rigid_bodies.push_back(stl_body33->get_vbf_rbody());
     VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
 
     rigid_bodies.push_back(kinCube);
