@@ -1,7 +1,7 @@
 #ifndef VBF_DYNAMIC_BODY_H
 #define VBF_DYNAMIC_BODY_H 
 
-#include "VBF_RigidBodies.hpp"
+#include <VBF_RigidBody.hpp>
 
 namespace VBF{
 
@@ -21,18 +21,12 @@ namespace VBF{
             double m_angularDamping;
         public:
 
-            //default constructor
-            //note right now call to this constructor
-            //creates hanging pointers, either resolve this
-            //or don't permit call to empty constructor
-            explicit DynamicBody();
             //user constructor
-            explicit DynamicBody(std::string name, CollShape* shape, btVector3 origin,
-                               btTransform shapeTransform, double mass, 
-                               btVector3 inertia, bool isKinematic=false,
-                               double linFriction=0.5, double rollingFriction=0.5, 
-                               double restitution=0.2, double linDamping=0.0, 
-                               double angularDamping=0.0, size_t index=0);
+            explicit DynamicBody(std::string name, CollShape* shape, 
+                                 btVector3 origin, double mass, 
+                                 double linFriction=0.5, double rollingFriction=0.5, 
+                                 double restitution=0.2, double linDamping=0.0, 
+                                 double angularDamping=0.0, size_t index=200);
             
             //preventing implicit copy Constructor
             DynamicBody(const RigidBody& vbf_rb) = delete;
@@ -41,8 +35,6 @@ namespace VBF{
             virtual ~DynamicBody();
             
             //helper functions
-            virtual btRigidBody* get_rbody() const;
-            virtual btRigidBody* get_rbody();
             virtual double get_mass()        const;
             virtual btVector3 get_inertia()  const;
             virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));

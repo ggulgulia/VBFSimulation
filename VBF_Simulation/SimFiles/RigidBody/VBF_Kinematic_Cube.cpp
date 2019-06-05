@@ -2,10 +2,10 @@
 
 //Kinematic_Cube Class Definitions
 VBF::Kinematic_Cube::Kinematic_Cube(double length, btVector3 origin, size_t index):
-               KinematicBody("Kinematic_Cube",
-               new btBoxShape(btVector3(length, length, length)),
-               origin, index),
-               m_length(length){
+                                    KinematicBody("Kinematic_Cube",
+                                    new btBoxShape(btVector3(length, length, length)),
+                                    origin, index),
+                                    m_length(length){
                         
                 //empty constructor body
                }

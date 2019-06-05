@@ -1,90 +1,8 @@
 #include "VBF_World.hpp"
 #include "VBF_CommonPhysics.hpp"
 #include "VBF_GraphicsBridge.hpp"
-#include <VBF_Static_Cube.hpp>
-#include <VBF_Kinematic_Cube.hpp>
-#include <VBF_KinematicMesh.hpp>
-#include <VBF_Static_Sphere.hpp>
-#include <VBF_StaticMesh.hpp>
+#include "test_rigidBody.hpp"
 
-void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
-                      std::vector<btDefaultMotionState*> &motionState){
-    for(size_t i=0; i<collShape.size(); ++i){
-        delete collShape[i];
-        collShape[i] = nullptr;
-    }
-    for(size_t i=0; i<rbody.size(); ++i){
-        delete rbody[i];
-        rbody[i] = nullptr;
-    }
-    for(size_t i=0; i<motionState.size(); ++i){
-        delete motionState[i];
-        motionState[i] = nullptr;
-    }
-
-    std::cout << "Successfully freed the memory\n";
-}
-
-VBF::Static_Cube* get_ground(){
-
-    //create a ground
-    double grLength = 50;
-    btVector3 grOrigin = btVector3(0.0, -4-grLength, 0.0);
-    size_t grIndex = 23;
-    
-    return new VBF::Static_Cube(grLength, grOrigin, grIndex);
- 
-}
-
-//void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
-//
-//    //create more objects cube objects
-//    std::vector<VBF::RigidBody*> rigid_bodies;
-//    double cubeLen = 1.0;
-//    double cubeMass = 1.0; //  these are dynamic objects
-//    size_t cubeIndex = 12;
-//    btVector3 cubeInertia= btVector3(0.0, 0.0, 0.0);
-//    size_t array_size = 5;
-//    btTransform shapeTrans;
-//    shapeTrans.setIdentity();
-//
-//    for(size_t k=0; k<array_size; ++k){
-//        for (size_t i = 0; i < array_size; ++i) {
-//           for (size_t j = 0; j < array_size; ++j) {
-//               
-//               btVector3 cubeOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
-//               cubeIndex += j + array_size*i + array_size*k;
-//               VBF::Kinematic_Cube *cube = new VBF::Kinematic_Cube(cubeLen, cubeOrigin,  cubeIndex);
-//               rigid_bodies_vector.push_back(cube);
-//           } 
-//        }
-//    }
-//}
-//
-void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
-    
-    double sphereRad = 1.0;
-   // double sphereMass = 1.0;
-    size_t sphereIndex = 44;
-   // btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
-   // btTransform shapeTrans;
-   // shapeTrans.setIdentity();
-    size_t array_size = 5;
-       for(size_t k=0; k<array_size; ++k){ 
-           for (size_t i = 0; i < array_size; ++i) {
-               for (size_t j = 0; j < array_size; ++j) {
-                   
-                   btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
-                   sphereIndex += j + array_size*i + array_size*k;
-                   VBF::Static_Sphere *sph = new VBF::Static_Sphere(sphereRad, sphereOrigin, sphereIndex);
-                   sphere_vector.push_back(sph);
-               } 
-            }
-        }
-
-}
-//
-//
 ////this method adds a reference sphere at the axis of  the vbf component for visual check and 
 ////debuggging 
 //void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector, btVector3 &meshAxis, const double scale){
@@ -110,8 +28,9 @@ int main(int argc, char *argv[]){
     VBF::StaticBody *ground = get_ground();
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
-
-    get_spheres(rigid_bodies);
+    
+    //test different types (static, kinematic or dynamic speheres or cubes)
+    get_cubes<VBF::Static_Sphere>(rigid_bodies);
     //import the stl file
     std::string fileName("MeshFiles/StufeFein150x30x200.stl");
     std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
@@ -122,11 +41,14 @@ int main(int argc, char *argv[]){
     VBF::KinematicMeshBody* stl_body2 = new VBF::KinematicMeshBody(file2, 10*scale, meshOrigin);
     rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
+    //test import static mesh
     VBF::StaticMeshBody* stl_body33 = new VBF::StaticMeshBody(fileName, 0.5*scale, btVector3(10.0, 0.0, 100.0));
     rigid_bodies.push_back(stl_body33->get_vbf_rbody());
-    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
 
+    //test import kinematic cubes
+    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
     rigid_bodies.push_back(kinCube);
+
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
     vbf_world->intialize_new_world();
