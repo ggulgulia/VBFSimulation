@@ -21,4 +21,4 @@ ADD_EXECUTABLE(vbf_test.out
               )
 
 
-target_link_libraries(vbf_test.out PRIVATE VBF_RigidBody)
+target_link_libraries(vbf_test.out PRIVATE VBF_RigidBody VBF_StaticBodies VBF_KinematicBodies VBF_DynamicBodies)
