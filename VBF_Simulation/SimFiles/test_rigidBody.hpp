@@ -12,6 +12,7 @@
 //#include <VBF_DynamicMesh.hpp>
 #include <VBF_Dynamic_Cube.hpp>
 #include <VBF_Dynamic_Sphere.hpp>
+#include <VBF_DynamicMesh.hpp>
 
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
