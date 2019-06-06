@@ -4,10 +4,10 @@ set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Werror -fno-elide-constructors")
 
 add_library(
     VBF_DynamicBodies SHARED #name of target library
-    #VBF_RigidBody.cpp
     VBF_DynamicBody.cpp
     VBF_Dynamic_Cube.cpp
     VBF_Dynamic_Sphere.cpp
+    VBF_DynamicMesh.cpp
     )
 
 target_link_libraries(VBF_DynamicBodies -L../VBF_RigidBody)

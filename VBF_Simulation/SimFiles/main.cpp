@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
     rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
     //test import static mesh
-    VBF::StaticMeshBody* stl_body33 = new VBF::StaticMeshBody(fileName, 0.5*scale, btVector3(10.0, 0.0, 100.0));
+    VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
     rigid_bodies.push_back(stl_body33->get_vbf_rbody());
 
     //test import kinematic cubes
