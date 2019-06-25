@@ -3,10 +3,49 @@
 #define LOAD_MESH_FROM_STL_H
 
 #include <OpenGLWindow/GLInstanceGraphicsShape.h>
-#include <cstdio> //fopen
 #include <bullet/Bullet3Common/b3AlignedObjectArray.h>
 #include <string>
+#include <cstdio> //fopen
 #include <fstream>
+#include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
+#include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+
+//internal routine to convert tri mesh data to a sensible bullet rigid body
+typedef GLInstanceGraphicsShape VBF_MeshShape;
+inline btGImpactMeshShape* triMeshToCollisionShape(const VBF_MeshShape* mesh){
+
+    btTriangleMesh* trimeshData = new btTriangleMesh();
+	double xV0{0.0}, yV0{0.0}, zV0{0.0};
+    double xV1{0.0}, yV1{0.0}, zV1{0.0};
+    double xV2{0.0}, yV2{0.0}, zV2{0.0};
+    b3AlignedObjectArray<int>* meshIndices = mesh->m_indices;
+    b3AlignedObjectArray<GLInstanceVertex>* meshVertices = mesh->m_vertices;
+
+    //set the origin of the body as the 
+    //coordinate of the first element
+    int numVertices = mesh->m_numvertices;
+	for (int ind0 = meshIndices->at(0), ind1 = meshIndices->at(1), ind2=meshIndices->at(2); ind2<numVertices; ind0+=3, ind1+=3, ind2+=3){
+
+        xV0 = meshVertices->at(ind0).xyzw[0];
+        yV0 = meshVertices->at(ind0).xyzw[1];
+        zV0 = meshVertices->at(ind0).xyzw[2];
+
+        xV1 = meshVertices->at(ind1).xyzw[0];
+        yV1 = meshVertices->at(ind1).xyzw[1];
+        zV1 = meshVertices->at(ind1).xyzw[2];
+
+        xV2 = meshVertices->at(ind2).xyzw[0];
+        yV2 = meshVertices->at(ind2).xyzw[1];
+        zV2 = meshVertices->at(ind2).xyzw[2];
+
+        btVector3 v0(xV0, yV0, zV0);
+        btVector3 v1(xV1, yV1, zV1);
+        btVector3 v2(xV2, yV2, zV2);
+		
+		trimeshData->addTriangle(v0,v1,v2);
+	}
+    return new btGImpactMeshShape(trimeshData);
+}
 
 class MySTLTriangle
 {
@@ -17,7 +56,7 @@ class MySTLTriangle
 	    float vertex2[3];
 };
 
-static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileName, double scaling_factor){
+inline GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileName, double scaling_factor){
 	GLInstanceGraphicsShape* shape;
 	FILE* file = fopen(relativeFileName.c_str(),"rb");
 	int size=0;
@@ -107,7 +146,7 @@ static GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
     }
 
     else
-        return nullptr;
+        throw("failed to create a bullet collision shape from the mesh\n");
 }
 
 #endif //LOAD_MESH_FROM_STL_H
