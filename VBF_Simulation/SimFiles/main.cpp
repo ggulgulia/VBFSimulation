@@ -1,53 +1,87 @@
+/*! \mainpage Project Description
+ *
+ * \section intro_sec Introduction
+ * 
+ *  Purpose of this documentation is to clarify the usage of the code that has been developed for Vibratroy Bowl Feeder (VBF) Simulation
+ *  which is a part of the PhD thesis of Msc. Cosima Stocker at the chair of IWB, Department of Mechanical Engineering, 
+ *  Technical University of Munich
+ * 
+ * \section install_sec Background
+ * Orienting devices for vibratory bowl feeders are still the most widely used system for the
+ * automated sorting and feeding of small parts. The design process of these orienting devices has recently been 
+ * supported by simulation methods. However, this merely shifts the well-known trial-and-error-based adaption of 
+ * the orienting device’s geometry into virtualworld. Yet, this does not provide optimal design and, furthermore, 
+ * requires strong involvement of the developer due to manual shape variation. This paper proposes an optimization 
+ * algorithm for the automated simulation-based shape optimization of orienting devices for vibratory bowl feeders. 
+ * First, general formalisms to state the multiobjective optimization problem for arbitrary types of orienting 
+ * devices and feeding parts are provided. Then, the implementation of the algorithm is described based on 
+ * Bullet Physics Engine and random search optimization technique. Finally, comparison of simulation results with 
+ * experimental data point out good accuracy and, thus, great potential of the developed shape optimization 
+ * software[Source: Automated Shape Optimization of Orienting Devices for Vibratory Bowl Feeders, hofman et.al.]
+ * 
+ * \subsection step1 Step 1: Opening the box
+ *
+ * etc...
+ */
+
+//! relevant imports
 #include "VBF_World.hpp"
 #include "VBF_CommonPhysics.hpp"
 #include "VBF_GraphicsBridge.hpp"
 #include "test_rigidBody.hpp"
 
-////this method adds a reference sphere at the axis of  the vbf component for visual check and 
-////debuggging 
-//void get_sphere(std::vector<VBF::RigidBody*>& sphere_vector, btVector3 &meshAxis, const double scale){
-//    
-//    double sphereRad = 1.0;
-//    size_t sphereIndex = 44;
-//    meshAxis[0] *= scale; meshAxis[1] *= scale; meshAxis[2] *= scale;
-//    btVector3 sphereInertia = btVector3(0.0, 0.0, 0.0);
-//    btTransform shapeTrans;
-//    shapeTrans.setIdentity();
-//    VBF::Sphere *sph = new VBF::Sphere(sphereRad, meshAxis, shapeTrans, sphereInertia, 0.0, sphereIndex);
-//    sphere_vector.push_back(sph);
-//
-//}
 
 int main(int argc, char *argv[]){
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
-    //create a placeholder for rigid boides
+    //! create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
+    //! create a reference ground
     VBF::StaticBody *ground = get_ground();
     btVector3 groundOrigin = get_rigid_body_position(ground);
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     
-    //test different types (static, kinematic or dynamic speheres or cubes)
+    //! test different types (static, kinematic or dynamic speheres or cubes)
+    
+    //! test static sphere
     get_cubes<VBF::Static_Sphere>(rigid_bodies);
-    //import the stl file
+    
+    //! test import stl files of kinematic and dynamic types
+    
+    //! declare file names 
+    
+    //! fileName for kinematic rigid body
     std::string fileName("MeshFiles/StufeFein150x30x200.stl");
+    //! fileName2 for dynamic rigid body
     std::string file2{"MeshFiles/Zylinder1_7x1_0.stl"};
+
+    //! set scaling factor
     double scale{0.1};
+
+    //! set origin for the imported part
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
+
+    //! import kinematic part
     VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(fileName, scale, meshOrigin);
+
+    //! initialize mass for dynamic body
+    double mass2{1.0};
+    //! import dynamic stl part
+    VBF::DynamicMeshBody* stl_body2 = new VBF::DynamicMeshBody(file2, 20*scale, mass2, meshOrigin);
+
+    //! store the imported bodies in the rigid_bodies container
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
-    VBF::KinematicMeshBody* stl_body2 = new VBF::KinematicMeshBody(file2, 10*scale, meshOrigin);
     rigid_bodies.push_back(stl_body2->get_vbf_rbody());
 
-    //test import static mesh
-    VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
-    rigid_bodies.push_back(stl_body33->get_vbf_rbody());
+    ////test import static mesh
+    //VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
+    //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
 
-    //test import kinematic cubes
-    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
-    rigid_bodies.push_back(kinCube);
+    ////test import kinematic cubes
+    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
+    //rigid_bodies.push_back(kinCube);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();

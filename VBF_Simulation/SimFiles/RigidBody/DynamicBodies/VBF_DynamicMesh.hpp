@@ -16,7 +16,7 @@ namespace VBF{
             DynamicBody* m_VBF_DynamicBody;
         public:
             DynamicMeshBody(const std::string &fileName, 
-                            double scale=0.1, double mass=0.0, 
+                            double scale=0.1, double mass=1.0, 
                             btVector3 origin = btVector3(0.0, 0.0, 0.0),
                             double linFriction=0.5, double rollingFriction=0.5, 
                             double restitution=0.2, double linDamping=0.0, 
