@@ -2,6 +2,12 @@
 #ifndef LOAD_MESH_FROM_STL_H
 #define LOAD_MESH_FROM_STL_H
 
+/*! This is a helper file that assists in opening and importing the triangular mesh data 
+ * from a binary encoded stl file and parse it in a format suitable to be converted into
+ * a bullet rigid body. This file is used by the classes VBF::StaticMeshBody, VBF::KinematicMeshBody
+ * and VBF::DynamicMeshBody during the constructor call of the respective class
+ */
+
 #include <OpenGLWindow/GLInstanceGraphicsShape.h>
 #include <bullet/Bullet3Common/b3AlignedObjectArray.h>
 #include <string>
@@ -11,18 +17,51 @@
 #include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 
 //internal routine to convert tri mesh data to a sensible bullet rigid body
+
+/*! Removing the ugly type name
+ */
 typedef GLInstanceGraphicsShape VBF_MeshShape;
+
+/*! Inlined function (to ensure the method has only a single definition)
+ * This function creates a collision shape of type btGImpactMeshShape from the 
+ * mesh data. The return type of this function is essential for the creation
+ * of a VBF::RigidBody which needs a collision shape in its constructor call.
+ *
+ * Note: This function is called by the method LoadMeshFromSTL
+ */
 inline btGImpactMeshShape* triMeshToCollisionShape(const VBF_MeshShape* mesh){
 
+    /*! an empty trimeshData is created on the heap. This triMeshData is not used
+     * further after the method goes out of scope but it still makes sense to
+     * allocate a heap storage since if the stl file is very large,
+     * it will suck up the entire stack space and cause a bad memory error
+     */
     btTriangleMesh* trimeshData = new btTriangleMesh();
-	double xV0{0.0}, yV0{0.0}, zV0{0.0};
-    double xV1{0.0}, yV1{0.0}, zV1{0.0};
-    double xV2{0.0}, yV2{0.0}, zV2{0.0};
+
+    /*! This is C++11 style initialization. If the initializer list is empty
+     * the default constructor for the template type T is called. For the 
+     * fundemental data types, the default constructor initializes the variable
+     * to zero
+     */
+	double xV0{}, yV0{}, zV0{};
+    double xV1{}, yV1{}, zV1{};
+    double xV2{}, yV2{}, zV2{};
+
     b3AlignedObjectArray<int>* meshIndices = mesh->m_indices;
     b3AlignedObjectArray<GLInstanceVertex>* meshVertices = mesh->m_vertices;
 
     //set the origin of the body as the 
     //coordinate of the first element
+    
+    /*! This loop fishes out the mesh vertex data and adds it to the data structre
+     * triMeshData. The basic steps used here are:
+     *  1. retrieve the x,y,z coordinates of first vertex of triangle.
+     *  2. repeat step 1 for second and third vertices of triangle.
+     *  3. create a vetor (btVector3) of each of the vertices.
+     *  4. add it to the triMeshData object by a call to  (bullet physics)
+     *     public member function addTriangle() passing the three vertices 
+     *     created in step3.
+     */
     int numVertices = mesh->m_numvertices;
 	for (int ind0 = meshIndices->at(0), ind1 = meshIndices->at(1), ind2=meshIndices->at(2); ind2<numVertices; ind0+=3, ind1+=3, ind2+=3){
 
@@ -44,6 +83,10 @@ inline btGImpactMeshShape* triMeshToCollisionShape(const VBF_MeshShape* mesh){
 		
 		trimeshData->addTriangle(v0,v1,v2);
 	}
+
+    /*! create a collision shape on the heap and 
+     * return the pointer to this storage location
+     */
     return new btGImpactMeshShape(trimeshData);
 }
 
