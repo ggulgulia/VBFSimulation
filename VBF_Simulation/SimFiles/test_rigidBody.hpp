@@ -9,7 +9,6 @@
 #include <VBF_Kinematic_Cube.hpp>
 #include <VBF_Kinematic_Sphere.cpp>
 
-//#include <VBF_DynamicMesh.hpp>
 #include <VBF_Dynamic_Cube.hpp>
 #include <VBF_Dynamic_Sphere.hpp>
 #include <VBF_DynamicMesh.hpp>
