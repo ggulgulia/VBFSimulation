@@ -10,4 +10,4 @@ VBF::Kinematic_Sphere::Kinematic_Sphere(double radius, btVector3 origin, size_t 
                     }
              
 VBF::Kinematic_Sphere::~Kinematic_Sphere() {};
-std::string VBF::Kinematic_Sphere::get_name() const { return "Kinematic_Sphere"; }
+std::string VBF::Kinematic_Sphere::get_name() const noexcept { return "Kinematic_Sphere"; }

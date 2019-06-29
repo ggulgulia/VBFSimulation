@@ -30,7 +30,7 @@ namespace VBF{
 
             //Destructor
             ~Dynamic_Sphere();
-            virtual std::string get_name() const override final;
+            virtual std::string get_name() const noexcept override final;
 
     };
 }//end of name space
