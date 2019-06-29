@@ -15,17 +15,17 @@ namespace VBF{
             double m_length;
 
         public:
-            Kinematic_Cube(): KinematicBody("Default Kinematic Cube", 
-                          new btBoxShape(btVector3(10.0, 10.0, 10.0)),
-                          btVector3(0.0,0.0, 0.0), 23), 
-            m_length(10.0){
-                            //empty constructor body
-            }
-
+            /*! @brief Deafault constructor
+             *
+             * @details This constructor creates a Kinematic Cube of  edge length 10.0 units
+             * and the name of this cube is "Default Kinematic Cube"
+             */
+            Kinematic_Cube();
             explicit Kinematic_Cube(double length, btVector3 origin, size_t index);
             Kinematic_Cube(const Kinematic_Cube&) = delete;
             ~Kinematic_Cube();
-            double get_length() const;
+            double get_length() const noexcept;
+            virtual std::string get_name() const noexcept override final;
     };
 }//end of name space
 

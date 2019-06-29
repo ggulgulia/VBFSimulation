@@ -3,10 +3,6 @@
 
 #include <../VBF_RigidBody.hpp>
 
-typedef btDefaultMotionState MotionState;
-typedef btRigidBody::btRigidBodyConstructionInfo btRbConstrInfo;
-typedef btCollisionShape CollShape;
-
 namespace VBF{
 
     

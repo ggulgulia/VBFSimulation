@@ -16,14 +16,14 @@ namespace VBF{
             double m_radius;
 
         public:
+            Static_Sphere();
 
             explicit Static_Sphere(double radius, btVector3 origin, size_t index);         
             ~Static_Sphere();
 
-            virtual std::string get_name() const override final;
-            double get_radius() const { return m_radius;}
+            virtual std::string get_name() const noexcept override final;
+            double get_radius() const;
     };
-
 }//end of name space
 
 #endif /* ifndef VBF_SPHERE_BODIES_H */

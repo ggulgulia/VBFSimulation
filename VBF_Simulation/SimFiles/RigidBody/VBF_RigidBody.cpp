@@ -32,12 +32,21 @@ VBF::RigidBody::~RigidBody(){
             }
             
 //helper functions                
-btRigidBody* VBF::RigidBody::get_rbody() const { return m_rbody; }
-btRigidBody* VBF::RigidBody::get_rbody() { return m_rbody; }
-std::string VBF::RigidBody::get_name()   const { return "incorrect name"; }
-CollShape* VBF::RigidBody::get_shape()   const { return m_shape;  } 
-CollShape* VBF::RigidBody::get_shape() { return m_shape;  } 
-btVector3 VBF::RigidBody::get_origin()   const { return m_origin; }
-size_t VBF::RigidBody::get_index()       const { return m_index;  }
-btVector3 VBF::RigidBody::get_cog_position()  {return m_rbody->getCenterOfMassPosition();}
+MotionState* VBF::RigidBody::get_motion_state() noexcept {return m_motionState;}
+
+void VBF::RigidBody::set_rbody(btRigidBody* rbody){
+    if(rbody == nullptr){
+        throw "Bad pointer. Please check the pointer to rigid body\n";
+    }
+    else
+        m_rbody = rbody;
+}
+btRigidBody* VBF::RigidBody::get_rbody() const noexcept { return m_rbody; }
+btRigidBody* VBF::RigidBody::get_rbody()noexcept { return m_rbody; }
+std::string VBF::RigidBody::get_name() const noexcept { return "incorrect name"; }
+CollShape* VBF::RigidBody::get_shape() const noexcept { return m_shape;  } 
+CollShape* VBF::RigidBody::get_shape() noexcept { return m_shape;  } 
+btVector3 VBF::RigidBody::get_origin()   const noexcept { return m_origin; }
+size_t VBF::RigidBody::get_index()       const noexcept { return m_index;  }
+btVector3 VBF::RigidBody::get_cog_position() noexcept {return m_rbody->getCenterOfMassPosition();}
 

@@ -1,4 +1,16 @@
-/*! \mainpage Project Description
+
+/*! \author Msc. Cosima Stocker, Msc. Gajendra Gulgulia
+ * 
+ * \date 01/07/2019
+ * 
+ * \bug The code has not been developed using Test Driven approach, hence the corner cases haven not yet been tested
+ * as such there might be bugs that need to be identified, tested. The veracity of the bullet physics engine itself 
+ * is not trustworthy because of missing documentation and release information on their website
+ *
+ * \copyright The work is a part of PhD thesis of Msc. Cosima Stocker and hence the code cannot be made public without
+ * her permission.
+ *
+ * \mainpage Project Description
  *
  * \section intro_sec Introduction
  * 
@@ -22,6 +34,7 @@
  * \subsection step1 Step 1: Opening the box
  *
  * etc...
+ *
  */
 
 //! relevant imports
