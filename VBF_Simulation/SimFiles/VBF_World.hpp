@@ -23,7 +23,9 @@ namespace VBF{
      *
      * @details VBF::World is an object predefined for VBF computations
      * and all related solvers and collision configurations are established 
-     * in this class
+     * in this class. For a VBF simulation, it is recommended to declare and 
+     * initialize a VBF::World object before proceeding to set up physics and
+     * creating 
      */
     class World {
         
@@ -291,15 +293,17 @@ namespace VBF{
              *
              * @param deltaT1 : TODO
              *
-             * @warning The method currently doesn't check the 
-             * validity of pointer that it tries to return.
+             * @warning TODO
              */
             void step_simulation(double deltaT1) const;
 
-            /*! 
+            /*! @berif Overloaded method of step_simulation
              *
-             * @warning The method currently doesn't check the 
-             * validity of pointer that it tries to return.
+             * @details TODO
+             *
+             * @param deltaT1 : TODO
+             *
+             * @warning TODO
              */
             void print_updated_positions() const;
     };
