@@ -43,7 +43,7 @@ VBF::InitializeSim::InitializeSim(std::string varName, double varVal){
             
             
 //move constructor
-VBF::InitializeSim::InitializeSim(InitializeSim&& init) :
+//VBF::InitializeSim::InitializeSim(InitializeSim&& init) :
                     m_filename(init.m_filename),
                     m_parameterList(init.m_parameterList){
         std::cout << "Move constructor called in InitializeSim object\n";
@@ -63,4 +63,3 @@ VBF::InitializeSim::~InitializeSim(){
 //this parameter list should be non-mutable once created
 const std::vector<std::pair<std::string, double>>* VBF::InitializeSim::get_parameter_list() const{return m_parameterList;}
             
-//overloaded operator<<  to print the paramter list
