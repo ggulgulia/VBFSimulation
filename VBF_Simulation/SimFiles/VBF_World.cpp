@@ -65,6 +65,9 @@ void VBF::World::set_world(btWorld* world){
     m_world = world;
 }
 
+void VBF::World::set_gravity(btVector3 gravity){
+    m_world->setGravity(gravity);
+}
 void VBF::World::set_collisionConfig(btCollConfig* collConfig){
     m_collisionConfig = collConfig;
 }
