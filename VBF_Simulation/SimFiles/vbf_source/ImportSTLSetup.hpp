@@ -13,8 +13,8 @@
 #include <string>
 #include <OpenGLWindow/GLInstanceGraphicsShape.h>
 #include <bullet/btBulletDynamicsCommon.h>
-#include "VBF_World.hpp"
-#include "VBF_RigidBodies.hpp"
+#include <VBF_World.hpp>
+#include <VBF_RigidBodies.hpp>
 
 typedef GLInstanceGraphicsShape VBF_Mesh;
 

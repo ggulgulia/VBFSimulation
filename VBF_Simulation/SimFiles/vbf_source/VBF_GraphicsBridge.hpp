@@ -2,9 +2,9 @@
 #define VBF_GRAPHICS_BRIDGE_H
 
 #include <bullet/LinearMath/btVector3.h>
-#include "CommonParameterInterface.h"
+#include <CommonParameterInterface.h>
 #include <string>
-#include "helper.hpp"
+#include <helper.hpp>
 
 
 /*! @brief The purpose of this class is to get the graphics working with 

@@ -3,7 +3,7 @@
 #define COMMON_PHYSICS_H
 #include <bullet/LinearMath/btVector3.h>
 #include <OpenGL/GLDebugDrawer.h>
-#include "VBF_World.hpp"
+#include <VBF_World.hpp>
 #include <VBF_RigidBody.hpp>
 #include <VBF_Static_Cube.hpp>
 

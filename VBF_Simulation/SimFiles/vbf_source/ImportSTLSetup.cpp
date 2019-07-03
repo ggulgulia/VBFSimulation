@@ -1,6 +1,6 @@
-#include "ImportSTLSetup.hpp"
-#include "LoadMeshFromSTL.hpp"
-#include "fstream"
+#include <ImportSTLSetup.hpp>
+#include <LoadMeshFromSTL.hpp>
+#include <fstream>
 #include <iostream>
 #include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
 #include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
