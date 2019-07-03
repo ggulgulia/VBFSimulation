@@ -1,11 +1,11 @@
 
-#include "ImportSTLSetup.hpp" 
-#include "VBF_World.hpp" 
-#include "VBF_CommonPhysics.hpp" 
-#include "VBF_GraphicsBridge.hpp" 
-#include "VBF_Cube.hpp" 
-#include "VBF_Sphere.hpp" 
-#include "VBF_InitializeSim.hpp"
+#include <ImportSTLSetup.hpp>
+#include <VBF_World.hpp>
+#include <VBF_CommonPhysics.hpp>
+#include <VBF_GraphicsBridge.hpp> 
+#include <VBF_Cube.hpp>
+#include <VBF_Sphere.hpp> 
+#include <VBF_InitializeSim.hpp>
 
 //returns the rigid body position based on motion state
 void get_rigid_body_position(const VBF::RigidBody *const vbf_rigid_body, btVector3& position){

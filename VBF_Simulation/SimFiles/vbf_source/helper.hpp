@@ -2,9 +2,9 @@
 #include <OpenGLWindow/X11OpenGLWindow.h>
 #include <OpenGL/GLDebugDrawer.h>
 #include <OpenGL/DemoApplication.h>
-#include "VBF_GraphicsBridge.hpp"
-#include "VBF_CommonPhysics.hpp"
-#include "VBF_World.hpp"
+#include <VBF_GraphicsBridge.hpp>
+#include <VBF_CommonPhysics.hpp>
+#include <VBF_World.hpp>
 
 
 int sWidth(800), sHeight(600);
