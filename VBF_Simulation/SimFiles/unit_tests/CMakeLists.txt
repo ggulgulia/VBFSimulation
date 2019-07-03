@@ -1,24 +1,15 @@
-# HelloWorld is a minimal sample creating, stepping and deleting a Bullet dynamics world
-cmake_minimum_required(VERSION 2.8)
-project(VBF_IWB_TUM CXX)
+cmake_minimum_required(VERSION 3.2.3)
+project(VBF_iwb_TUM CXX) 
+enable_testing()
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Werror -fno-elide-constructors")
 
-#set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
-set(CMAKE_CXX_FLAGS "-std=c++14 -g -Wall -Werror -fno-elide-constructors")
-message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(gtest REQUIRED gtest>=1.8.1)
+include_directories(${gtest_INCLUDE_DIRS})
 
-add_subdirectory(RigidBody)
-
-LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath Bullet3Common)
-
-ADD_EXECUTABLE(vbf_test.out
-              VBF_World.cpp
-              VBF_CommonPhysics.cpp
-              RigidBody/KinematicBodies/VBF_KinematicMesh.cpp ##need to resolve circular dependency
-              main.cpp
-              )
-
-
-target_link_libraries(vbf_test.out PRIVATE VBF_RigidBody VBF_StaticBodies VBF_KinematicBodies VBF_DynamicBodies)
+add_executable(vbf_unit_test.out 
+                main_test.cpp 
+               )
+target_link_libraries(vbf_unit_test.out vbf_simulation ${gtest_LIBRARIES})
+add_test(NAME test COMMAND vbf_unit_test)
