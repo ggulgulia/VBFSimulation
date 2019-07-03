@@ -1,4 +1,5 @@
 bullet3-master/
+VBF_Simulation/VWF_with_complex_workpiece/
 **/build/*
 *.o
 *.text
@@ -10,4 +11,9 @@ bullet3-master/
 *.swp
 *.swo
 OldCMakeLists
+*.zip
+*.tar
+*.tarz
+**/Docs
+doc.cpp
 Makefile.am

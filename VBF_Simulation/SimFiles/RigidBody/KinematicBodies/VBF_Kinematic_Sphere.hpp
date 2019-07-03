@@ -24,7 +24,7 @@ namespace VBF{
             Kinematic_Sphere(const Kinematic_Sphere&) = delete;
             Kinematic_Sphere& operator=(Kinematic_Sphere&) = delete;
 
-            virtual std::string get_name() const override final;
+            virtual std::string get_name() const noexcept override final;
             double get_radius() const { return m_radius;}
     };
 
