@@ -28,4 +28,7 @@ TEST_F(Test_VBF_World, worldIsInitialized){
     ASSERT_THAT(vbf_world->is_initialized(), Eq(true));
 }
 
-
+TEST_F(Test_VBF_World, timeIsInitializedToZero){
+    SetUp();
+    ASSERT_THAT(vbf_world->get_curr_time(), Eq(0.0));
+}
