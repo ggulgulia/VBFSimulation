@@ -42,6 +42,7 @@ VBF::World::World(btWorld* world,
     m_solver(solver)
 {
     m_is_initialized = true;
+    m_time = 0.0;
 }
 
 //new world is shaped on the implicit this object
@@ -54,6 +55,7 @@ void  VBF::World::intialize_new_world(){
     m_solver          = new btSolver;
     m_world           = new btWorld(m_dispatcher, m_interface, m_solver, m_collisionConfig);
     m_world->setGravity(btVector3(0.0, -9.81, 0.0));
+    m_time = 0.0;
     m_is_initialized = true;
 }
 
@@ -100,6 +102,7 @@ void VBF::World::add_rigid_bodies_to_world(btRigidBody* rbody){
 btWorld* VBF::World::get_world() const{
     return m_world;
 }
+
 btCollConfig* VBF::World::get_collisionConfig() const{
     return m_collisionConfig;
 }
@@ -117,6 +120,10 @@ btIDebugDraw* VBF::World::get_debug_drawer() const{
     return m_world->getDebugDrawer();
 }
 
+long double VBF::World::get_curr_time() noexcept{
+    return m_time;
+}
+
 void VBF::World::step_simulation(double timeStep, double subStep, double fixedTimeStep){
     m_world->stepSimulation(fixedTimeStep, subStep, fixedTimeStep);
 }
@@ -125,8 +132,9 @@ void VBF::World::step_simulation(double deltaT1, double deltaT2) const{
     m_world->stepSimulation(deltaT1, deltaT2);
 }
 
-void VBF::World::step_simulation(double deltaT1) const{
+void VBF::World::step_simulation(double deltaT1) noexcept{
     m_world->stepSimulation(deltaT1);
+    m_time += deltaT1;
 }
 
 void VBF::World::print_updated_positions() const

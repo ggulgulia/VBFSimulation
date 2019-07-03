@@ -36,6 +36,7 @@ namespace VBF{
             btInterface* m_interface; /*!< Member of type btInterface (bullet object) encapsulated in VBF::World */
             btSolver* m_solver; /*!< Member of type btSolver (bullet object) encapsulated in VBF::World */
             bool m_is_initialized; /*!< Boolean member to verify if the VBF::World object is initialized */
+            long double m_time;
     
         public:
             /*! @brief Destructor
@@ -260,6 +261,8 @@ namespace VBF{
              * validity of pointer that it tries to return.
              */
             btIDebugDraw*     get_debug_drawer() const;
+
+            long double get_curr_time() noexcept;
     
 
             /*! @brief Advances the simulation in time.
@@ -295,7 +298,7 @@ namespace VBF{
              *
              * @warning TODO
              */
-            void step_simulation(double deltaT1) const;
+            void step_simulation(double deltaT1) noexcept;
 
             /*! @berif Overloaded method of step_simulation
              *
