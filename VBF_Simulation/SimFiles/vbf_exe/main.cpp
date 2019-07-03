@@ -38,10 +38,10 @@
  */
 
 //! relevant imports
-#include "VBF_World.hpp"
-#include "VBF_CommonPhysics.hpp"
-#include "VBF_GraphicsBridge.hpp"
-#include "test_rigidBody.hpp"
+#include <VBF_World.hpp>
+#include <VBF_CommonPhysics.hpp>
+#include <VBF_GraphicsBridge.hpp>
+#include <test_rigidBody.hpp>
 
 
 int main(int argc, char **argv){
