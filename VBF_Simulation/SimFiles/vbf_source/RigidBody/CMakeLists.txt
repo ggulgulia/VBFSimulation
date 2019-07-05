@@ -2,9 +2,10 @@
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
 
+LINK_LIBRARIES(ConvexDecomposition GIMPACTUtils HACD BulletInverseDynamicsUtils)
 
 add_library(
-    VBF_RigidBody SHARED #name of target library
+    VBF_RigidBody STATIC #name of target library
     VBF_RigidBody.cpp
     )
 

@@ -66,7 +66,7 @@ int main(int argc, char **argv){
     //! test different types (static, kinematic or dynamic speheres or cubes)
     
     //! test static sphere
-    get_cubes<VBF::Static_Sphere>(rigid_bodies);
+    //get_cubes<VBF::Static_Sphere>(rigid_bodies);
     
     //! test import stl files of kinematic and dynamic types
     
@@ -84,18 +84,18 @@ int main(int argc, char **argv){
     //! fileName2 for dynamic rigid body
 
     //! set scaling factor
-    double scale{0.1};
+    double scale{1};
 
     //! set origin for the imported part
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
-
+    btVector3 partOrigin{btVector3(0.0, 5.0, 0.0)};
     //! import kinematic part
     VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(file1Path, scale, meshOrigin);
 
     //! initialize mass for dynamic body
     double mass2{1.0};
     //! import dynamic stl part
-    VBF::DynamicMeshBody* stl_body2 = new VBF::DynamicMeshBody(file2Path, 20*scale, mass2, meshOrigin);
+    VBF::DynamicMeshBody* stl_body2 = new VBF::DynamicMeshBody(file2Path, 10*scale, mass2, partOrigin);
 
     //! store the imported bodies in the rigid_bodies container
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
@@ -134,19 +134,19 @@ int main(int argc, char **argv){
 
 
     btClock timer;
-    unsigned long prevTime = timer.getTimeMicroseconds();
+    //unsigned long prevTime = timer.getTimeMicroseconds();
     VBF::KinematicBody* stl_vbf_rbody = stl_body->get_vbf_rbody();
 
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
-             phy.stepSimulation((currTime - prevTime)/1000.);
+             phy.stepSimulation(0.0166667);
          }
          Vy = velFun(currTime, 2);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
          stl_vbf_rbody->set_linear_vel(axis, linVel);
 
-         prevTime = currTime;
+         //prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
