@@ -8,13 +8,7 @@
  * and VBF::DynamicMeshBody during the constructor call of the respective class
  */
 
-#include <OpenGLWindow/GLInstanceGraphicsShape.h>
-#include <bullet/Bullet3Common/b3AlignedObjectArray.h>
-#include <string>
-#include <cstdio> //fopen
-#include <fstream>
-#include <bullet/BulletCollision/Gimpact/btGImpactShape.h>
-#include <bullet/BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+#include <GIMPACTUtils/btGImpactConvexDecompositionShape.h>
 
 //internal routine to convert tri mesh data to a sensible bullet rigid body
 
@@ -88,6 +82,7 @@ inline btGImpactMeshShape* triMeshToCollisionShape(const VBF_MeshShape* mesh){
      * return the pointer to this storage location
      */
     return new btGImpactMeshShape(trimeshData);
+    //return new btGImpactConvexDecompositionShape(trimeshData, btVector3(1.f,1.f,1.f),btScalar(0.01));
 }
 
 class MySTLTriangle

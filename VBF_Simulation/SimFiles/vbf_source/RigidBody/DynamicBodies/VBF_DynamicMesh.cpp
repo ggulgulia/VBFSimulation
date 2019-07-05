@@ -27,10 +27,11 @@ VBF::DynamicMeshBody::DynamicMeshBody(const std::string &fileName,
     }
 
 	btGImpactMeshShape* shape = triMeshToCollisionShape(m_mesh);
+	//btGImpactConvexDecompositionShape* shape = triMeshToCollisionShape(m_mesh);
     origin[0] *= scale; 
     origin[1] *= scale; 
     origin[2] *= scale;
-    double colMargin{0.005};
+    double colMargin{0.01};
     shape->setMargin(colMargin);
     shape->updateBound();
 

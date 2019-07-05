@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
 
 add_library(
-    VBF_KinematicBodies SHARED #name of target library
+    VBF_KinematicBodies STATIC #name of target library
     #VBF_RigidBody.cpp
     VBF_KinematicBody.cpp
     VBF_Kinematic_Cube.cpp
