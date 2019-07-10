@@ -8,7 +8,6 @@
  * and VBF::DynamicMeshBody during the constructor call of the respective class
  */
 
-#include <GIMPACTUtils/btGImpactConvexDecompositionShape.h>
 
 //internal routine to convert tri mesh data to a sensible bullet rigid body
 
