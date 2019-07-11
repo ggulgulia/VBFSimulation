@@ -1,13 +1,14 @@
 #ifndef VBF_STATIC_CYLINDER_H
 #define VBF_STATIC_CYLINDER_H 
 
-/*! @brief Class file for VBF::StaticCube
+/* @brief The interface creates a Static Cylinder rigid body
  *
- * @details This class encapsulates the bullet's data structure for a Cube but ensures that
- * all the cube object generated through this calss object are static rigid body. This class
- * has only one private member that dictates the length of the cube
- *
- */
+ * @details The construction of a cylinder proceeds through a call to the creation of a
+ * bullet primitive cylinder of type btCylinderShape whose constructor takes a 3d vector 
+ * whose  parameters can be interpreted as 
+ * btVector3(cylinder_radius, 0.5*cylinder_height, cylinder_radius)
+*/
+
 #include <VBF_StaticBody.hpp>
 
 /*! typedefs for ugly bullet's datatypes
@@ -19,17 +20,18 @@ namespace VBF{
 
         private:
 
-            double m_length;
+            double m_radius; //!< Radius of cyinder
+            double m_height; //!< Height of cylinder 
 
         public:
-            Static_Cylinder(): StaticBody("Default Static Cube", 
-                          new btBoxShape(btVector3(10.0, 10.0, 10.0)),
-                          btVector3(0.0,0.0, 0.0), 23), 
-            m_length(10.0){
+            Static_Cylinder(): StaticBody("Default Static Cylinder", 
+                          new btCylinderShape(btVector3(0.50, 0.5*2.0, 0.50)),
+                          btVector3(0.0,0.0, 0.0), 33), 
+            m_radius(0.50), m_height(2.0) {
                             //empty constructor body
             }
 
-            explicit Static_Cylinder(double length, btVector3 origin, size_t index);
+            explicit Static_Cylinder(double radius, double height, btVector3 origin, size_t index);
             
             /*! @brief Preventing copy semantics for Static_Cylinder construction
              */
@@ -40,13 +42,21 @@ namespace VBF{
              */
             ~Static_Cylinder();
 
-            /*! Non-static, constant public member function returning
-             * length of the cube
+            /*! @brief Returns the radius of VBF::Static_Cylinder.
              *
-             * @return private member variable m_length (non-modifiable)
+             * @details Non-static, constant public member function that returns the value 
+             * of private member m_radius of object VBF::Static_Cylinder. This method
+             * is guaranteed to not thorw. 
              */
-            double get_length() const;
-            
+            double get_cylinder_radius() const noexcept;
+
+            /*! @brief Returns the height of VBF::Kinematic_Cylinder.
+             *
+             * @details Non-static, constant public member function that returns the value 
+             * of private member m_height of object VBF::Kinematic_Cylinder. This method
+             * is guaranteed to not thorw. 
+             */
+            double get_cylinder_height() const noexcept;
             virtual std::string get_name() const noexcept override final;
     };
 }//end of name space

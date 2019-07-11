@@ -87,12 +87,12 @@ int main(int argc, char **argv){
 
     //! set origin for the imported part
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
-    btVector3 partOrigin{btVector3(0.0, 5.0, 0.0)};
+    btVector3 partOrigin{btVector3(-2.0, 5.0, 0.0)};
     //! import kinematic part
     VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(file1Path, scale, meshOrigin);
 
     //! initialize mass for dynamic body
-    double mass2{1.0};
+    double mass2{0.20};
     //! import dynamic stl part
     VBF::DynamicMeshBody* stl_body2 = new VBF::DynamicMeshBody(file2Path, 10*scale, mass2, partOrigin);
 
@@ -102,7 +102,8 @@ int main(int argc, char **argv){
     
 
     //add a cylinder like part to the simulation 
-    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(1.0, partOrigin, mass2);
+    static const double cylHeight{2.0}, cylRad{0.5};
+    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
     rigid_bodies.push_back(stl_body3);
 
     ////test import static mesh
@@ -110,8 +111,8 @@ int main(int argc, char **argv){
     //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
 
     ////test import kinematic cubes
-    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
-    rigid_bodies.push_back(kinCube);
+    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
+    //rigid_bodies.push_back(kinCube);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
@@ -140,13 +141,14 @@ int main(int argc, char **argv){
     btClock timer;
     unsigned long prevTime = timer.getTimeMicroseconds();
     VBF::KinematicBody* stl_vbf_rbody = stl_body->get_vbf_rbody();
-
+    
+    static int numSteps{};
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime-prevTime)*0.001);
          }
-         Vy = velFun(currTime*2, 2);
+         Vy = velFun(currTime*10, 1.0);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
          stl_vbf_rbody->set_linear_vel(axis, linVel);
 
@@ -157,8 +159,17 @@ int main(int argc, char **argv){
          vbf_window->end_rendering();
          btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
-
-
+        
+        ++numSteps;
+        
+        if(numSteps%100==0){
+            std::cout << "******************************************************\n";
+            std::cout << "number of parts in rigid body container " << rigid_bodies.size() << "\n";
+            std::cout << "******************************************************\n";
+            VBF::Dynamic_Cylinder* part = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
+            rigid_bodies.push_back(part);
+            vbf_world->add_rigid_bodies_to_world(part->get_rbody());
+            }
         }while(!vbf_window->requested_exit());
         
     vbf_window->close_window();
