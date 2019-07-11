@@ -81,7 +81,6 @@ int main(int argc, char **argv){
     std::string file1Path(meshPath + file1Name);
     std::cout << file1Path << "\n";
     std::string file2Path(meshPath + file2Name);
-    //! fileName2 for dynamic rigid body
 
     //! set scaling factor
     static const double scale{0.1};
@@ -100,14 +99,19 @@ int main(int argc, char **argv){
     //! store the imported bodies in the rigid_bodies container
     rigid_bodies.push_back(stl_body->get_vbf_rbody());
     rigid_bodies.push_back(stl_body2->get_vbf_rbody());
+    
+
+    //add a cylinder like part to the simulation 
+    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(1.0, partOrigin, mass2);
+    rigid_bodies.push_back(stl_body3);
 
     ////test import static mesh
     //VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
     //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
 
     ////test import kinematic cubes
-    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
-    //rigid_bodies.push_back(kinCube);
+    VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
+    rigid_bodies.push_back(kinCube);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
@@ -142,7 +146,7 @@ int main(int argc, char **argv){
          if(!vis_bridge.isIdle()){
              phy.stepSimulation((currTime-prevTime)*0.001);
          }
-         Vy = velFun(currTime*5, 1);
+         Vy = velFun(currTime*2, 2);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
          stl_vbf_rbody->set_linear_vel(axis, linVel);
 
