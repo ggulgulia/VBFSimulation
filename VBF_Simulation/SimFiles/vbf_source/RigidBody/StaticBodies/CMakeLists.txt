@@ -11,6 +11,7 @@ add_library(
     VBF_Static_Ground.cpp
     VBF_Static_Cube.cpp
     VBF_Static_Sphere.cpp
+    VBF_Static_Cylinder.cpp
     VBF_StaticMesh.cpp
     )
 target_link_libraries(VBF_StaticBodies -L../VBF_RigidBody)

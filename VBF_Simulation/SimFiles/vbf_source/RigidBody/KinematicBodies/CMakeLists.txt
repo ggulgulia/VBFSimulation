@@ -2,12 +2,16 @@
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
 
+LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread 
+              BulletDynamics BulletCollision LinearMath Bullet3Common)
+
 add_library(
     VBF_KinematicBodies STATIC #name of target library
     #VBF_RigidBody.cpp
     VBF_KinematicBody.cpp
     VBF_Kinematic_Cube.cpp
     VBF_Kinematic_Sphere.cpp
+    VBF_Kinematic_Cylinder.cpp
     VBF_KinematicMesh.cpp
     )
 target_link_libraries(VBF_KinematicBodies -L../VBF_RigidBody)

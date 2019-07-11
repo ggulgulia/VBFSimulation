@@ -13,10 +13,6 @@
 /*! typedefs for ugly bullet's datatypes
  *
  */
-typedef btDefaultMotionState MotionState;
-typedef btRigidBody::btRigidBodyConstructionInfo btRbConstrInfo;
-typedef btCollisionShape CollShape;
-
 namespace VBF{
     
     class Static_Cube : public StaticBody{
