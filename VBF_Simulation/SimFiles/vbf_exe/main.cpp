@@ -84,7 +84,7 @@ int main(int argc, char **argv){
     //! fileName2 for dynamic rigid body
 
     //! set scaling factor
-    double scale{1};
+    static const double scale{0.1};
 
     //! set origin for the imported part
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
@@ -134,19 +134,19 @@ int main(int argc, char **argv){
 
 
     btClock timer;
-    //unsigned long prevTime = timer.getTimeMicroseconds();
+    unsigned long prevTime = timer.getTimeMicroseconds();
     VBF::KinematicBody* stl_vbf_rbody = stl_body->get_vbf_rbody();
 
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
-             phy.stepSimulation(0.0166667);
+             phy.stepSimulation((currTime-prevTime)*0.001);
          }
-         Vy = velFun(currTime, 2);
+         Vy = velFun(currTime*5, 1);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
          stl_vbf_rbody->set_linear_vel(axis, linVel);
 
-         //prevTime = currTime;
+         prevTime = currTime;
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
