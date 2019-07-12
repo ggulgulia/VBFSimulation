@@ -124,7 +124,7 @@
              * pointers in the object have been initialized. TODO :
              * implement a layer of safety check.
              */
-    	    virtual void initPhysics();
+    	    void initPhysics();
             
             /*! @brief Steps the simulation in time. 
              *
@@ -136,11 +136,14 @@
              * ntation for VBF::World).
              *
              * @param deltaT : time step 
+             * @param resolution : internal substeps to compute the physics. 
+             *                     Number of substesp = deltaTime/resolution
+             *                     Default value of resolution = 1/60f
              *
              * @todo implement other overladed variants of 
              * stepSimulation defined in bullet and VBF::World
              */
-    	    virtual void stepSimulation(double deltaTime);
+    	    void step_simulation(double deltaTime, double resolution=0.0166667);
             
             /*! @brief Sets debug draw flags
              *
@@ -159,7 +162,7 @@
              * not initialized. Need proper exception handling for 
              * this method. 
              */
-            virtual void debugDraw(int debugDrawFlags);
+            void debugDraw(int debugDrawFlags);
             
             /*! @brief TODO
              *
@@ -169,7 +172,7 @@
              *
              * @warning TODO
              */
-    	    virtual void syncPhysicsToGraphics();
+    	    void syncPhysicsToGraphics();
             
             /*! @brief Returns the btWorld (bullet) object
              *
