@@ -146,7 +146,7 @@ int main(int argc, char **argv){
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
-             phy.stepSimulation((currTime-prevTime)*0.001);
+             phy.step_simulation((currTime-prevTime)*0.001);
          }
          Vy = velFun(currTime*10, 1.0);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};

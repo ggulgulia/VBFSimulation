@@ -38,6 +38,39 @@ namespace VBF{
             bool m_is_initialized; /*!< Boolean member to verify if the VBF::World object is initialized */
             long double m_time;
     
+            /*! @brief Advances the simulation in time.
+             *
+             * @details Non-static private member method that advances
+             * the simulation in time determined by timeStep. This method is
+             * called internally by the public member functions that are
+             * overloaded by the same name
+             *
+             * source : https://stackoverflow.com/questions/12778229/what-does-step-mean-in-stepsimulation-and-what-do-its-parameters-mean-in-bulle
+             * @param timeStep : Time (in seconds) by which the simulation is advanced
+             * @param maxSubStep : Maximum number of substesp bullet is allowed to take each time 
+             *                     Step simulation is called (keep it fixed to 1)
+             * @param fixedTimeStep : Resolution of simulation. Decrease the value to inscrease the simulation 
+             *                        resolution
+             *
+             * @returns 
+             * @warning maxSubStep should be kept to 1.0 . (read the source)
+             */
+            void step_simulation(double deltaT1, double maxSubStep, double resolution){
+
+            
+                    m_world->stepSimulation(deltaT1, maxSubStep, resolution);
+                    m_time += deltaT1;
+            }
+            /*! @berif Overloaded method of step_simulation
+             *
+             * @details TODO
+             *
+             * @param deltaT1 : TODO
+             * @param deltaT2 : TODO
+             * @param deltaT2 : TODO
+             *
+             * @warning TODO
+             */
         public:
             /*! @brief Destructor
              *
@@ -265,39 +298,6 @@ namespace VBF{
             long double get_curr_time() noexcept;
     
 
-            /*! @brief Advances the simulation in time.
-             *
-             * @details Non-static public member method that advances
-             * the simulation in time determined by timeStep. 
-             *
-             * @param timeStep : TODO
-             * @param subStep : TODO
-             * @param fixedTimeStep : TODO
-             *
-             * @returns NONE
-             * @warning TODO
-             */
-            void step_simulation(double timeStep, double subStep, double fixedTimeStep);
-
-            /*! @berif Overloaded method of step_simulation
-             *
-             * @details TODO
-             *
-             * @param deltaT1 : TODO
-             * @param deltaT2 : TODO
-             *
-             * @warning TODO
-             */
-            void step_simulation(double deltaT1, double deltaT2) const;
-
-            /*! @berif Overloaded method of step_simulation
-             *
-             * @details TODO
-             *
-             * @param deltaT1 : TODO
-             *
-             * @warning TODO
-             */
             void step_simulation(double deltaT1) noexcept;
 
             /*! @berif Overloaded method of step_simulation
@@ -308,10 +308,11 @@ namespace VBF{
              *
              * @warning TODO
              */
+            
+            void step_simulation(double deltaT1, double deltaT2);
             void print_updated_positions() const;
     };
 
 }
-//getting rid of ugly type names
 
 #endif //VBF_WORLD_H

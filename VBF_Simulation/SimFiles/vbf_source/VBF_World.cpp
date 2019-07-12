@@ -124,17 +124,13 @@ long double VBF::World::get_curr_time() noexcept{
     return m_time;
 }
 
-void VBF::World::step_simulation(double timeStep, double subStep, double fixedTimeStep){
-    m_world->stepSimulation(fixedTimeStep, subStep, fixedTimeStep);
-}
 
-void VBF::World::step_simulation(double deltaT1, double deltaT2) const{
-    m_world->stepSimulation(deltaT1, deltaT2);
+void VBF::World::step_simulation(double deltaT1, double deltaT2){
+    this->step_simulation(deltaT1, 1.0, deltaT2);
 }
 
 void VBF::World::step_simulation(double deltaT1) noexcept{
-    m_world->stepSimulation(deltaT1);
-    m_time += deltaT1;
+    this->step_simulation(deltaT1, 1.0, 0.0166667);
 }
 
 void VBF::World::print_updated_positions() const
