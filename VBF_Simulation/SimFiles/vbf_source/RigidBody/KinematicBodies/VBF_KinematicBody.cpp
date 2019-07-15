@@ -33,7 +33,7 @@ void VBF::KinematicBody::set_linear_vel(const btVector3& pos, const btVector3& l
 
 btVector3 VBF::KinematicBody::get_cog_position()const noexcept {return this->get_rbody()->getCenterOfMassPosition();}
 const btMatrix3x3& VBF::KinematicBody::get_rotation() const noexcept {
-    btTransform trans;
-    this->get_rbody()->getMotionState()->getWorldTransform(trans);
-    return trans.getBasis();}
+    btTransform* trans = new btTransform();
+    this->get_rbody()->getMotionState()->getWorldTransform(*trans);
+    return trans->getBasis();}
 
