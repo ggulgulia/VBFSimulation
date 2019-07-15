@@ -48,5 +48,4 @@ CollShape* VBF::RigidBody::get_shape() const noexcept { return m_shape;  }
 CollShape* VBF::RigidBody::get_shape() noexcept { return m_shape;  } 
 btVector3 VBF::RigidBody::get_origin()   const noexcept { return m_origin; }
 size_t VBF::RigidBody::get_index()       const noexcept { return m_index;  }
-btVector3 VBF::RigidBody::get_cog_position() noexcept {return m_rbody->getCenterOfMassPosition();}
 

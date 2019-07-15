@@ -161,7 +161,9 @@ namespace VBF{
              *
              * \returns private data member : m_rbody (btRigidBody) 
              */
-            virtual btVector3 get_cog_position()noexcept;
+            virtual btVector3 get_cog_position() const noexcept = 0;
+
+            virtual const btMatrix3x3& get_rotation() const noexcept = 0;
 
     };
 }//end of name space

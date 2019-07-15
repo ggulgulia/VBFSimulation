@@ -21,6 +21,8 @@ namespace VBF{
             virtual double get_mass() const; 
             virtual btVector3 get_inertia() const;
             virtual void set_linear_vel(const btVector3& pos, const btVector3& linVel);
+            virtual btVector3 get_cog_position() const noexcept;
+            virtual const btMatrix3x3& get_rotation() const noexcept;
 
     };
 }//end of name space
