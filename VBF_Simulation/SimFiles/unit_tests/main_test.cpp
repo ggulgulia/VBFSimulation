@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
-#include "VBFWorldTest.cpp"
+#include "VBFSimLoopTest.hpp"
+//#include "VBFWorldTest.hpp"
 
 
 int main(int argc, char **argv) {
