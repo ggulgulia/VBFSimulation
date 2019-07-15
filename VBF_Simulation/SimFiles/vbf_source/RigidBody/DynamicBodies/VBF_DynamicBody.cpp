@@ -40,3 +40,11 @@ void VBF::DynamicBody::set_linear_vel(const btVector3& pos, const btVector3& lin
     btRigidBody *rbody = this->get_rbody();
     rbody->setLinearVelocity(linVel);
 }
+
+btVector3 VBF::DynamicBody::get_cog_position()const noexcept {return this->get_rbody()->getCenterOfMassPosition();}
+
+const btMatrix3x3& VBF::DynamicBody::get_rotation() const noexcept {
+    btTransform trans;
+    this->get_rbody()->getMotionState()->getWorldTransform(trans);
+    return trans.getBasis();}
+
