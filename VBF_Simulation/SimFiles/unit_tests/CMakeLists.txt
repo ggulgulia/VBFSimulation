@@ -11,5 +11,6 @@ include_directories(${gtest_INCLUDE_DIRS})
 add_executable(vbf_unit_test.out 
                 main_test.cpp 
                )
-target_link_libraries(vbf_unit_test.out vbf_simulation ${gtest_LIBRARIES})
+           target_link_libraries(vbf_unit_test.out vbf_simulation -L VBF_RigidBody
+                      ${gtest_LIBRARIES})
 add_test(NAME test COMMAND vbf_unit_test)
