@@ -11,7 +11,7 @@ VBF::Static_Cylinder::Static_Cylinder(double radius, double height, btVector3 or
                }
 
 //destructor
-VBF::Static_Cylinder::~Static_Cylinder(){};
+VBF::Static_Cylinder::~Static_Cylinder(){}
 
 double VBF::Static_Cylinder::get_cylinder_radius()const noexcept {return m_radius;}
 double VBF::Static_Cylinder::get_cylinder_height()const noexcept {return m_height;}

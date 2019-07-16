@@ -136,7 +136,7 @@ int main(int argc, char **argv){
      */
     auto velFun = [] (double time, double amplitude)->double{double pi{3.14159};
                                                             return amplitude*sin(4*pi*time);};
-    btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
+    //btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
 
 
 
@@ -174,7 +174,7 @@ int main(int argc, char **argv){
          }
          Vy = velFun(currTime*10, 0.20);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
-         stl_vbf_rbody->set_linear_vel(axis, linVel);
+         stl_vbf_rbody->set_linear_vel(linVel);
 
          prevTime = currTime;
          vbf_window->start_rendering();

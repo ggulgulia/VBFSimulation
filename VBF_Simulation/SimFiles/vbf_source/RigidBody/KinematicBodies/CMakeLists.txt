@@ -1,14 +1,29 @@
 #add appropriate path to src code from which the lib is to be made
+cmake_minimum_required(VERSION 3.2.3)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
 
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
-message(STATUS "Compile sources for VBF_KinematicBody into a libary?" ${USE_LIBRARY})
+message(STATUS "Compile sources for VBF_KinematicBodes into a libary?" ${USE_LIBRARY})
 
 LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread 
               BulletDynamics BulletCollision LinearMath Bullet3Common)
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(STATUS "CMake build type for KinematicBodes library is Debug")
+    list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    message(STATUS "CMake build type for KinematicBodes library is Release")
+    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+endif()
+
+if(UNIX)
+    message(STATUS "Compiling KinematicBodes library for Unix like system")
+    list(APPEND flags "-Wextra" "-Wpedantic")
+endif(UNIX)
 
 
 ## append all DynamicBody source files in a list
@@ -34,6 +49,10 @@ elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
                ${_sources2}
                )
 endif()
+
+target_compile_options(VBF_KinematicBodies
+                      PRIVATE
+                      ${flags})
 
 #link the new library with VBF_RididBody library
 target_link_libraries(VBF_KinematicBodies -L../VBF_RigidBody)

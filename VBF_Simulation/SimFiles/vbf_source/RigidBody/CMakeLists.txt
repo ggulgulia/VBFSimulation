@@ -1,16 +1,17 @@
 #add appropriate path to src code from which the lib is to be made
-set(CMAKE_CXX_STANDARD 11)
+cmake_minimum_required(VERSION 3.2.3)
+set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-std=c++14")
 
 message(STATUS "Compiling RigidBody source to a library")
 
 ## set Release type specific type compiler flags
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    message("CMake build type is DEBUG")
-    list(APPEND flags "-g -Wall -Werror -fno-elide-conostructors")
+    message(STATUS "CMake build type is DEBUG")
+    list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    message("CMake build type is RELEASE")
-    list(APPEND flags "-O1 -fPIC -Wall -Werror -fno-elide-constructors" )
+    message(STATUS "CMake build type is RELEASE")
+    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## add extra compilation flags for linux type machines
@@ -41,6 +42,8 @@ message(STATUS "compiling Rigid_Body sources to shared library")
                )
 endif()
 
+##this attribute sets the flags only for the target library 
+## and no other targets using the VBF_RigidBody library
 target_compile_options(VBF_RigidBody
                       PRIVATE
                       ${flags})

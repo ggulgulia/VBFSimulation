@@ -1,3 +1,4 @@
+cmake_minimum_required(VERSION 3.2.3)
 set(CMAKE_CXX_STANDARD 14)
 
 ## set up of build specific compiler options 
@@ -5,22 +6,22 @@ set(CMAKE_CXX_STANDARD 14)
 ##debug mode 
 
 set(CMAKE_CXX_FLAGS "-std=c++14")
-message(STATUS "compilation of VBF Simulation components to library")
+message(STATUS "compilation of VBF_Simulation components to library")
 if(${CMAKE_BUILD_TYPE}  STREQUAL "Debug")
-    message("CMAKE build type is DEBUG ")
-    list(APPEND flags "-g -Wall -Werror -fno-elide-conostructors")
+    message(STATUS "CMAKE build type is DEBUG ")
+    list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    message("CMAKE build type is RELEASE ")
-    list(APPEND flags "-O1 -fPIC -Wall -Werror -fno-elide-constructors" )
+    message(STATUS "CMAKE build type is RELEASE ")
+    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## set Linux Specific flags
 if(UNIX)
-    message("Compiling for Unix like system")
+    message(STATUS "Compiling VBF_Simulation library for Unix like system")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif(UNIX)
 
-message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
+message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 
 add_subdirectory(RigidBody)
 
@@ -42,24 +43,24 @@ list(APPEND
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
 
     message(STATUS "Compiling VBF Simulation components to a STATIC LIBRARY")
-    add_library(vbf_simulation
+    add_library(VBF_Simulation
                 ${_sources3}
                   )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
 
     message(STATUS "Compiling VBF Simulation components to a SHARED LIBRARY")
-    ADD_LIBRARY(vbf_simulation
+    ADD_LIBRARY(VBF_Simulation
                 SHARED 
                 ${_sources3}
                   )
 endif()
 
-target_compile_options(vbf_simulation
+target_compile_options(VBF_Simulation
                       PRIVATE
                       ${flags})
 
 #link the current library with other VBF rigid body libraries
-target_link_libraries(vbf_simulation PUBLIC VBF_RigidBody VBF_StaticBodies VBF_KinematicBodies VBF_DynamicBodies)
+target_link_libraries(VBF_Simulation PUBLIC VBF_RigidBody VBF_StaticBodies VBF_KinematicBodies VBF_DynamicBodies)
 
 #make the library available publicly
-target_include_directories(vbf_simulation PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(VBF_Simulation PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

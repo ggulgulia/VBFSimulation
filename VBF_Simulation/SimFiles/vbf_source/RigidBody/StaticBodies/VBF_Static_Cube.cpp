@@ -11,7 +11,7 @@ VBF::Static_Cube::Static_Cube(double length, btVector3 origin, size_t index):
                }
 
 //destructor
-VBF::Static_Cube::~Static_Cube(){};
+VBF::Static_Cube::~Static_Cube(){}
 double VBF::Static_Cube::get_length()const{return m_length;}
 
 std::string VBF::Static_Cube::get_name() const noexcept { return "Static_Cube"; }

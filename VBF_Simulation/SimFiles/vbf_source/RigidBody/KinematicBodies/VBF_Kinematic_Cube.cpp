@@ -18,6 +18,6 @@ VBF::Kinematic_Cube::Kinematic_Cube(double length, btVector3 origin, size_t inde
                }
 
 //destructor
-VBF::Kinematic_Cube::~Kinematic_Cube(){};
+VBF::Kinematic_Cube::~Kinematic_Cube(){}
 double VBF::Kinematic_Cube::get_length()const noexcept {return m_length;}
 std::string VBF::Kinematic_Cube::get_name() const noexcept { return "Kinematic_Cube"; }

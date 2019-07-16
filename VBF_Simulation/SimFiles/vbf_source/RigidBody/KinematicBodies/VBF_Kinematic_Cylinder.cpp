@@ -19,7 +19,7 @@ VBF::Kinematic_Cylinder::Kinematic_Cylinder(double radius, double height, btVect
                }
 
 //destructor
-VBF::Kinematic_Cylinder::~Kinematic_Cylinder(){};
+VBF::Kinematic_Cylinder::~Kinematic_Cylinder(){}
 double VBF::Kinematic_Cylinder::get_cylinder_radius()const noexcept {return m_radius;}
 double VBF::Kinematic_Cylinder::get_cylinder_height()const noexcept {return m_height;}
 std::string VBF::Kinematic_Cylinder::get_name() const noexcept { return "Kinematic_Cylinder"; }
