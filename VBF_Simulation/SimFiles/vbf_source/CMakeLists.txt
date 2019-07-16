@@ -60,7 +60,7 @@ target_compile_options(VBF_Simulation
                       ${flags})
 
 #link the current library with other VBF rigid body libraries
-target_link_libraries(VBF_Simulation PUBLIC VBF_RigidBody VBF_StaticBodies VBF_KinematicBodies VBF_DynamicBodies)
+target_link_libraries(VBF_Simulation PUBLIC VBF_RigidBody VBF_StaticBody VBF_KinematicBody VBF_DynamicBody)
 
 #make the library available publicly
 target_include_directories(VBF_Simulation PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

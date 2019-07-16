@@ -37,25 +37,25 @@ LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDyn
 
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
     message(STATUS "compiling Static_Body sources to static library")
-    add_library(VBF_StaticBodies
+    add_library(VBF_StaticBody
      STATIC 
     ${_sources1}
     )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
     message(STATUS "compiling Static_Body sources to shared library")
-    add_library(VBF_StaticBodies 
+    add_library(VBF_StaticBody 
                SHARED
                ${_sources1}
                )
 
 endif()
-target_compile_options(VBF_StaticBodies
+target_compile_options(VBF_StaticBody
                       PRIVATE
                       ${flags})
 
 
-## link VBF_RigidBody library with VBF_StaticBodies library
-target_link_libraries(VBF_StaticBodies -L../VBF_RigidBody)
+## link VBF_RigidBody library with VBF_StaticBody library
+target_link_libraries(VBF_StaticBody -L../VBF_RigidBody)
 
 #make the library PUBLIC
-target_include_directories(VBF_StaticBodies PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(VBF_StaticBody PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

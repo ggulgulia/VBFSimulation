@@ -38,24 +38,24 @@ list(APPEND
 
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
     message(STATUS "compiling Kinematic_Body sources to STATIC LIBRARY")
-add_library(VBF_KinematicBodies 
+add_library(VBF_KinematicBody 
             STATIC #name of target library
             ${_sources2}
             )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
     message(STATUS "compiling Rigid_Body sources to SHARED LIBRARY")
-    add_library(VBF_KinematicBodies
+    add_library(VBF_KinematicBody
                SHARED
                ${_sources2}
                )
 endif()
 
-target_compile_options(VBF_KinematicBodies
+target_compile_options(VBF_KinematicBody
                       PRIVATE
                       ${flags})
 
 #link the new library with VBF_RididBody library
-target_link_libraries(VBF_KinematicBodies -L../VBF_RigidBody)
+target_link_libraries(VBF_KinematicBody -L../VBF_RigidBody)
 
 #make the library PUBLIC
-target_include_directories(VBF_KinematicBodies PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(VBF_KinematicBody PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

@@ -5,7 +5,7 @@ set(CMAKE_CXX_FLAGS "-std=c++14")
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
-message(STATUS "Compile sources for VBF_DynamicBodies into a libary? " ${USE_LIBRARY})
+message(STATUS "Compile sources for VBF_DynamicBody into a libary? " ${USE_LIBRARY})
 
 LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread 
               BulletDynamics BulletCollision LinearMath Bullet3Common)
@@ -41,23 +41,23 @@ list(APPEND
 
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
 message(STATUS "compiling Kinematic_Body sources to static library")
-add_library(VBF_DynamicBodies 
+add_library(VBF_DynamicBody 
             STATIC #name of target library
             ${_sources3}
             )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
 message(STATUS "compiling Rigid_Body sources to shared library")
-    add_library(VBF_DynamicBodies
+    add_library(VBF_DynamicBody
                SHARED
                ${_sources3}
                )
 endif()
 
-target_compile_options(VBF_DynamicBodies
+target_compile_options(VBF_DynamicBody
                       PRIVATE
                       ${flags})
 
-target_link_libraries(VBF_DynamicBodies -L../VBF_RigidBody)
+target_link_libraries(VBF_DynamicBody -L../VBF_RigidBody)
 
 #make the library PUBLIC
-target_include_directories(VBF_DynamicBodies PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
+target_include_directories(VBF_DynamicBody PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
