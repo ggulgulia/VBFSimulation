@@ -1,6 +1,23 @@
 #add appropriate path to src code from which the lib is to be made
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
+set(CMAKE_CXX_FLAGS "-std=c++14")
+
+message(STATUS "Compiling RigidBody source to a library")
+
+## set Release type specific type compiler flags
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message("CMake build type is DEBUG")
+    list(APPEND flags "-g -Wall -Werror -fno-elide-conostructors")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    message("CMake build type is RELEASE")
+    list(APPEND flags "-O1 -fPIC -Wall -Werror -fno-elide-constructors" )
+endif()
+
+## add extra compilation flags for linux type machines
+if(UNIX)
+    message(STATUS "Compiling for Unix like system")
+    list(APPEND flags "-Wextra" "-Wpedantic")
+endif(UNIX)
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
@@ -22,8 +39,13 @@ message(STATUS "compiling Rigid_Body sources to shared library")
                SHARED
                ${_sources}
                )
-
 endif()
+
+target_compile_options(VBF_RigidBody
+                      PRIVATE
+                      ${flags})
+
+
 #make the library PUBLIC
 target_include_directories(VBF_RigidBody PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
