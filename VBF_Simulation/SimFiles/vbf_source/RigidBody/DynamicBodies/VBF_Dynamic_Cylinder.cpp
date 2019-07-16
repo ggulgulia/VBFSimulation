@@ -16,7 +16,7 @@ VBF::Dynamic_Cylinder::Dynamic_Cylinder(double radius, double height, btVector3 
                                        }
 
 //destructor
-VBF::Dynamic_Cylinder::~Dynamic_Cylinder(){};
+VBF::Dynamic_Cylinder::~Dynamic_Cylinder(){}
 
 double VBF::Dynamic_Cylinder::get_cylinder_radius()const noexcept {return m_radius;}
 double VBF::Dynamic_Cylinder::get_cylinder_height()const noexcept {return m_height;}

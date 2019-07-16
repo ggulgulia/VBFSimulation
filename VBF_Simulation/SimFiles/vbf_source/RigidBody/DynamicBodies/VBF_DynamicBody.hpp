@@ -39,7 +39,7 @@ namespace VBF{
             virtual btVector3 get_inertia()  const;
             virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));
             virtual btVector3 get_position();
-            virtual void set_linear_vel(const btVector3& pos, const btVector3& linVel);
+            virtual void set_linear_vel(const btVector3& linVel);
             //virtual void set_angular_vel(const btVector3& axis, const btVector3& angVel);
             virtual btVector3 get_cog_position() const noexcept;
             virtual const btMatrix3x3& get_rotation() const noexcept;

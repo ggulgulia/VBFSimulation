@@ -17,7 +17,9 @@ VBF::DynamicBody::DynamicBody(std::string name, CollShape* shape,
 
     //this causes the loaded stl mesh to dissappear
     //rbinfo.m_rollingFriction = rollingFriction;  //bug here
-    rbinfo.m_restitution = 0.0;
+    rbinfo.m_restitution = restitution;
+    rbinfo.m_rollingFriction = rollingFriction;
+    rbinfo.m_friction = linFriction;
     rbinfo.m_linearDamping = linDamping;
     rbinfo.m_angularDamping = angularDamping;
     btRigidBody* rbody = new btRigidBody(rbinfo);
@@ -36,7 +38,8 @@ btVector3 VBF::DynamicBody::get_inertia()  const { return m_inertia;}
 void VBF::DynamicBody::set_gravity(const btVector3 gravity){ get_rbody()->setGravity(gravity);  }
 btVector3 VBF::DynamicBody::get_position()  {return get_rbody()->getCenterOfMassPosition();}
 
-void VBF::DynamicBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+//void VBF::DynamicBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+void VBF::DynamicBody::set_linear_vel(const btVector3& linVel){
     btRigidBody *rbody = this->get_rbody();
     rbody->setLinearVelocity(linVel);
 }

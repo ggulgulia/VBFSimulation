@@ -17,7 +17,7 @@ VBF::Dynamic_Cube::Dynamic_Cube(double length, btVector3 origin,
                                 }
 
 //destructor
-VBF::Dynamic_Cube::~Dynamic_Cube(){};
+VBF::Dynamic_Cube::~Dynamic_Cube(){}
 
 std::string VBF::Dynamic_Cube::get_name() const noexcept { return "Dynamic_Cube"; }
 
