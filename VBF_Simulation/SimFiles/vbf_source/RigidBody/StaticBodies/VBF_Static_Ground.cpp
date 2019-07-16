@@ -12,7 +12,7 @@ VBF::Static_Ground::Static_Ground(btVector3& normal, double position, btVector3&
                }
 
 //destructor
-VBF::Static_Ground::~Static_Ground(){};
+VBF::Static_Ground::~Static_Ground(){}
 btVector3 VBF::Static_Ground::get_normal()const noexcept {return m_normal;}
 float VBF::Static_Ground::get_position()const noexcept {return m_position;}
 

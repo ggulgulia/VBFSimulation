@@ -15,6 +15,6 @@ VBF::Static_Sphere::Static_Sphere(double radius, btVector3 origin, size_t index)
                         //empty constructor body
                     }
              
-VBF::Static_Sphere::~Static_Sphere() {};
+VBF::Static_Sphere::~Static_Sphere() {}
 std::string VBF::Static_Sphere::get_name() const noexcept { return "Static_Sphere"; }
 double VBF::Static_Sphere::get_radius() const { return m_radius;}

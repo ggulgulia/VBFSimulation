@@ -18,12 +18,13 @@ VBF::KinematicBody::KinematicBody(const std::string& name, CollShape* shape, btV
                }
 
 //destructor
-VBF::KinematicBody::~KinematicBody(){};
+VBF::KinematicBody::~KinematicBody(){}
 
 double VBF::KinematicBody::get_mass() const { return 0.0;}
 btVector3 VBF::KinematicBody::get_inertia()  const { return btVector3(0.0, 0.0, 0.0);}
 btVector3 VBF::KinematicBody::get_position()  {return get_rbody()->getCenterOfMassPosition();}
-void VBF::KinematicBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+//void VBF::KinematicBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+void VBF::KinematicBody::set_linear_vel(const btVector3& linVel){
     btRigidBody *rbody = this->get_rbody();
     btTransform trans;
     rbody->getMotionState()->getWorldTransform(trans);
