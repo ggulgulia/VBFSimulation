@@ -7,18 +7,16 @@ message(STATUS "Compiling RigidBody source to a library")
 
 ## set Release type specific type compiler flags
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    message(STATUS "CMake build type is DEBUG")
     list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    message(STATUS "CMake build type is RELEASE")
     list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## add extra compilation flags for linux type machines
-if(UNIX)
-    message(STATUS "Compiling for Unix like system")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    message(STATUS "Compiling RigidBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
-endif(UNIX)
+endif()
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)

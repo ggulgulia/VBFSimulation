@@ -1,7 +1,9 @@
 #add appropriate path to src code from which the lib is to be made
 cmake_minimum_required(VERSION 3.2.3)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
 
 
@@ -20,13 +22,14 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 endif()
 
-if(UNIX)
-    message(STATUS "Compiling KinematicBodes library for Unix like system")
+#Linux/Gcc Specific compiler flags
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    message(STATUS "Compiling KinematicBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
-endif(UNIX)
+endif()
 
 
-## append all DynamicBody source files in a list
+## append all KinematicBody source files in a list
 list(APPEND
     _sources2
     VBF_KinematicBody.cpp
@@ -49,6 +52,10 @@ elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
                ${_sources2}
                )
 endif()
+
+set_target_properties(VBF_KinematicBody
+                      PROPERTIES
+                      POSITION_INDEPENDENT_CODE 1)
 
 target_compile_options(VBF_KinematicBody
                       PRIVATE

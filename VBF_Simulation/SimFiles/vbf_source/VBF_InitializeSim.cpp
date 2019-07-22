@@ -42,13 +42,6 @@ VBF::InitializeSim::InitializeSim(std::string varName, double varVal){
 }
             
             
-//move constructor
-//VBF::InitializeSim::InitializeSim(InitializeSim&& init) :
-                    m_filename(init.m_filename),
-                    m_parameterList(init.m_parameterList){
-        std::cout << "Move constructor called in InitializeSim object\n";
-        init.m_parameterList = nullptr;
-}  
             
 VBF::InitializeSim::~InitializeSim(){
     std::cout << "Destructor being called\n";

@@ -1,6 +1,9 @@
 #add appropriate path to src code from which the lib is to be made
 cmake_minimum_required(VERSION 3.2.3)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(CMAKE_CXX_FLAGS "-std=c++14")
 message(STATUS "Compilation of StaticBodies sources to a library")
 
@@ -16,10 +19,11 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 endif()
 
-if(UNIX)
-    message(STATUS "Compiling StaticBodies library for Unix like system")
+#Linux/Gcc Specific compiler flags
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    message(STATUS "Compiling StaticBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
-endif(UNIX)
+endif()
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
@@ -49,6 +53,11 @@ elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
                )
 
 endif()
+
+set_target_properties(VBF_StaticBody
+                      PROPERTIES
+                      POSITION_INDEPENDENT_CODE 1)
+
 target_compile_options(VBF_StaticBody
                       PRIVATE
                       ${flags})
