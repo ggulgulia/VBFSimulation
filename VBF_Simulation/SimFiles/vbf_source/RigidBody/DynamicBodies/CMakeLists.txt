@@ -1,8 +1,10 @@
 #add appropriate path to src code from which the lib is to be made
 cmake_minimum_required(VERSION 3.2.3)
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "-std=c++14")
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS "-std=c++14")
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
 message(STATUS "Compile sources for VBF_DynamicBody into a libary? " ${USE_LIBRARY})
@@ -22,10 +24,11 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 endif()
 
-if(UNIX)
-    message(STATUS "Compiling DynamicBodies library for Unix like system")
+#Linux/Gcc Specific compiler flags
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    message(STATUS "Compiling DynamicBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
-endif(UNIX)
+endif()
 
 
 ## append all DynamicBody source files in a list
@@ -52,6 +55,10 @@ message(STATUS "compiling Rigid_Body sources to shared library")
                ${_sources3}
                )
 endif()
+
+set_target_properties(VBF_DynamicBody
+                      PROPERTIES
+                      POSITION_INDEPENDENT_CODE 1)
 
 target_compile_options(VBF_DynamicBody
                       PRIVATE

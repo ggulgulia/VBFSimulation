@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.2.3)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 ## set up of build specific compiler options 
 ## goal is to have strict compiler checks even in 
@@ -8,18 +10,16 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-std=c++14")
 message(STATUS "compilation of VBF_Simulation components to library")
 if(${CMAKE_BUILD_TYPE}  STREQUAL "Debug")
-    message(STATUS "CMAKE build type is DEBUG ")
     list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    message(STATUS "CMAKE build type is RELEASE ")
     list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## set Linux Specific flags
-if(UNIX)
-    message(STATUS "Compiling VBF_Simulation library for Unix like system")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    message(STATUS "Compiling VBF_Simulation library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
-endif(UNIX)
+endif()
 
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 
@@ -38,6 +38,8 @@ list(APPEND
     VBF_World.cpp
     VBF_CommonPhysics.cpp
     VBF_SimLoop.hpp
+    VBF_InitializeSim.cpp
+    VBF_InitializeSim.hpp
     RigidBody/KinematicBodies/VBF_KinematicMesh.cpp ##need to resolve circular dependency
     )
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
@@ -54,6 +56,10 @@ elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
                 ${_sources3}
                   )
 endif()
+
+set_target_properties(VBF_Simulation
+                      PROPERTIES
+                      POSITION_INDEPENDENT_CODE 1)
 
 target_compile_options(VBF_Simulation
                       PRIVATE

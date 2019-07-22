@@ -1,14 +1,16 @@
 # HelloWorld is a minimal sample creating, stepping and deleting a Bullet dynamics world
 cmake_minimum_required(VERSION 3.2.3)
-project(VBF_iwb_TUM CXX)
+project(VBF_iwb_TUM LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_STANDARD 14)
+message(STATUS "Configuring ${PROJECT_NAME} project with ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} Compiler")
 
 # set a default build type of DEBUG
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type" FORCE)
 endif()
 
+message(STATUS "Configuring project ${project} on/for ${CMAKE_SYSTEM_NAME}")
 message(STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
 add_subdirectory(vbf_source)
 add_subdirectory(vbf_exe)

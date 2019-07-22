@@ -42,6 +42,7 @@
 #include <VBF_CommonPhysics.hpp>
 #include <VBF_GraphicsBridge.hpp>
 #include <test_rigidBody.hpp>
+#include <VBF_InitializeSim.hpp>
 
 
 int main(int argc, char **argv){
@@ -51,7 +52,7 @@ int main(int argc, char **argv){
     if(argc !=2){
         std::cout << "Incorrect input arguments while running executable\n";
         std::cout << "Correct format to run the simulation:\n";
-        std::cout << "<PATH TO EXECUTABLE> <PATH TO MESH FILES DIR>\n";
+        std::cout << "<PATH TO EXECUTABLE> <PATH TO Input.txt File>\n";
         std::cout  << "Aborting the program. Please run the simulation with correct format\n";
         return 0;
     }
@@ -75,6 +76,8 @@ int main(int argc, char **argv){
     //! fileName for kinematic rigid body
     //
     std::string meshPath{argv[1]};
+    std::string inputFile{argv[1]};
+    VBF::InitializeSim init(inputFile);
     std::string file1Name{"StufeFein150x30x200.stl"};
     std::string file2Name{"Zylinder1_7x1_0.stl"};
 
@@ -99,7 +102,7 @@ int main(int argc, char **argv){
     
 
     //add a cylinder like part to the simulation 
-    static const double cylHeight{2.0}, cylRad{0.5};
+    static const double cylHeight{1.0}, cylRad{0.25};
     VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
     rigid_bodies.push_back(stl_body3);
 
@@ -170,7 +173,7 @@ int main(int argc, char **argv){
     do{
          unsigned long currTime = timer.getTimeMicroseconds();
          if(!vis_bridge.isIdle()){
-             phy.step_simulation((currTime-prevTime)*0.001);
+             phy.step_simulation(0.01, 0.02);
          }
          Vy = velFun(currTime*10, 0.20);
          btVector3 linVel{btVector3(0.0, Vy, 0.0)};
