@@ -55,8 +55,8 @@ void VBF::CommonPhysics::initPhysics()
 	
 }
 
-void VBF::CommonPhysics::stepSimulation(double deltaTime){
-			m_VBF_world->step_simulation(deltaTime);
+void VBF::CommonPhysics::step_simulation(double deltaTime, double resolution){
+			m_VBF_world->step_simulation(deltaTime, resolution);
 }
 
 

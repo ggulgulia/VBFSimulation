@@ -17,7 +17,7 @@ VBF::Dynamic_Sphere::Dynamic_Sphere(double radius, btVector3 origin,
                                 }
 
 //destructor
-VBF::Dynamic_Sphere::~Dynamic_Sphere(){};
+VBF::Dynamic_Sphere::~Dynamic_Sphere(){}
 
 std::string VBF::Dynamic_Sphere::get_name() const noexcept{ return "Dynamic_Sphere"; }
 

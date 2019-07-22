@@ -4,6 +4,7 @@
 #include <VBF_StaticMesh.hpp>
 #include <VBF_Static_Cube.hpp>
 #include <VBF_Static_Sphere.hpp>
+#include <VBF_Static_Ground.hpp>
 
 #include <VBF_KinematicMesh.hpp>
 #include <VBF_Kinematic_Cube.hpp>
@@ -12,6 +13,7 @@
 #include <VBF_Dynamic_Cube.hpp>
 #include <VBF_Dynamic_Sphere.hpp>
 #include <VBF_DynamicMesh.hpp>
+#include <VBF_Dynamic_Cylinder.hpp>
 
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
@@ -32,14 +34,15 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
-VBF::Static_Cube* get_ground(){
+VBF::Static_Ground* get_ground(){
 
     //create a ground
-    double grLength = 50;
-    btVector3 grOrigin = btVector3(0.0, -4-grLength, 0.0);
-    size_t grIndex = 23;
+    float grPos = -20;
+    btVector3 grNormal= btVector3(0.0, 1.0, 0.0);
+    btVector3 grOrigin;
+    size_t grIndex = 245;
     
-    return new VBF::Static_Cube(grLength, grOrigin, grIndex);
+    return new VBF::Static_Ground(grNormal, grPos, grOrigin, grIndex);
  
 }
 

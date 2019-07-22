@@ -18,16 +18,23 @@ VBF::KinematicBody::KinematicBody(const std::string& name, CollShape* shape, btV
                }
 
 //destructor
-VBF::KinematicBody::~KinematicBody(){};
+VBF::KinematicBody::~KinematicBody(){}
 
 double VBF::KinematicBody::get_mass() const { return 0.0;}
 btVector3 VBF::KinematicBody::get_inertia()  const { return btVector3(0.0, 0.0, 0.0);}
 btVector3 VBF::KinematicBody::get_position()  {return get_rbody()->getCenterOfMassPosition();}
-void VBF::KinematicBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+//void VBF::KinematicBody::set_linear_vel(const btVector3& pos, const btVector3& linVel){
+void VBF::KinematicBody::set_linear_vel(const btVector3& linVel){
     btRigidBody *rbody = this->get_rbody();
     btTransform trans;
     rbody->getMotionState()->getWorldTransform(trans);
     trans.getOrigin() += linVel*0.166667; //dummy vibration, get deltaT as input
     rbody->getMotionState()->setWorldTransform(trans);
 }
+
+btVector3 VBF::KinematicBody::get_cog_position()const noexcept {return this->get_rbody()->getCenterOfMassPosition();}
+const btMatrix3x3& VBF::KinematicBody::get_rotation() const noexcept {
+    btTransform* trans = new btTransform();
+    this->get_rbody()->getMotionState()->getWorldTransform(*trans);
+    return trans->getBasis();}
 

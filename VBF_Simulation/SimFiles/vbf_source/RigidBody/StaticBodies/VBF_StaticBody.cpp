@@ -16,6 +16,11 @@ VBF::StaticBody::StaticBody(const std::string& name, CollShape* shape, btVector3
                }
 
 //destructor
-VBF::StaticBody::~StaticBody(){};
+VBF::StaticBody::~StaticBody(){}
 
+btVector3 VBF::StaticBody::get_cog_position()const noexcept {return this->get_rbody()->getCenterOfMassPosition();}
+btMatrix3x3& VBF::StaticBody::get_rotation() const noexcept {
+    btTransform* trans = new btTransform();
+    this->get_rbody()->getMotionState()->getWorldTransform(*trans);
+    return trans->getBasis();}
 

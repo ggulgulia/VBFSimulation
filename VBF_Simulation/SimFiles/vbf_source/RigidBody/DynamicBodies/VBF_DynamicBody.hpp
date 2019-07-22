@@ -24,7 +24,7 @@ namespace VBF{
             //user constructor
             explicit DynamicBody(std::string name, CollShape* shape, 
                                  btVector3 origin, double mass, 
-                                 double linFriction=0.5, double rollingFriction=0.5, 
+                                 double linFriction=0.2, double rollingFriction=0.2, 
                                  double restitution=0.2, double linDamping=0.0, 
                                  double angularDamping=0.0, size_t index=200);
             
@@ -39,8 +39,10 @@ namespace VBF{
             virtual btVector3 get_inertia()  const;
             virtual void set_gravity(const btVector3 gravity= btVector3(0.0,-9.81, 0.0));
             virtual btVector3 get_position();
-            virtual void set_linear_vel(const btVector3& pos, const btVector3& linVel);
+            virtual void set_linear_vel(const btVector3& linVel);
             //virtual void set_angular_vel(const btVector3& axis, const btVector3& angVel);
+            virtual btVector3 get_cog_position() const noexcept;
+            virtual const btMatrix3x3& get_rotation() const noexcept;
     };
 }//end of name space
 
