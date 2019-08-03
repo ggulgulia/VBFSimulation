@@ -49,13 +49,13 @@ int main(int argc, char **argv){
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
-    if(argc !=2){
-        std::cout << "Incorrect input arguments while running executable\n";
-        std::cout << "Correct format to run the simulation:\n";
-        std::cout << "<PATH TO EXECUTABLE> <PATH TO Input.txt File>\n";
-        std::cout  << "Aborting the program. Please run the simulation with correct format\n";
-        return 0;
-    }
+    //if(argc !=3){
+    //    std::cout << "Incorrect input arguments while running executable\n";
+    //    std::cout << "Correct format to run the simulation:\n";
+    //    std::cout << "<PATH TO EXECUTABLE> <PATH TO Input.txt File>\n";
+    //    std::cout  << "Aborting the program. Please run the simulation with correct format\n";
+    //    return 0;
+    //}
     //! create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
@@ -75,9 +75,15 @@ int main(int argc, char **argv){
     
     //! fileName for kinematic rigid body
     //
-    std::string meshPath{argv[1]};
-    std::string inputFile{argv[1]};
+    //std::string meshPath{argv[1]};
+    //std::string inputFile{argv[2]};
+    std::string meshPath{"../MeshFiles/"};
+    std::string inputFile{"../Input.txt"};
     VBF::InitializeSim init(inputFile);
+    std::cout << "Printing inputs " << init;
+    std::cout << "Value of deltaT " << init["deltaT"] << "\n";
+
+
     std::string file1Name{"StufeFein150x30x200.stl"};
     std::string file2Name{"Zylinder1_7x1_0.stl"};
 
@@ -198,7 +204,7 @@ int main(int argc, char **argv){
         //    vbf_world->add_rigid_bodies_to_world(part->get_rbody());
         //    }
         }while(!vbf_window->requested_exit());
-        
+      
     vbf_window->close_window();
     //stl_body->~ImportSTLSetup();
     //delete window;
