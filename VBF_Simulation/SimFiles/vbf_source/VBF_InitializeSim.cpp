@@ -23,8 +23,10 @@ m_filename(filename){
                 line >> value;
                 //std::cout <<linenum++ << " "<< data << ": " << value <<"\n"; 
                 ++linenum;
-                std::pair<std::string, double> temp(data, value);
-                m_parameterList->push_back(temp);
+                //std::pair<std::string, double> temp(data, value);
+                m_parameterList->insert(std::make_pair(data, value));
+                //(*m_parameterList)[data] = value;
+                //m_parameterList->push_back(temp);
             }
         }
         std::cout << "Number of parameters read from " << m_filename << ": "<< linenum << "\n";
@@ -38,13 +40,13 @@ m_filename(filename){
 
 //user constructor2
 VBF::InitializeSim::InitializeSim(std::string varName, double varVal){
-    m_parameterList->push_back(std::pair<std::string, double>(varName, varVal));
+    m_parameterList->insert(std::make_pair(varName, varVal));
 }
             
             
             
 VBF::InitializeSim::~InitializeSim(){
-    std::cout << "Destructor being called\n";
+    //std::cout << "Destructor being called\n";
     m_filename.clear();
     if(m_parameterList){
         m_parameterList->clear();
@@ -54,5 +56,4 @@ VBF::InitializeSim::~InitializeSim(){
  }
             
 //this parameter list should be non-mutable once created
-const std::vector<std::pair<std::string, double>>* VBF::InitializeSim::get_parameter_list() const{return m_parameterList;}
-            
+const std::unordered_map<std::string, double>* VBF::InitializeSim::get_parameter_list() const{return m_parameterList;}            

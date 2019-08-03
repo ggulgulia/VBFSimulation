@@ -21,8 +21,6 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif()
 
-message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
-
 add_subdirectory(RigidBody)
 
 LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread 
@@ -47,11 +45,11 @@ if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
     message(STATUS "Compiling VBF Simulation components to a STATIC LIBRARY")
     add_library(VBF_Simulation
                 ${_sources3}
-                  )
+               )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
 
     message(STATUS "Compiling VBF Simulation components to a SHARED LIBRARY")
-    ADD_LIBRARY(VBF_Simulation
+    add_library(VBF_Simulation
                 SHARED 
                 ${_sources3}
                   )

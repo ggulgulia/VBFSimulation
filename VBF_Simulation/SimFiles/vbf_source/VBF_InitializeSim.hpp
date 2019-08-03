@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <utility>
+#include <unordered_map>
 
 /*! The purpose of of VBF::InitializeSim is to initialize VBF Simulation by reading the input file, which will contain several
  * simulation input, run time and output parameters. 
@@ -22,7 +23,7 @@ namespace VBF{
 
         private:
             std::string m_filename; /*!< Input file name */
-            std::vector<std::pair<std::string,double>> *m_parameterList = new std::vector<std::pair<std::string, double>>(0); /*!< container that stores parameter name and value */
+            std::unordered_map<std::string,double> *m_parameterList = new std::unordered_map<std::string, double>; /*!< container that stores parameter name and value */
              
         public:
             /*! @brief Default constructor
@@ -93,7 +94,7 @@ namespace VBF{
              * simulation has to be restarted. This is the rationale
              * behind providing read only access to parameter list.
              */
-            const std::vector<std::pair<std::string, double>>* get_parameter_list() const;
+            const std::unordered_map<std::string, double>* get_parameter_list() const;
 
 
             /*! @brief Method passes a reference to std::ostream
@@ -101,17 +102,32 @@ namespace VBF{
              * could be printed on the screen (or on a file)
              */
             friend std::ostream& operator<<(std::ostream& out, const InitializeSim& init ){
-    const std::vector<std::pair<std::string, double>>::iterator itr;
-    const std::vector<std::pair<std::string, double>> *paramList = init.get_parameter_list() ;
+                const std::unordered_map<std::string, double>::iterator itr;
+                const std::unordered_map<std::string, double> *paramList = init.get_parameter_list();
 
-    out << "printing the paramters list that was read from input file: \n";
-    //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
-    for (const auto pair : *paramList){
-        std::cout << pair.first << ":" << pair.second << "\n";
-    } 
+                out << "printing the paramters list that was read from input file: \n";
+                //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
+                for (const auto pair : *paramList){
+                    std::cout << pair.first << ":" << pair.second << "\n";
+                } 
 
-    return out;
-}
+                return out;
+             }
+
+        double operator[](const std::string&  s){
+            auto iter = m_parameterList->find(s);
+            if(iter != m_parameterList->end()){
+                std::cout << "Searched parameter: " << s << " was found in the list\n";
+
+                return iter->second;
+            }
+            else{
+                std::cout << "Searched parameter: " << s << " was NOT found in the list\n";
+                std::cout << "returning a stub value\n";
+                return 0.0;
+                }
+
+        }
     };//end class definition
 
 }//end namespace VBF
