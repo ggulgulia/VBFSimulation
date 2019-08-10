@@ -114,20 +114,8 @@ namespace VBF{
                 return out;
              }
 
-        double operator[](const std::string&  s){
-            auto iter = m_parameterList->find(s);
-            if(iter != m_parameterList->end()){
-                std::cout << "Searched parameter: " << s << " was found in the list\n";
+        double operator[](const std::string&  s);
 
-                return iter->second;
-            }
-            else{
-                std::cout << "Searched parameter: " << s << " was NOT found in the list\n";
-                std::cout << "returning a stub value\n";
-                return 0.0;
-                }
-
-        }
     };//end class definition
 
 }//end namespace VBF

@@ -19,7 +19,7 @@ m_filename(filename){
             if(varName[0] != '/' && varName.length() !=1){
                 std::stringstream line(varName);
                 std::string data;
-                std::getline(line, data, '=');
+                std::getline(line, data, ' ');
                 line >> value;
                 //std::cout <<linenum++ << " "<< data << ": " << value <<"\n"; 
                 ++linenum;
@@ -57,3 +57,19 @@ VBF::InitializeSim::~InitializeSim(){
             
 //this parameter list should be non-mutable once created
 const std::unordered_map<std::string, double>* VBF::InitializeSim::get_parameter_list() const{return m_parameterList;}            
+
+
+double VBF::InitializeSim::operator[](const std::string&  s){
+    auto iter = m_parameterList->find(s);
+    if(iter != m_parameterList->end()){
+        std::cout << "Searched parameter: " << s << " was found in the list\n";
+
+        return iter->second;
+    }
+    else{
+        std::cout << "Searched parameter: " << s << " was NOT found in the list\n";
+        std::cout << "returning a stub value\n";
+        return 0.0;
+        }
+}
+
