@@ -1,3 +1,6 @@
+#ifndef READ_INPUT_DATA_H
+#define READ_INPUT_DATA_H
+
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -6,7 +9,7 @@
 #include <utility>
 #include <unordered_map>
 
-/*! The purpose of of VBF::InitializeSim is to initialize VBF Simulation by reading the input file, which will contain several
+/*! The purpose of of VBF::ReadInputData is to initialize VBF Simulation by reading the input file, which will contain several
  * simulation input, run time and output parameters. 
  *
  * Currently this class in not complete as the VBF::Simulation itself is under progress and the full extent of parameters
@@ -19,7 +22,7 @@
  * @todo Change the private member variable from a pointer to a non-pointer object since std::vector guarantees heap memory allocation.
  */
 namespace VBF{
-    class InitializeSim{
+    class ReadInputData{
 
         private:
             std::string m_filename; /*!< Input file name */
@@ -33,7 +36,7 @@ namespace VBF{
              * @todo Define proper impelementation. If in future it 
              * seems useless, delete the default constructor.
              */
-            InitializeSim();
+            ReadInputData();
 
             /*! @brief User constructor 1
              *
@@ -44,15 +47,15 @@ namespace VBF{
              * @param filename : string that determines path to input
              * file.
              */
-            explicit InitializeSim(std::string filename);
+            explicit ReadInputData(std::string filename);
 
             /*! @brief user constructor2
              *
              * @details This constructor allows user to create a 
-             * VBF::InitializeSim object by passing a parameter name 
+             * VBF::ReadInputData object by passing a parameter name 
              * and a parameter value. Later if more parameters is 
              * desired to be added to the object, the public member 
-             * method VBF::InitializeSim::add_parameter method could 
+             * method VBF::ReadInputData::add_parameter method could 
              * be used.
              * @todo Implement add_parameter method for this class.
              *
@@ -64,25 +67,25 @@ namespace VBF{
              * @todo Correct the second parameter type to accept any
              * type. 
              */
-            explicit InitializeSim(std::string varName, double varVal);
+            explicit ReadInputData(std::string varName, double varVal);
             
             //move constructor
-            //InitializeSim(InitializeSim&& init);
+            //ReadInputData(InitializeSim&& init);
 
             /*! @brief Destructor
              * @details The destructor clears the contents of variable
              * m_parameterList and releases any memory held by it.
              */
-            ~InitializeSim();
+            ~ReadInputData();
 
             /*! @brief Deleted copy constructor to prevent copy 
              * semantics.
              */
-            InitializeSim(const InitializeSim&) = delete;
+            ReadInputData(const ReadInputData&) = delete;
 
             /*! @brief Deleted copy assignment operator
              */
-            const InitializeSim& operator=(const InitializeSim&) = delete;
+            const ReadInputData& operator=(const ReadInputData&) = delete;
             
             /*! @brief This method gives read only access to 
              * parameter list.
@@ -101,7 +104,7 @@ namespace VBF{
              * so that parameterlist encapsulated within 'this' object
              * could be printed on the screen (or on a file)
              */
-            friend std::ostream& operator<<(std::ostream& out, const InitializeSim& init ){
+            friend std::ostream& operator<<(std::ostream& out, const ReadInputData& init ){
                 const std::unordered_map<std::string, double>::iterator itr;
                 const std::unordered_map<std::string, double> *paramList = init.get_parameter_list();
 
@@ -119,3 +122,5 @@ namespace VBF{
     };//end class definition
 
 }//end namespace VBF
+
+#endif
