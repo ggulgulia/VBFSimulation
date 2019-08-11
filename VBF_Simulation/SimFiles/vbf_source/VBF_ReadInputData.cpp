@@ -1,4 +1,4 @@
-#include <VBF_InitializeSim.hpp>
+#include <VBF_ReadInputData.hpp>
 
 VBF::ReadInputData::ReadInputData(){  }
 

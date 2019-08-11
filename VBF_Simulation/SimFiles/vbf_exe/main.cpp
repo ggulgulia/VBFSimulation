@@ -42,7 +42,7 @@
 #include <VBF_CommonPhysics.hpp>
 #include <VBF_GraphicsBridge.hpp>
 #include <test_rigidBody.hpp>
-#include <VBF_InitializeSim.hpp>
+#include <VBF_ReadInputData.hpp>
 
 
 int main(int argc, char **argv){
@@ -52,7 +52,7 @@ int main(int argc, char **argv){
     if(argc !=3){
         std::cout << "Incorrect input arguments while running executable\n";
         std::cout << "Correct format to run the simulation:\n";
-        std::cout << "<PATH TO EXECUTABLE> <PATH TO Input.txt File>\n";
+        std::cout << "<PATH TO EXECUTABLE> <PATH TO VBF MESH FILE> <PATH TO INPUT FILE>\n";
         std::cout  << "Aborting the program. Please run the simulation with correct format\n";
         return 0;
     }
