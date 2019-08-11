@@ -78,136 +78,136 @@ int main(int argc, char **argv){
     //std::string meshPath{argv[1]};
     //std::string inputFile{argv[2]};
     std::string meshPath{"../MeshFiles/"};
-    std::string inputFile{"../Input.txt"};
+    std::string inputFile{"../InputFile"};
     VBF::InitializeSim init(inputFile);
     std::cout << "Printing inputs " << init;
     std::cout << "Value of deltaT " << init["deltaT"] << "\n";
 
 
-    std::string file1Name{"StufeFein150x30x200.stl"};
-    std::string file2Name{"Zylinder1_7x1_0.stl"};
-
-    std::string file1Path(meshPath + file1Name);
-    std::cout << file1Path << "\n";
-    std::string file2Path(meshPath + file2Name);
-
-    //! set scaling factor
-    static const double scale{0.1};
-
-    //! set origin for the imported part
-    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
-    btVector3 partOrigin{btVector3(5.0, 2.230, -1.5)};
-    //! import kinematic part
-    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(file1Path, scale, meshOrigin);
-
-    //! initialize mass for dynamic body
-    double mass2{0.20};
-
-    //! store the imported bodies in the rigid_bodies container
-    rigid_bodies.push_back(stl_body->get_vbf_rbody());
-    
-
-    //add a cylinder like part to the simulation 
-    static const double cylHeight{1.0}, cylRad{0.25};
-    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
-    rigid_bodies.push_back(stl_body3);
-
-    ////test import static mesh
-    //VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
-    //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
-
-    ////test import kinematic cubes
-    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
-    //rigid_bodies.push_back(kinCube);
-
-    //create world for vbf simulation
-    VBF::World* vbf_world = new VBF::World();
-    vbf_world->intialize_new_world();
-    
-    //CommonPhysics phy(vbf_world);
-    VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
-    phy.initPhysics();
-    
-    //visualization bridge
-    VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
-    vbf_window->create_window();
-    VBF_Vis vis_bridge;
-    vis_bridge.setDynamicsWorld(vbf_world->get_world());
-    vis_bridge.reshape(800, 600);
-    vis_bridge.setShadows(true);
-    gApp = &vis_bridge; 
-
-
-    
-    double Vy{}; //!< Variable to store instantenous vibration 
-
-    /*! Vibration function 
-     */
-    auto velFun = [] (double time, double amplitude)->double{double pi{3.14159};
-                                                            return amplitude*sin(4*pi*time);};
-    //btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
-
-
-
-    btClock timer;
-    unsigned long prevTime = timer.getTimeMicroseconds();
-    VBF::KinematicBody* stl_vbf_rbody = stl_body->get_vbf_rbody();
-    
-    static int numSteps{};
-    size_t no_movement_steps{200}; //200 seconds without vibration
-
-    //this loops starts the simulation but the VBF part is not
-    //vibrated for some time (defined by no_movement_steps)
-    for(size_t i=0; i<no_movement_steps; ++i){
-
-         unsigned long currTime = timer.getTimeMicroseconds();
-         if(!vis_bridge.isIdle()){
-             phy.step_simulation((currTime-prevTime)*0.001);
-         }
-         prevTime = currTime;
-         vbf_window->start_rendering();
-         vis_bridge.renderme();
-         phy.debugDraw(2);
-         vbf_window->end_rendering();
-         btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
-        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
-        
-        ++numSteps;
-    }
-    
-    //in this loop the vibration of the VBF part begins
-    do{
-         unsigned long currTime = timer.getTimeMicroseconds();
-         if(!vis_bridge.isIdle()){
-             phy.step_simulation(0.01, 0.02);
-         }
-         Vy = velFun(currTime*10, 0.20);
-         btVector3 linVel{btVector3(0.0, Vy, 0.0)};
-         stl_vbf_rbody->set_linear_vel(linVel);
-
-         prevTime = currTime;
-         vbf_window->start_rendering();
-         vis_bridge.renderme();
-         phy.debugDraw(2);
-         vbf_window->end_rendering();
-         btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
-        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
-        
-        ++numSteps;
-        
-        //if(numSteps%500==0){
-        //    std::cout << "******************************************************\n";
-        //    std::cout << "number of parts in rigid body container " << rigid_bodies.size() << "\n";
-        //    std::cout << "******************************************************\n";
-        //    VBF::Dynamic_Cylinder* part = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
-        //    rigid_bodies.push_back(part);
-        //    vbf_world->add_rigid_bodies_to_world(part->get_rbody());
-        //    }
-        }while(!vbf_window->requested_exit());
-      
-    vbf_window->close_window();
-    //stl_body->~ImportSTLSetup();
-    //delete window;
+//    std::string file1Name{"StufeFein150x30x200.stl"};
+//    std::string file2Name{"Zylinder1_7x1_0.stl"};
+//
+//    std::string file1Path(meshPath + file1Name);
+//    std::cout << file1Path << "\n";
+//    std::string file2Path(meshPath + file2Name);
+//
+//    //! set scaling factor
+//    static const double scale{0.1};
+//
+//    //! set origin for the imported part
+//    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
+//    btVector3 partOrigin{btVector3(5.0, 2.230, -1.5)};
+//    //! import kinematic part
+//    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(file1Path, scale, meshOrigin);
+//
+//    //! initialize mass for dynamic body
+//    double mass2{0.20};
+//
+//    //! store the imported bodies in the rigid_bodies container
+//    rigid_bodies.push_back(stl_body->get_vbf_rbody());
+//    
+//
+//    //add a cylinder like part to the simulation 
+//    static const double cylHeight{1.0}, cylRad{0.25};
+//    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
+//    rigid_bodies.push_back(stl_body3);
+//
+//    ////test import static mesh
+//    //VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
+//    //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
+//
+//    ////test import kinematic cubes
+//    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
+//    //rigid_bodies.push_back(kinCube);
+//
+//    //create world for vbf simulation
+//    VBF::World* vbf_world = new VBF::World();
+//    vbf_world->intialize_new_world();
+//    
+//    //CommonPhysics phy(vbf_world);
+//    VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
+//    phy.initPhysics();
+//    
+//    //visualization bridge
+//    VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
+//    vbf_window->create_window();
+//    VBF_Vis vis_bridge;
+//    vis_bridge.setDynamicsWorld(vbf_world->get_world());
+//    vis_bridge.reshape(800, 600);
+//    vis_bridge.setShadows(true);
+//    gApp = &vis_bridge; 
+//
+//
+//    
+//    double Vy{}; //!< Variable to store instantenous vibration 
+//
+//    /*! Vibration function 
+//     */
+//    auto velFun = [] (double time, double amplitude)->double{double pi{3.14159};
+//                                                            return amplitude*sin(4*pi*time);};
+//    //btVector3 axis{btVector3(7.397719, 0.25, 13.203666)};
+//
+//
+//
+//    btClock timer;
+//    unsigned long prevTime = timer.getTimeMicroseconds();
+//    VBF::KinematicBody* stl_vbf_rbody = stl_body->get_vbf_rbody();
+//    
+//    static int numSteps{};
+//    size_t no_movement_steps{200}; //200 seconds without vibration
+//
+//    //this loops starts the simulation but the VBF part is not
+//    //vibrated for some time (defined by no_movement_steps)
+//    for(size_t i=0; i<no_movement_steps; ++i){
+//
+//         unsigned long currTime = timer.getTimeMicroseconds();
+//         if(!vis_bridge.isIdle()){
+//             phy.step_simulation((currTime-prevTime)*0.001);
+//         }
+//         prevTime = currTime;
+//         vbf_window->start_rendering();
+//         vis_bridge.renderme();
+//         phy.debugDraw(2);
+//         vbf_window->end_rendering();
+//         btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
+//        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
+//        
+//        ++numSteps;
+//    }
+//    
+//    //in this loop the vibration of the VBF part begins
+//    do{
+//         unsigned long currTime = timer.getTimeMicroseconds();
+//         if(!vis_bridge.isIdle()){
+//             phy.step_simulation(0.01, 0.02);
+//         }
+//         Vy = velFun(currTime*10, 0.20);
+//         btVector3 linVel{btVector3(0.0, Vy, 0.0)};
+//         stl_vbf_rbody->set_linear_vel(linVel);
+//
+//         prevTime = currTime;
+//         vbf_window->start_rendering();
+//         vis_bridge.renderme();
+//         phy.debugDraw(2);
+//         vbf_window->end_rendering();
+//         btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
+//        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
+//        
+//        ++numSteps;
+//        
+//        //if(numSteps%500==0){
+//        //    std::cout << "******************************************************\n";
+//        //    std::cout << "number of parts in rigid body container " << rigid_bodies.size() << "\n";
+//        //    std::cout << "******************************************************\n";
+//        //    VBF::Dynamic_Cylinder* part = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
+//        //    rigid_bodies.push_back(part);
+//        //    vbf_world->add_rigid_bodies_to_world(part->get_rbody());
+//        //    }
+//        }while(!vbf_window->requested_exit());
+//      
+//    vbf_window->close_window();
+//    //stl_body->~ImportSTLSetup();
+//    //delete window;
    
 return 0;
 }
