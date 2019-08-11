@@ -77,9 +77,9 @@ int main(int argc, char **argv){
     //
     std::string meshPath{argv[1]};
     std::string inputFile{argv[2]};
-    VBF::InitializeSim init(inputFile);
-    std::cout << "Printing inputs " << init;
-    std::cout << "Value of deltaT " << init["deltaT"] << "\n";
+    VBF::ReadInputData init(inputFile);
+    //std::cout << "Printing inputs " << init;
+    //std::cout << "Value of deltaT " << init["deltaT"] << "\n";
 
 
     std::string file1Name{"StufeFein150x30x200.stl"};

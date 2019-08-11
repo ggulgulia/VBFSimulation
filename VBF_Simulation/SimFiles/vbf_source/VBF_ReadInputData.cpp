@@ -1,9 +1,9 @@
 #include <VBF_InitializeSim.hpp>
 
-VBF::InitializeSim::InitializeSim(){  }
+VBF::ReadInputData::ReadInputData(){  }
 
 //user constructor 1
-VBF::InitializeSim::InitializeSim(std::string filename):
+VBF::ReadInputData::ReadInputData(std::string filename):
 m_filename(filename){
     std::ifstream input_file;
     try{
@@ -39,13 +39,13 @@ m_filename(filename){
 } 
 
 //user constructor2
-VBF::InitializeSim::InitializeSim(std::string varName, double varVal){
+VBF::ReadInputData::ReadInputData(std::string varName, double varVal){
     m_parameterList->insert(std::make_pair(varName, varVal));
 }
             
             
             
-VBF::InitializeSim::~InitializeSim(){
+VBF::ReadInputData::~ReadInputData(){
     //std::cout << "Destructor being called\n";
     m_filename.clear();
     if(m_parameterList){
@@ -56,10 +56,10 @@ VBF::InitializeSim::~InitializeSim(){
  }
             
 //this parameter list should be non-mutable once created
-const std::unordered_map<std::string, double>* VBF::InitializeSim::get_parameter_list() const{return m_parameterList;}            
+const std::unordered_map<std::string, double>* VBF::ReadInputData::get_parameter_list() const{return m_parameterList;}            
 
 
-double VBF::InitializeSim::operator[](const std::string&  s){
+double VBF::ReadInputData::operator[](const std::string&  s){
     auto iter = m_parameterList->find(s);
     if(iter != m_parameterList->end()){
         std::cout << "Searched parameter: " << s << " was found in the list\n";
