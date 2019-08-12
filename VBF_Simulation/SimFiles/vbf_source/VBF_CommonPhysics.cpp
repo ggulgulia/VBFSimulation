@@ -48,7 +48,7 @@ VBF::CommonPhysics::CommonPhysics(VBF::World* vbf_world, VBF::RigidBody* vbf_rbo
 void VBF::CommonPhysics::initPhysics()
 {
     if(!m_VBF_world->is_initialized()) {
-        m_VBF_world->intialize_new_world(); }
+        m_VBF_world->initialize_new_world(); }
 	
 	if (m_VBF_world->get_debug_drawer())
 		m_VBF_world->get_debug_drawer()->setDebugMode(btIDebugDraw::DBG_DrawWireframe+btIDebugDraw::DBG_DrawContactPoints);

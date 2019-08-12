@@ -19,16 +19,6 @@ VBF::World::~World(){
 }
 
 
-VBF::World::World():
-    m_world(nullptr),
-    m_collisionConfig(nullptr),
-    m_dispatcher(nullptr),
-    m_interface(nullptr),
-    m_solver(nullptr),
-    m_is_initialized(false)
-{
-    //empty constructor body
-}
 
 VBF::World::World(btWorld* world,
              btCollConfig* collConfig,
@@ -47,7 +37,7 @@ VBF::World::World(btWorld* world,
 
 //new world is shaped on the implicit this object
 //assumption that the world is empty 
-void  VBF::World::intialize_new_world(){
+void  VBF::World::initialize_new_world(){
     
     m_collisionConfig = new btCollConfig();
     m_dispatcher      = new btDispatcher_iwb(m_collisionConfig);

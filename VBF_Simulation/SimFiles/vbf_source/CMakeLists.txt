@@ -38,6 +38,7 @@ list(APPEND
     VBF_SimLoop.hpp
     VBF_ReadInputData.cpp
     VBF_ReadInputData.hpp
+    VBF_InitializeSim.hpp
     RigidBody/KinematicBodies/VBF_KinematicMesh.cpp ##need to resolve circular dependency
     )
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
