@@ -1,6 +1,5 @@
 #include <VBF_ReadInputData.hpp>
 
-VBF::ReadInputData::ReadInputData(){  }
 
 //user constructor 1
 VBF::ReadInputData::ReadInputData(std::string filename):
@@ -34,6 +33,7 @@ m_filename(filename){
     catch(const char* exception){
         std::cerr << "Error: " << exception << "\n";
         std::cerr << "Force aborting program\n";
+        input_file.close();
         exit(-1);
     }
 } 

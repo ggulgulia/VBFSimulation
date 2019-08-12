@@ -36,7 +36,7 @@ namespace VBF{
              * @todo Define proper impelementation. If in future it 
              * seems useless, delete the default constructor.
              */
-            ReadInputData();
+            ReadInputData() = default;
 
             /*! @brief User constructor 1
              *

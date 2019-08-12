@@ -38,24 +38,24 @@
  */
 
 //! relevant imports
-#include <VBF_World.hpp>
 #include <VBF_CommonPhysics.hpp>
 #include <VBF_GraphicsBridge.hpp>
 #include <test_rigidBody.hpp>
-#include <VBF_ReadInputData.hpp>
+#include <VBF_InitializeSim.hpp>
+//#include <VBF_ReadInputData.hpp>
 
 
 int main(int argc, char **argv){
 
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
-    if(argc !=3){
-        std::cout << "Incorrect input arguments while running executable\n";
-        std::cout << "Correct format to run the simulation:\n";
-        std::cout << "<PATH TO EXECUTABLE> <PATH TO VBF MESH FILE> <PATH TO INPUT FILE>\n";
-        std::cout  << "Aborting the program. Please run the simulation with correct format\n";
-        return 0;
-    }
+    //if(argc !=3){
+    //    std::cout << "Incorrect input arguments while running executable\n";
+    //    std::cout << "Correct format to run the simulation:\n";
+    //    std::cout << "<PATH TO EXECUTABLE> <PATH TO VBF MESH FILE> <PATH TO INPUT FILE>\n";
+    //    std::cout  << "Aborting the program. Please run the simulation with correct format\n";
+    //    return 0;
+    //}
     //! create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
@@ -75,20 +75,24 @@ int main(int argc, char **argv){
     
     //! fileName for kinematic rigid body
     //
-    std::string meshPath{argv[1]};
-    std::string inputFile{argv[2]};
-    VBF::ReadInputData init(inputFile);
+    //std::string meshPath{argv[1]};
+    //std::string inputFile{argv[2]};
+    //VBF::ReadInputData init(inputFile);
     //std::cout << "Printing inputs " << init;
     //std::cout << "Value of deltaT " << init["deltaT"] << "\n";
 
 
-    std::string file1Name{"StufeFein150x30x200.stl"};
-    std::string file2Name{"Zylinder1_7x1_0.stl"};
+    //std::string file1Name{"StufeFein150x30x200.stl"};
+    //std::string file2Name{"Zylinder1_7x1_0.stl"};
 
-    std::string file1Path(meshPath + file1Name);
-    std::cout << file1Path << "\n";
-    std::string file2Path(meshPath + file2Name);
+    //std::string vbf_file_path(meshPath + file1Name);
+    std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
+    std::string inputFile{"../InputFile"};
+    std::cout << vbf_file_path << "\n";
+    //std::string file2Path(meshPath + file2Name);
+    std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
+    VBF::InitializeSim initSim(inputFile, vbf_file_path);
     //! set scaling factor
     static const double scale{0.1};
 
@@ -96,7 +100,7 @@ int main(int argc, char **argv){
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
     btVector3 partOrigin{btVector3(5.0, 2.230, -1.5)};
     //! import kinematic part
-    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(file1Path, scale, meshOrigin);
+    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(vbf_file_path, scale, meshOrigin);
 
     //! initialize mass for dynamic body
     double mass2{0.20};
@@ -120,7 +124,7 @@ int main(int argc, char **argv){
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();
-    vbf_world->intialize_new_world();
+    vbf_world->initialize_new_world();
     
     //CommonPhysics phy(vbf_world);
     VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
