@@ -13,6 +13,7 @@ VBF::RigidBody::RigidBody(const std::string& name, CollShape* shape, btVector3 o
 m_name(name), m_shape(shape), m_origin(origin), m_index(index)
 {
     //beautiful process in bullet to create a rigid body
+    m_shape->setMargin(m_collisionMargin);
     btTransform trans;
     trans.setIdentity();
     trans.setOrigin(m_origin);
