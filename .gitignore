@@ -5,6 +5,7 @@ VBF_Simulation/VWF_with_complex_workpiece/
 *.text
 *.txt
 !CMakeLists.txt
+!InputFile.txt
 *.log
 *.pdf
 *.swap
