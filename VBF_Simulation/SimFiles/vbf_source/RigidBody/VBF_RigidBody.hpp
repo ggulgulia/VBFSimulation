@@ -33,6 +33,7 @@ namespace VBF{
             size_t m_index;     //!< Index of VBF::RigidBody for book keeping purpose
             MotionState *m_motionState; //!< Motion state of VBF::RigidBody 
             btRigidBody *m_rbody; //!< Bullet btRigidBody encapsulated in the VBF::RigidBody 
+            double m_collisionMargin{0.004};
 
         public:
 
