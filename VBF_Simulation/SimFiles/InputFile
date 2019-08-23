@@ -73,6 +73,8 @@ frequency_rotation 10.0
 phase_rotation 0.0
 offset_rotation 0.0
 
+//ground 
+
 
 // Transported parts data
 //dyn_meshpath = "../../Input/CAD_Daten/Quadratprisma%1_5x1_0x1_0.obj";
