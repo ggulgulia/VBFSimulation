@@ -59,22 +59,9 @@ int main(int argc, char **argv){
     //! create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
-    //! create a reference ground
-    VBF::StaticBody *ground = get_ground();
-    btVector3 groundOrigin = get_rigid_body_position(ground);
-    std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
-    
-    //! test different types (static, kinematic or dynamic speheres or cubes)
-    
-    //! test static sphere
-    //get_cubes<VBF::Static_Sphere>(rigid_bodies);
-    
-    //! test import stl files of kinematic and dynamic types
-    
     //! declare file names 
     
     //! fileName for kinematic rigid body
-    //
     //std::string meshPath{argv[1]};
     //std::string inputFile{argv[2]};
     //VBF::ReadInputData init(inputFile);
@@ -92,15 +79,28 @@ int main(int argc, char **argv){
     //std::string file2Path(meshPath + file2Name);
     std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
+    VBF::ReadInputData inputData(inputFile);
+    std::cout << inputData << "\n";
+
     VBF::InitializeSim initSim(inputFile, vbf_file_path);
     //! set scaling factor
-    static const double scale{0.1};
+    static const double scaleFactor = initSim.get_scalingFactor();
+    static const double collMargin = initSim.get_collisionMargin();
+    std::cout << "COLLISION MARGIN VALUE " << collMargin << "\n";
+    std::cout << "SCALING FACTOR VALUE " << scaleFactor<< "\n";
 
+    //! create a reference ground
+    VBF::StaticBody *ground = get_ground(collMargin);
+    btVector3 groundOrigin = get_rigid_body_position(ground);
+    std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
+    
+    
     //! set origin for the imported part
     btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
     btVector3 partOrigin{btVector3(5.0, 2.230, -1.5)};
     //! import kinematic part
-    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(vbf_file_path, scale, meshOrigin);
+    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(vbf_file_path, scaleFactor, 
+                                                                  meshOrigin, collMargin);
 
     //! initialize mass for dynamic body
     double mass2{0.20};
@@ -113,14 +113,6 @@ int main(int argc, char **argv){
     static const double cylHeight{1.0}, cylRad{0.25};
     VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
     rigid_bodies.push_back(stl_body3);
-
-    ////test import static mesh
-    //VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
-    //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
-
-    ////test import kinematic cubes
-    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
-    //rigid_bodies.push_back(kinCube);
 
     //create world for vbf simulation
     VBF::World* vbf_world = new VBF::World();

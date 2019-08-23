@@ -28,7 +28,8 @@ namespace VBF{
              * @param origin : vector specifying the location of center of mass of cube 
              * @param index : index of kinematic cube for book keeping purpose 
              */
-            explicit Kinematic_Cube(double length, btVector3 origin, size_t index);
+            explicit Kinematic_Cube(double length, btVector3 origin,
+                                    const double collMarg, size_t index);
 
             /*! @brief Deleted copy constructor to prevent copy semantics.
              */

@@ -34,7 +34,7 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
-VBF::Static_Ground* get_ground(){
+VBF::Static_Ground* get_ground(const double collMarg){
 
     //create a ground
     float grPos = -20;
@@ -42,7 +42,7 @@ VBF::Static_Ground* get_ground(){
     btVector3 grOrigin;
     size_t grIndex = 245;
     
-    return new VBF::Static_Ground(grNormal, grPos, grOrigin, grIndex);
+    return new VBF::Static_Ground(grNormal, grPos, grOrigin, collMarg, grIndex);
  
 }
 

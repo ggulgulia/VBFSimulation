@@ -30,10 +30,10 @@ namespace VBF{
             std::string m_name; //!< Name of the VBF::RigidBody (eg. Sphere, Cube, etc).
             CollShape* m_shape; //!< Collision shape encapsulated in the VBF::RigidBody
             btVector3 m_origin; //!< Origin vector of the VBF::RigidBody
+            double m_collisionMargin{0.004};
             size_t m_index;     //!< Index of VBF::RigidBody for book keeping purpose
             MotionState *m_motionState; //!< Motion state of VBF::RigidBody 
             btRigidBody *m_rbody; //!< Bullet btRigidBody encapsulated in the VBF::RigidBody 
-            double m_collisionMargin{0.004};
 
         public:
 
@@ -58,7 +58,7 @@ namespace VBF{
              * @return NONE
              */
             explicit RigidBody(const std::string& name, CollShape* shape, 
-                               btVector3 origin, size_t index=0);
+                               btVector3 origin, const double collMarg, size_t index=0);
             
 
             /*! Deleted copy constructor
@@ -102,6 +102,13 @@ namespace VBF{
 
             /*! @brief Same as constant member function but returns a modifiable btRigidbody encapsulated in VBF::RigidBody
              */
+
+            void set_collision_margin(const double collMargin){
+                m_collisionMargin = collMargin;
+            }
+
+            double get_collision_margin();
+
             virtual btRigidBody* get_rbody() noexcept;
 
             /*! @breif Non-static public member function returning the name of the VBF::RigidBody
@@ -167,6 +174,7 @@ namespace VBF{
             virtual const btMatrix3x3& get_rotation() const noexcept = 0;
 
     };
+
 }//end of name space
 
 #endif /* ifndef VBF_RIGID_BODY_H */

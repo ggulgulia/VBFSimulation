@@ -6,7 +6,8 @@
 
 
 VBF::KinematicMeshBody::KinematicMeshBody(const std::string &fileName,
-                                    double scale, btVector3 origin, size_t index):
+                                    double scale, btVector3 origin,
+                                    const double collMarg, size_t index):
                                     m_filename(fileName), m_scale(scale)
 {
     std::fstream file;
@@ -27,10 +28,9 @@ VBF::KinematicMeshBody::KinematicMeshBody(const std::string &fileName,
     origin[0] *= scale; 
     origin[1] *= scale; 
     origin[2] *= scale;
-    double colMargin{0.005};
-    shape->setMargin(colMargin);
+    shape->setMargin(collMarg);
     shape->updateBound();
-     m_VBF_kinematicBody = new KinematicBody(m_filename, shape, origin, index);
+     m_VBF_kinematicBody = new KinematicBody(m_filename, shape, origin, collMarg, index);
 }
 
 

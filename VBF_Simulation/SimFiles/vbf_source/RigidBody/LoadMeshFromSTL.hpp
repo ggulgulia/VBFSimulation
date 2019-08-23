@@ -97,9 +97,9 @@ inline GLInstanceGraphicsShape* LoadMeshFromSTL(const std::string& relativeFileN
 	GLInstanceGraphicsShape* shape{nullptr};
 	FILE* file = fopen(relativeFileName.c_str(),"rb");
 	int size=0;
-    if(!file)
+    if(!file){
         throw "Mesh file not found, please check the file path";
-
+    }
 	if (fseek(file, 0, SEEK_END) || (size = ftell(file)) == EOF || fseek(file, 0, SEEK_SET)){
         throw "cannot access file to determine it's size. Please check user permissions";
 	}
