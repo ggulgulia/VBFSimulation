@@ -15,7 +15,7 @@ namespace VBF{
             
             //user constructor
             explicit Dynamic_Cube(double length, btVector3 origin, 
-                                  double mass, 
+                                  const double collMarg, double mass, 
                                   double linFriction=0.5, double rollingFriction=0.5, 
                                   double restitution=0.2, double linDamping=0.0, 
                                   double angularDamping=0.0, size_t index=221);

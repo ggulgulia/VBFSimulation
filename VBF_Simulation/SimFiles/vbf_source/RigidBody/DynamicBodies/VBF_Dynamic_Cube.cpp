@@ -4,13 +4,13 @@
 
 //Dynamic_Cube Class Definitions
 VBF::Dynamic_Cube::Dynamic_Cube(double length, btVector3 origin, 
-                                double mass, 
+                                const double collMarg, double mass, 
                                 double linFriction, double rollingFriction, 
                                 double restitution, double linDamping, 
                                 double angularDamping, size_t index):
                                 DynamicBody("Dynamic_Cube",
                                 new btBoxShape(btVector3(length, length, length)),
-                                origin, mass, linFriction, rollingFriction, 
+                                origin, collMarg, mass, linFriction, rollingFriction, 
                                 restitution, linDamping, angularDamping, index),
                                 m_length(length){
                                     //empty constructor body

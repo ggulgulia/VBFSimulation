@@ -185,6 +185,8 @@
              * underlying pointer that it is returning. TODO
              */
             virtual btWorld* get_world() const;
+            
+            void init_physics(VBF::World* vbf_world, VBF::StaticBody* ground, std::vector<VBF::RigidBody*>& vbf_rbody_vect);
     };
 
 }
