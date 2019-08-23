@@ -25,7 +25,7 @@ namespace VBF{
             
             //user constructor
             explicit Dynamic_Cylinder(double radius, double height,
-                                      btVector3 origin, double mass, 
+                                      btVector3 origin, const double collMarg, double mass, 
                                       double linFriction=0.2, double rollingFriction=0.5, 
                                       double restitution=0.01, double linDamping=0.0, 
                                       double angularDamping=0.0, size_t index=221);

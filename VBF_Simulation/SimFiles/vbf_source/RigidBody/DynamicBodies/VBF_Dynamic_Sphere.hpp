@@ -15,10 +15,10 @@ namespace VBF{
             
             //user constructor
             explicit Dynamic_Sphere(double radius, btVector3 origin, 
-                                  double mass, 
-                                  double linFriction=0.5, double rollingFriction=0.5, 
-                                  double restitution=0.2, double linDamping=0.0, 
-                                  double angularDamping=0.0, size_t index=221);
+                                    const double collMarg, double mass, 
+                                    double linFriction=0.5, double rollingFriction=0.5, 
+                                    double restitution=0.2, double linDamping=0.0, 
+                                    double angularDamping=0.0, size_t index=221);
 
             //below two lines prevent expensive copy semantics
             Dynamic_Sphere(const Dynamic_Sphere&) = delete;

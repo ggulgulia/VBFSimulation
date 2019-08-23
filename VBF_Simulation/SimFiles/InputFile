@@ -80,7 +80,13 @@ offset_rotation 0.0
 dyn_mass 0.01
 dyn_friction 0.5
 dyn_restitution 0.5
+cylinder_height 1.0
+cylinder_radius 0.25
 //dyn_texturepath = "../../VBF_Simulation_v2.0/irrlicht-1.8.1/media/stones.jpg";
+//5.0, 2.230, -1.5)
+dyn_start_posX 5.0
+dyn_start_posY 2.230
+dyn_start_posZ -1.50
 
 //orientation_axes = ((0,0,1))
 orientation_angles 90.0

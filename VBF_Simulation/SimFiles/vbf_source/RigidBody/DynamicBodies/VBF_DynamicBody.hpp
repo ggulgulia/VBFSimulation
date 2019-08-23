@@ -23,7 +23,7 @@ namespace VBF{
 
             //user constructor
             explicit DynamicBody(std::string name, CollShape* shape, 
-                                 btVector3 origin, double mass, 
+                                 btVector3 origin, const double collMarg, double mass, 
                                  double linFriction=0.2, double rollingFriction=0.2, 
                                  double restitution=0.2, double linDamping=0.0, 
                                  double angularDamping=0.0, size_t index=200);

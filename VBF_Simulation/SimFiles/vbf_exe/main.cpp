@@ -69,9 +69,6 @@ int main(int argc, char **argv){
     //std::cout << "Value of deltaT " << init["deltaT"] << "\n";
 
 
-    //std::string file1Name{"StufeFein150x30x200.stl"};
-    //std::string file2Name{"Zylinder1_7x1_0.stl"};
-
     //std::string vbf_file_path(meshPath + file1Name);
     std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
     std::string inputFile{"../InputFile"};
@@ -86,6 +83,8 @@ int main(int argc, char **argv){
     //! set scaling factor
     static const double scaleFactor = initSim.get_scalingFactor();
     static const double collMargin = initSim.get_collisionMargin();
+    const btVector3 meshOrigin = initSim.get_vbf_mesh_origin();
+    const btVector3 partOrigin = initSim.get_dyn_part_origin();
     std::cout << "COLLISION MARGIN VALUE " << collMargin << "\n";
     std::cout << "SCALING FACTOR VALUE " << scaleFactor<< "\n";
 
@@ -95,9 +94,6 @@ int main(int argc, char **argv){
     std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     
     
-    //! set origin for the imported part
-    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
-    btVector3 partOrigin{btVector3(5.0, 2.230, -1.5)};
     //! import kinematic part
     VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(vbf_file_path, scaleFactor, 
                                                                   meshOrigin, collMargin);
@@ -111,7 +107,7 @@ int main(int argc, char **argv){
 
     //add a cylinder like part to the simulation 
     static const double cylHeight{1.0}, cylRad{0.25};
-    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
+    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, collMarg, mass2);
     rigid_bodies.push_back(stl_body3);
 
     //create world for vbf simulation
@@ -122,6 +118,8 @@ int main(int argc, char **argv){
     VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
     phy.initPhysics();
     
+    VBF::CommonPhysics& phy2 = initSim.get_VBF_physics();
+    phy2.initPhysics();
     //visualization bridge
     VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
     vbf_window->create_window();
