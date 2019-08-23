@@ -11,7 +11,8 @@ namespace VBF{
 
         public:
 
-            explicit StaticBody(const std::string& name, CollShape* shape, btVector3 origin, size_t index);
+            explicit StaticBody(const std::string& name, CollShape* shape, btVector3 origin, 
+                                const double collMarg, size_t index);
             StaticBody(const StaticBody&) = delete;
             ~StaticBody();
             virtual double get_mass(){return 0.0;}

@@ -24,12 +24,13 @@ namespace VBF{
         public:
             Static_Cube(): StaticBody("Default Static Cube", 
                           new btBoxShape(btVector3(10.0, 10.0, 10.0)),
-                          btVector3(0.0,0.0, 0.0), 23), 
+                          btVector3(0.0,0.0, 0.0), 0.004, 23), 
             m_length(10.0){
                             //empty constructor body
             }
 
-            explicit Static_Cube(double length, btVector3 origin, size_t index);
+            explicit Static_Cube(double length, btVector3 origin, const double collMarg,
+                                size_t index);
             
             /*! @brief Preventing copy semantics for Static_Cube construction
              */

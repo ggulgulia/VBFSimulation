@@ -111,7 +111,7 @@ namespace VBF{
                 out << "printing the paramters list that was read from input file: \n";
                 //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
                 for (const auto pair : *paramList){
-                    std::cout << pair.first << " : " << pair.second << "\n";
+                    std::cout << pair.first << ":" << pair.second << "\n";
                 } 
 
                 return out;

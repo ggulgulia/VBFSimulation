@@ -2,16 +2,17 @@
 
 VBF::Kinematic_Cube::Kinematic_Cube(): KinematicBody("Default Kinematic Cube", 
                           new btBoxShape(btVector3(10.0, 10.0, 10.0)),
-                          btVector3(0.0,0.0, 0.0), 23), 
+                          btVector3(0.0,0.0, 0.0), 0.004, 23), 
             m_length(10.0){
                             //empty constructor body
             }
 
 //Kinematic_Cube Class Definitions
-VBF::Kinematic_Cube::Kinematic_Cube(double length, btVector3 origin, size_t index):
+VBF::Kinematic_Cube::Kinematic_Cube(double length, btVector3 origin, 
+                                    const double collMarg, size_t index):
                                     KinematicBody("Kinematic_Cube",
                                     new btBoxShape(btVector3(length, length, length)),
-                                    origin, index),
+                                    origin, collMarg, index),
                                     m_length(length){
                         
                 //empty constructor body

@@ -11,7 +11,8 @@ namespace VBF{
 
         public:
 
-            explicit KinematicBody(const std::string& name, CollShape* shape, btVector3 origin, size_t index);
+            explicit KinematicBody(const std::string& name, CollShape* shape, btVector3 origin,
+                                 const double collMarg, size_t index);
             KinematicBody(const KinematicBody&) = delete;
             ~KinematicBody();
             

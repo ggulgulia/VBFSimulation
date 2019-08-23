@@ -25,13 +25,14 @@ namespace VBF{
 
         public:
             Static_Cylinder(): StaticBody("Default Static Cylinder", 
-                          new btCylinderShape(btVector3(0.50, 0.5*2.0, 0.50)),
-                          btVector3(0.0,0.0, 0.0), 33), 
-            m_radius(0.50), m_height(2.0) {
+                                new btCylinderShape(btVector3(0.50, 0.5*2.0, 0.50)),
+                                btVector3(0.0,0.0, 0.0), 0.004, 33), 
+                                m_radius(0.50), m_height(2.0) {
                             //empty constructor body
             }
 
-            explicit Static_Cylinder(double radius, double height, btVector3 origin, size_t index);
+            explicit Static_Cylinder(double radius, double height, btVector3 origin, 
+                                    const double collMarg, size_t index);
             
             /*! @brief Preventing copy semantics for Static_Cylinder construction
              */

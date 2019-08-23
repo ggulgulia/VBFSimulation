@@ -26,12 +26,13 @@ namespace VBF{
         public:
             Static_Ground(): StaticBody("Default Static Ground", 
                              new btStaticPlaneShape(btVector3(0.0, 1.0, 0.0), 0.0),
-                             btVector3(0.0, 0.0, 0.0), 24), 
+                             btVector3(0.0, 0.0, 0.0), 0.004, 24), 
                              m_normal(btVector3(0.0, 1.0, 0.0)),m_position(0.0){
                             //empty constructor body
             }
 
-            explicit Static_Ground(btVector3& normal, double position, btVector3& origin, size_t index);
+            explicit Static_Ground(btVector3& normal, double position, btVector3& origin, 
+                                  const double collMarg, size_t index);
             
             /*! @brief Preventing copy semantics for Static_Ground construction
              */

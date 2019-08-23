@@ -10,8 +10,9 @@ visualization 1  //1 for ON, 0 for OFF
 output_all 1     //1 for ON, 0 for OFF
 step_size 0.005 
 collision_margin 0.004 
-scaling_factor 1.0
+scaling_factor 0.1
 gravity -9.81
+
 
 //Optimization information
 optimization_Algorithm 0 //1 for ON, 0 for OFF
@@ -37,6 +38,12 @@ kin_meshpath = "../../Input/CAD_Daten/Stufe%31x3_0x1_0.obj";
 //kin_startposition = (0, 0, 0);
 //kin_startposition = (0.0, 0.0, 0.0)
 //kin_startposition_1 = (20.0, 0.0, 0.0)
+
+//starting position of the vbf part
+kin_start_posX 0.0
+kin_start_posY 0.0
+kin_start_posZ 0.0
+
 //kin_startaxis = axis_rotation
 kin_startangle_vbf 0.0
 kin_mass 0.0
@@ -82,5 +89,6 @@ orientation_yheights 0.8
 
 // Filling data
 fillrate -1
-objects_fall 100
-objects_simulation 100
+//objects_fall 100
+num_instances 100
+//objects_simulation 100

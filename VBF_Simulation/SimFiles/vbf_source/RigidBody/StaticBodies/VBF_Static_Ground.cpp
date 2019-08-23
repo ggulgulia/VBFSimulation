@@ -1,10 +1,11 @@
 #include "VBF_Static_Ground.hpp"
 
 //Static_Ground Class Definitions
-VBF::Static_Ground::Static_Ground(btVector3& normal, double position, btVector3& origin, size_t index):
+VBF::Static_Ground::Static_Ground(btVector3& normal, double position, btVector3& origin,
+                                const double collMarg, size_t index):
                StaticBody(std::string("Static_Ground"),
                new btStaticPlaneShape(normal, position),
-               origin, index),
+               origin, collMarg, index),
                m_normal(normal),
                m_position(position){
                         

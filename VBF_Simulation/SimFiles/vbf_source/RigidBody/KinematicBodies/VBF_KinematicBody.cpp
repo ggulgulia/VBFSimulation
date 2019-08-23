@@ -3,8 +3,9 @@
 
 
 //KinematicBody Class Definitions
-VBF::KinematicBody::KinematicBody(const std::string& name, CollShape* shape, btVector3 origin, size_t index):
-               RigidBody(name, shape, origin, index){
+VBF::KinematicBody::KinematicBody(const std::string& name, CollShape* shape, btVector3 origin,
+                                  const double collMarg, size_t index):
+               RigidBody(name, shape, origin, collMarg, index){
                         
                 MotionState* moSt = RigidBody::get_motion_state();
                 double mass = 0.0;

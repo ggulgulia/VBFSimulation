@@ -9,8 +9,9 @@ VBF::RigidBody::RigidBody():
 
 //user constructor
 VBF::RigidBody::RigidBody(const std::string& name, CollShape* shape, btVector3 origin,
-                           size_t index):
-m_name(name), m_shape(shape), m_origin(origin), m_index(index)
+                          const double collMarg, size_t index):
+m_name(name), m_shape(shape), m_origin(origin), 
+m_collisionMargin(collMarg), m_index(index)
 {
     //beautiful process in bullet to create a rigid body
     m_shape->setMargin(m_collisionMargin);
@@ -44,6 +45,10 @@ void VBF::RigidBody::set_rbody(btRigidBody* rbody){
 }
 btRigidBody* VBF::RigidBody::get_rbody() const noexcept { return m_rbody; }
 btRigidBody* VBF::RigidBody::get_rbody()noexcept { return m_rbody; }
+double VBF::RigidBody::get_collision_margin(){
+    return m_collisionMargin;
+}
+
 std::string VBF::RigidBody::get_name() const noexcept { return "incorrect name"; }
 CollShape* VBF::RigidBody::get_shape() const noexcept { return m_shape;  } 
 CollShape* VBF::RigidBody::get_shape() noexcept { return m_shape;  } 

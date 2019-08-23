@@ -15,8 +15,9 @@ namespace VBF{
             VBF_Mesh*  m_mesh;
             KinematicBody* m_VBF_kinematicBody;
         public:
-            KinematicMeshBody(const std::string &fileName, double scale=0.1, btVector3 origin = btVector3(0.0, 0.0, 0.0),
-                             size_t index=500);
+            KinematicMeshBody(const std::string &fileName, double scale=0.1, 
+                              btVector3 origin = btVector3(0.0, 0.0, 0.0),
+                             const double collMarg=0.004,size_t index=500);
             virtual ~KinematicMeshBody();
             KinematicBody* get_vbf_rbody() ;
             virtual VBF_Mesh* get_mesh() const noexcept;
