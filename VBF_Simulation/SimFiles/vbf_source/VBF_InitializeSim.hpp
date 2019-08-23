@@ -108,6 +108,14 @@ namespace VBF{
     World* get_VBF_world(){
         return m_world;
     }
+
+    KinematicMeshBody* get_vbf_part(){
+        return m_vbf_part;
+    }
+
+    VBF::Dynamic_Cylinder* get_dyn_part(){
+        return m_dyn_part;
+    }
     };
 
 }
