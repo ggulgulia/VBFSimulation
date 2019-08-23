@@ -91,5 +91,7 @@ void VBF::CommonPhysics::init_physics(VBF::World* vbf_world,
             m_shape.push_back(vbf_rbody_vect[i]->get_shape());
             m_VBF_world->add_rigid_bodies_to_world(vbf_rbody_vect[i]->get_rbody());
        }
+
+        this->initPhysics();
 }
 

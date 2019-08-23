@@ -73,54 +73,24 @@ int main(int argc, char **argv){
     std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
     std::string inputFile{"../InputFile"};
     std::cout << vbf_file_path << "\n";
-    //std::string file2Path(meshPath + file2Name);
     std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
     VBF::ReadInputData inputData(inputFile);
     std::cout << inputData << "\n";
 
     VBF::InitializeSim initSim(inputFile, vbf_file_path);
-    //! set scaling factor
-    static const double scaleFactor = initSim.get_scalingFactor();
-    static const double collMargin = initSim.get_collisionMargin();
-    const btVector3 meshOrigin = initSim.get_vbf_mesh_origin();
-    const btVector3 partOrigin = initSim.get_dyn_part_origin();
-    std::cout << "COLLISION MARGIN VALUE " << collMargin << "\n";
-    std::cout << "SCALING FACTOR VALUE " << scaleFactor<< "\n";
-
-    //! create a reference ground
-    VBF::StaticBody *ground = get_ground(collMargin);
-    btVector3 groundOrigin = get_rigid_body_position(ground);
-    std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
     
     
     //! import kinematic part
-    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(vbf_file_path, scaleFactor, 
-                                                                  meshOrigin, collMargin);
-
-    //! initialize mass for dynamic body
-    double mass2{0.20};
-
-    //! store the imported bodies in the rigid_bodies container
-    rigid_bodies.push_back(stl_body->get_vbf_rbody());
-    
+    VBF::KinematicMeshBody* stl_body = initSim.get_vbf_part();
 
     //add a cylinder like part to the simulation 
-    static const double cylHeight{1.0}, cylRad{0.25};
-    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, collMarg, mass2);
+    VBF::Dynamic_Cylinder* stl_body3 = initSim.get_dyn_part(); 
     rigid_bodies.push_back(stl_body3);
 
-    //create world for vbf simulation
-    VBF::World* vbf_world = new VBF::World();
-    vbf_world->initialize_new_world();
     
-    //CommonPhysics phy(vbf_world);
-    VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
-    phy.initPhysics();
-    
-    VBF::CommonPhysics& phy2 = initSim.get_VBF_physics();
-    phy2.initPhysics();
-    //visualization bridge
+    VBF::CommonPhysics& phy = initSim.get_VBF_physics();
+    VBF::World* vbf_world = initSim.get_VBF_world(); 
     VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
     vbf_window->create_window();
     VBF_Vis vis_bridge;
