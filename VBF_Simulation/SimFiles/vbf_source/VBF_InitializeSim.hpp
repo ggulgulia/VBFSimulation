@@ -25,15 +25,22 @@ namespace VBF{
             btVector3 m_mesh_origin;
             btVector3 m_part_origin;
 
+            double get_numeric_input_parameter(const std::string& key){
+                return m_inputData.get_numeric_value(key);
+            }
+            
+            std::string get_string_input_parameter(const std::string& key){
+                return m_inputData.get_string_value(key);
+            }
+
             void initialize_data(){
                 
-                //lambda closure to return the value held in 
-                //m_inputData map. The lambda expression
-                //captures m_inputData member by reference
-                //and key by forwarding reference
-                auto value_of_key = [&] (auto&& key){
-                    return m_inputData[key];
+                //lambda closure to return the numeric value held in 
+                //m_inputData map.
+                auto value_of_key = [&](auto&& key)->double {
+                    return m_inputData.get_numeric_value(key);
                 };
+                
                 
                 m_world->initialize_new_world();
                 m_world->set_gravity(btVector3(0.0, value_of_key("gravity"), 0.0));
@@ -87,11 +94,11 @@ namespace VBF{
 
 
     const double get_collisionMargin(){
-        return m_inputData["collision_margin"];
+        return get_numeric_input_parameter("collision_margin");
     }
 
     const double get_scalingFactor(){
-        return m_inputData["scaling_factor"];
+        return get_numeric_input_parameter("scaling_factor");
     }
 
     const btVector3 get_vbf_mesh_origin(){
