@@ -23,9 +23,9 @@ m_filename(filename){
                 //std::cout <<linenum++ << " "<< data << ": " << value <<"\n"; 
                 ++linenum;
                 //std::pair<std::string, double> temp(data, value);
-                m_parameterList->insert(std::make_pair(data, value));
-                //(*m_parameterList)[data] = value;
-                //m_parameterList->push_back(temp);
+                m_numeral_paramList->insert(std::make_pair(data, value));
+                //(*m_numeral_paramList)[data] = value;
+                //m_numeral_paramList->push_back(temp);
             }
         }
         std::cout << "Number of parameters read from " << m_filename << ": "<< linenum << "\n";
@@ -40,7 +40,7 @@ m_filename(filename){
 
 //user constructor2
 VBF::ReadInputData::ReadInputData(std::string varName, double varVal){
-    m_parameterList->insert(std::make_pair(varName, varVal));
+    m_numeral_paramList->insert(std::make_pair(varName, varVal));
 }
             
             
@@ -48,20 +48,15 @@ VBF::ReadInputData::ReadInputData(std::string varName, double varVal){
 VBF::ReadInputData::~ReadInputData(){
     //std::cout << "Destructor being called\n";
     m_filename.clear();
-    if(m_parameterList){
-        m_parameterList->clear();
-        delete m_parameterList;
-        m_parameterList=nullptr;
-    }
  }
             
 //this parameter list should be non-mutable once created
-const std::unordered_map<std::string, double>* VBF::ReadInputData::get_parameter_list() const{return m_parameterList;}            
+const std::shared_ptr<numeral_param_type> VBF::ReadInputData::get_parameter_list() const{return m_numeral_paramList;}            
 
 
 double VBF::ReadInputData::operator[](const std::string&  s){
-    auto iter = m_parameterList->find(s);
-    if(iter != m_parameterList->end()){
+    auto iter = m_numeral_paramList->find(s);
+    if(iter != m_numeral_paramList->end()){
         std::cout << "Searched parameter: " << s << " was found in the list\n";
 
         return iter->second;
