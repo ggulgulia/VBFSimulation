@@ -113,10 +113,15 @@ namespace VBF{
             friend std::ostream& operator<<(std::ostream& out, const ReadInputData& init ){
 
                 std::shared_ptr<numeral_param_type> paramList = init.m_numeral_paramList;
+                std::shared_ptr<string_param_type> paramList2 = init.m_string_paramList;
 
                 out << "printing the paramters list that was read from input file: \n";
                 //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
-                for (const auto pair : *paramList){
+                for (const auto& pair : *paramList){
+                    std::cout << pair.first << ":" << pair.second << "\n";
+                } 
+
+                for (const auto& pair : *paramList2){
                     std::cout << pair.first << ":" << pair.second << "\n";
                 } 
 

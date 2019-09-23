@@ -71,7 +71,7 @@ int main(int argc, char **argv){
 
     //std::string vbf_file_path(meshPath + file1Name);
     std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
-    std::string inputFile{"../InputFile"};
+    std::string inputFile{"../InputFile.txt"};
     std::cout << vbf_file_path << "\n";
     std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
