@@ -8,6 +8,8 @@
 #include <sstream>
 #include <utility>
 #include <unordered_map>
+#include <memory>
+#include <cctype>
 
 /*! The purpose of of VBF::ReadInputData is to initialize VBF Simulation by reading the input file, which will contain several
  * simulation input, run time and output parameters. 
@@ -21,12 +23,16 @@
  * TODO: Complete implementation as the simulation development progresses. 
  * @todo Change the private member variable from a pointer to a non-pointer object since std::vector guarantees heap memory allocation.
  */
+
+typedef std::unordered_map<std::string, double> numeral_param_type;
+typedef std::unordered_map<std::string, std::string> string_param_type;
 namespace VBF{
     class ReadInputData{
 
         private:
             std::string m_filename; /*!< Input file name */
-            std::unordered_map<std::string,double> *m_parameterList = new std::unordered_map<std::string, double>; /*!< container that stores parameter name and value */
+            std::shared_ptr<numeral_param_type> m_numeral_paramList = std::make_shared<numeral_param_type>(); /*!< container that stores parameter name and value */
+            std::shared_ptr<string_param_type> m_string_paramList = std::make_shared<string_param_type>(); /*!< container that stores parameter name and value */
              
         public:
             /*! @brief Default constructor
@@ -43,7 +49,7 @@ namespace VBF{
              * @details Creates a VBF::IniitalizeSim object by reading
              * the input file. The body of the constructor reads line
              * by line each parameter name and its value and stores it
-             * in the memeber variable m_parameterList
+             * in the memeber variable m_numeral_paramList
              * @param filename : string that determines path to input
              * file.
              */
@@ -74,7 +80,7 @@ namespace VBF{
 
             /*! @brief Destructor
              * @details The destructor clears the contents of variable
-             * m_parameterList and releases any memory held by it.
+             * m_numeral_paramList and releases any memory held by it.
              */
             ~ReadInputData();
 
@@ -97,7 +103,7 @@ namespace VBF{
              * simulation has to be restarted. This is the rationale
              * behind providing read only access to parameter list.
              */
-            const std::unordered_map<std::string, double>* get_parameter_list() const;
+            const std::shared_ptr<numeral_param_type> get_parameter_list() const;
 
 
             /*! @brief Method passes a reference to std::ostream
@@ -105,8 +111,8 @@ namespace VBF{
              * could be printed on the screen (or on a file)
              */
             friend std::ostream& operator<<(std::ostream& out, const ReadInputData& init ){
-                const std::unordered_map<std::string, double>::iterator itr;
-                const std::unordered_map<std::string, double> *paramList = init.get_parameter_list();
+
+                std::shared_ptr<numeral_param_type> paramList = init.m_numeral_paramList;
 
                 out << "printing the paramters list that was read from input file: \n";
                 //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
