@@ -134,8 +134,32 @@ namespace VBF{
          *  numerical value of the passed key. The user has to
          *  ensure that the value held in the key exists and is a
          *  a numerical value
+         *
+         *  @param key : std::string name of parameter
+         *  for which the numerical value is sought
+         *
+         *  @returns double numerical value of the key 
+         *  if it exists else the method throws to inform 
+         *  the user that the parameter doesn't exist
+         *  and it should be added to the input file
          */
         double get_numeric_value(const std::string&  key) const ;
+        /*! @brief Returns the string value of the parameter
+         * for e.g. : file path for  CAD data
+         *
+         *  @details Public method that retruns the encapsulated
+         *  numerical value of the passed key. The user has to
+         *  ensure that the value held in the key exists and is a
+         *  a numerical value
+         *
+         *  @param key : std::string name of parameter
+         *  for which the string value is sought
+         *
+         *  @returns std::string value of the key 
+         *  if it exists else the method throws to inform 
+         *  the user that the parameter doesn't exist
+         *  and it should be added to the input file
+         */
         std::string get_string_value(const std::string&  key)const ;
 
     };//end class definition

@@ -22,9 +22,15 @@ m_filename(filename){
                 line >> value;
                 ++linenum;
 
-                //check if a string has `+` or `-`
-                //symbol charcters
-                if(value[0] == '-' || value[0] == '+'){
+                //check if the first char is a digit
+                //if yes then the value is assumed to be a double
+                //Hope the user does't try someething stupid like : 123IamCrazy
+                //in which case there'll be runtime error
+                if(isdigit(value[0])){
+                    m_numeral_paramList->insert(std::make_pair(data, std::stod(value)));
+                }
+                //check if the first char is `+` or `-`
+                else if(value[0] == '-' || value[0] == '+'){
                     //if the symbols `+` or `-` are present
                     //check that second character is a decimal and third cahracter is a digit
                     //OR
@@ -34,19 +40,16 @@ m_filename(filename){
                     }
                 }
 
-                //If all above conditions fail and the first character is a digit
-                //the value is assumed to be a double
-                else if(isdigit(value[0])){
-                m_numeral_paramList->insert(std::make_pair(data, std::stod(value)));
-                }
+                //if all above conditions fail, then the 
+                //value is string
                 else
                     m_string_paramList->insert(std::make_pair(data, value));
             }
         }
         std::cout << "Number of parameters read from " << m_filename << ": "<< linenum << "\n";
     }
-    catch(const char* exception){
-        std::cerr << "Error: " << exception << "\n";
+    catch(const std::exception& e){
+        std::cerr << "ERROR: " << e.what() << "\n";
         std::cerr << "Force aborting program\n";
         input_file.close();
         exit(-1);
