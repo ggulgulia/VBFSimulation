@@ -5,6 +5,7 @@
 ///////////////////////////////////////////////////////////
 
 deltaT 0.001111243
+time_step 0.001111243
 // Simulation data
 visualization 1  //1 for ON, 0 for OFF
 output_all 1     //1 for ON, 0 for OFF

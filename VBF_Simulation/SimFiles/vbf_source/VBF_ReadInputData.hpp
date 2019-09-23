@@ -103,7 +103,7 @@ namespace VBF{
              * simulation has to be restarted. This is the rationale
              * behind providing read only access to parameter list.
              */
-            const std::shared_ptr<numeral_param_type> get_parameter_list() const;
+            const std::shared_ptr<numeral_param_type> get_parameter_list() const noexcept;
 
 
             /*! @brief Method passes a reference to std::ostream
@@ -128,8 +128,15 @@ namespace VBF{
                 return out;
              }
 
-        double get_numeric_value(const std::string&  s);
-        std::string get_string_value(const std::string&  s);
+        /*! @brief Returns the numerical value of the parameter
+         *
+         *  @details Public method that retruns the encapsulated
+         *  numerical value of the passed key. The user has to
+         *  ensure that the value held in the key exists and is a
+         *  a numerical value
+         */
+        double get_numeric_value(const std::string&  key) const ;
+        std::string get_string_value(const std::string&  key)const ;
 
     };//end class definition
 

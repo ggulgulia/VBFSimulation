@@ -81,8 +81,13 @@ namespace VBF{
             m_inputData(inputFileName),
             m_path_to_VBF_part(path_to_VBF_part)
             {
+                try{
                 initialize_data();
-    
+                }
+                catch(const std::exception& e){
+                    std::cerr << e.what() << "\n";
+                    abort();
+                }
                 //storage for rigid bodies
                 //std::vector<VBF::RigidBody*> rigid_bodies;
 
