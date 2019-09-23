@@ -11,7 +11,7 @@ m_filename(filename){
         if(!input_file.is_open())
             throw "failed to open the file, please make sure the file exists in the path specified\n";
         std::string varName;
-        double value;
+        std::string value;
         int linenum(0);
         while(getline(input_file, varName)){
         //read after ignoring comment and empty lines
@@ -20,12 +20,12 @@ m_filename(filename){
                 std::string data;
                 std::getline(line, data, ' ');
                 line >> value;
-                //std::cout <<linenum++ << " "<< data << ": " << value <<"\n"; 
                 ++linenum;
-                //std::pair<std::string, double> temp(data, value);
-                m_numeral_paramList->insert(std::make_pair(data, value));
-                //(*m_numeral_paramList)[data] = value;
-                //m_numeral_paramList->push_back(temp);
+                if(isdigit(value[0])){
+                m_numeral_paramList->insert(std::make_pair(data, std::stod(value)));
+                }
+                else
+                    m_string_paramList->insert(std::make_pair(data, value));
             }
         }
         std::cout << "Number of parameters read from " << m_filename << ": "<< linenum << "\n";
