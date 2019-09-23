@@ -54,7 +54,7 @@ VBF::ReadInputData::~ReadInputData(){
 const std::shared_ptr<numeral_param_type> VBF::ReadInputData::get_parameter_list() const{return m_numeral_paramList;}            
 
 
-double VBF::ReadInputData::operator[](const std::string&  s){
+double VBF::ReadInputData::get_numeric_value(const std::string&  s){
     auto iter = m_numeral_paramList->find(s);
     if(iter != m_numeral_paramList->end()){
         std::cout << "Searched parameter: " << s << " was found in the list\n";
@@ -68,3 +68,17 @@ double VBF::ReadInputData::operator[](const std::string&  s){
         }
 }
 
+std::string VBF::ReadInputData::get_string_value(const std::string&  s){
+
+    auto iter = m_string_paramList->find(s);
+    if(iter != m_string_paramList->end()){
+        std::cout << "Searched parameter: " << s << " was found in the list\n";
+
+        return iter->second;
+    }
+    else{
+        std::cout << "Searched parameter: " << s << " was NOT found in the list\n";
+        std::cout << "returning a stub value\n";
+        return "";
+        }
+}

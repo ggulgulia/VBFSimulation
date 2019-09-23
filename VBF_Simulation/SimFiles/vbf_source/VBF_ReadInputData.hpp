@@ -31,8 +31,8 @@ namespace VBF{
 
         private:
             std::string m_filename; /*!< Input file name */
-            std::shared_ptr<numeral_param_type> m_numeral_paramList = std::make_shared<numeral_param_type>(); /*!< container that stores parameter name and value */
-            std::shared_ptr<string_param_type> m_string_paramList = std::make_shared<string_param_type>(); /*!< container that stores parameter name and value */
+            std::shared_ptr<numeral_param_type> m_numeral_paramList = std::make_shared<numeral_param_type>(); /*!< container that stores a parameter name and a corresponding numeric value */
+            std::shared_ptr<string_param_type> m_string_paramList = std::make_shared<string_param_type>(); /*!< container that stores parameter name and  corresponding string value */
              
         public:
             /*! @brief Default constructor
@@ -128,7 +128,8 @@ namespace VBF{
                 return out;
              }
 
-        double operator[](const std::string&  s);
+        double get_numeric_value(const std::string&  s);
+        std::string get_string_value(const std::string&  s);
 
     };//end class definition
 
