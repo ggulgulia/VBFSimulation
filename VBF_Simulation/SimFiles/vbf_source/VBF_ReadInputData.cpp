@@ -21,7 +21,22 @@ m_filename(filename){
                 std::getline(line, data, ' ');
                 line >> value;
                 ++linenum;
-                if(isdigit(value[0])){
+
+                //check if a string has `+` or `-`
+                //symbol charcters
+                if(value[0] == '-' || value[0] == '+'){
+                    //if the symbols `+` or `-` are present
+                    //check that second character is a decimal and third cahracter is a digit
+                    //OR
+                    //the second character is a digit
+                    if((value[1] == '.' && isdigit(value[2])) || isdigit(value[1])){
+                        m_numeral_paramList->insert(std::make_pair(data, std::stod(value)));
+                    }
+                }
+
+                //If all above conditions fail and the first character is a digit
+                //the value is assumed to be a double
+                else if(isdigit(value[0])){
                 m_numeral_paramList->insert(std::make_pair(data, std::stod(value)));
                 }
                 else
@@ -51,34 +66,33 @@ VBF::ReadInputData::~ReadInputData(){
  }
             
 //this parameter list should be non-mutable once created
-const std::shared_ptr<numeral_param_type> VBF::ReadInputData::get_parameter_list() const{return m_numeral_paramList;}            
+const std::shared_ptr<numeral_param_type> VBF::ReadInputData::get_parameter_list() const noexcept
+{return m_numeral_paramList;}            
 
 
-double VBF::ReadInputData::get_numeric_value(const std::string&  s){
-    auto iter = m_numeral_paramList->find(s);
+double VBF::ReadInputData::get_numeric_value(const std::string&  key) const{
+    auto iter = m_numeral_paramList->find(key);
     if(iter != m_numeral_paramList->end()){
-        std::cout << "Searched parameter: " << s << " was found in the list\n";
+        std::cout << "Searched parameter: " << key << " was found in the list\n";
 
         return iter->second;
     }
     else{
-        std::cout << "Searched parameter: " << s << " was NOT found in the list\n";
-        std::cout << "returning a stub value\n";
-        return 0.0;
+        std::cout << "Searched parameter: " << key << " was NOT found in the list\n";
+        throw(std::runtime_error("ERROR: SEARCHED KEY WAS NOT FOUND. PLEASE CHECK THE INPUT FILE"));
         }
 }
 
-std::string VBF::ReadInputData::get_string_value(const std::string&  s){
+std::string VBF::ReadInputData::get_string_value(const std::string&  key) const{
 
-    auto iter = m_string_paramList->find(s);
+    auto iter = m_string_paramList->find(key);
     if(iter != m_string_paramList->end()){
-        std::cout << "Searched parameter: " << s << " was found in the list\n";
+        std::cout << "Searched parameter: " << key << " was found in the list\n";
 
         return iter->second;
     }
     else{
-        std::cout << "Searched parameter: " << s << " was NOT found in the list\n";
-        std::cout << "returning a stub value\n";
-        return "";
+        std::cout << "Searched parameter: " << key << " was NOT found in the list\n";
+        throw(std::runtime_error("ERROR: SEARCHED KEY WAS NOT FOUND. PLEASE CHECK THE INPUT FILE"));
         }
 }
