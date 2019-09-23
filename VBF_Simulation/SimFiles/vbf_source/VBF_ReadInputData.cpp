@@ -24,8 +24,9 @@ m_filename(filename){
 
                 //check if the first char is a digit
                 //if yes then the value is assumed to be a double
-                //Hope the user does't try someething stupid like : 123IamCrazy
+                //Hope the user does't try someething stupid like : 123IamCrazy456456
                 //in which case there'll be runtime error
+                //This could be prevented with a complex string parser
                 if(isdigit(value[0])){
                     m_numeral_paramList->insert(std::make_pair(data, std::stod(value)));
                 }
@@ -40,8 +41,7 @@ m_filename(filename){
                     }
                 }
 
-                //if all above conditions fail, then the 
-                //value is string
+                //if all above conditions fail, then the value is string
                 else
                     m_string_paramList->insert(std::make_pair(data, value));
             }
