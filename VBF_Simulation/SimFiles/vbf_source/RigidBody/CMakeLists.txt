@@ -9,7 +9,7 @@ message(STATUS "Compiling RigidBody source to a library")
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## add extra compilation flags for linux type machines

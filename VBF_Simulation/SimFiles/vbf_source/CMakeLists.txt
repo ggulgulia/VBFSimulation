@@ -12,7 +12,7 @@ message(STATUS "compilation of VBF_Simulation components to library")
 if(${CMAKE_BUILD_TYPE}  STREQUAL "Debug")
     list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
+    list(APPEND flags "O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## set Linux Specific flags

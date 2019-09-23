@@ -19,7 +19,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     message(STATUS "CMake build type for KinematicBodes library is Release")
-    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 endif()
 
 #Linux/Gcc Specific compiler flags
