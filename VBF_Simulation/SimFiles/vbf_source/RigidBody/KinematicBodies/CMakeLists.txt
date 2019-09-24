@@ -1,11 +1,17 @@
 #add appropriate path to src code from which the lib is to be made
 cmake_minimum_required(VERSION 3.2.3)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(CMAKE_CXX_FLAGS "-g -std=c++14 -Wall -Werror -fno-elide-constructors")
-
+set(CMAKE_CXX_FLAGS "-std=c++17")
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(STATUS "CMake build type for DynamicBodies library is Debug")
+    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    message(STATUS "CMake build type for DynamicBodies library is Release")
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+endif()
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
@@ -65,4 +71,8 @@ target_compile_options(VBF_KinematicBody
 target_link_libraries(VBF_KinematicBody -L../VBF_RigidBody)
 
 #make the library PUBLIC
+#this enables includes of header files
+#using the angled brackets and without the
+#user being aware of the relative location 
+#of the header
 target_include_directories(VBF_KinematicBody PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

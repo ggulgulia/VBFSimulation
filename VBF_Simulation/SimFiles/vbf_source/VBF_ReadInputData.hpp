@@ -10,6 +10,7 @@
 #include <unordered_map>
 #include <memory>
 #include <cctype>
+#include <exception>
 
 /*! The purpose of of VBF::ReadInputData is to initialize VBF Simulation by reading the input file, which will contain several
  * simulation input, run time and output parameters. 
@@ -117,12 +118,12 @@ namespace VBF{
 
                 out << "printing the paramters list that was read from input file: \n";
                 //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
-                for (const auto& pair : *paramList){
-                    std::cout << pair.first << ":" << pair.second << "\n";
+                for(const auto& [first, second] : *paramList){
+                    std::cout << first << ":" << second << "\n";
                 } 
 
-                for (const auto& pair : *paramList2){
-                    std::cout << pair.first << ":" << pair.second << "\n";
+                for(const auto& [first, second] : *paramList2){
+                    std::cout << first << ":" << second << "\n";
                 } 
 
                 return out;
