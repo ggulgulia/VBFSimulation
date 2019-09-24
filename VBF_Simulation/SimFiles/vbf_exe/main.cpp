@@ -47,6 +47,7 @@
 
 int main(int argc, char **argv){
 
+    try{
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
     //if(argc !=3){
@@ -170,6 +171,23 @@ int main(int argc, char **argv){
     vbf_window->close_window();
     //stl_body->~ImportSTLSetup();
     //delete window;
+    }
+    
+    
+    catch(const std::runtime_error& e){
+        std::cerr << "RUNTIME ERROR: " << e.what() << "\n";
+        std::cerr << "Force aborting program\n";
+        exit(-1);
+    }
+    /*! Catch statement with elipsis `...` catches any exception
+    / that might not have been accounted for
+    */
+    catch(...){
+        std::cerr << "ERROR : CAUGHT AN EXCEPTION OF UNDETERMINED TYPE\n"
+                  << "FORCE EXITING THE PROGRAM\n";
+
+        return -1;
+    }
    
 return 0;
 }

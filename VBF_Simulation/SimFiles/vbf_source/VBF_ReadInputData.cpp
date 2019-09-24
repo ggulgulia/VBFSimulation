@@ -5,11 +5,10 @@
 VBF::ReadInputData::ReadInputData(std::string filename):
 m_filename(filename){
     std::ifstream input_file;
-    try{
         std::cout << "attempting to open the input file\n";
         input_file.open(m_filename);
         if(!input_file.is_open())
-            throw "failed to open the file, please make sure the file exists in the path specified\n";
+            throw std::runtime_error("failed to open the file, please make sure the file exists in the path specified\n");
         std::string varName;
         std::string value;
         int linenum(0);
@@ -47,13 +46,6 @@ m_filename(filename){
             }
         }
         std::cout << "Number of parameters read from " << m_filename << ": "<< linenum << "\n";
-    }
-    catch(const std::exception& e){
-        std::cerr << "ERROR: " << e.what() << "\n";
-        std::cerr << "Force aborting program\n";
-        input_file.close();
-        exit(-1);
-    }
 } 
 
 //user constructor2
