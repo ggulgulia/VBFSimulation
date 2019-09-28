@@ -36,3 +36,16 @@ endif()
 
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 message(STATUS "compiling the ${PROJECT_NAME} with CXX ${COMPILER_FLAGS}")
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(UseDoxygenDoc)
+add_doxygen_doc(
+    BUILD_DIR
+    ${CMAKE_CURRENT_BINARY_DIR}/_build
+    DOXY_FILE
+    ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in
+    TARGET_NAME
+    docs
+    COMMENT
+    "HTML documentation"
+    )
