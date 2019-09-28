@@ -1,42 +1,38 @@
 # HelloWorld is a minimal sample creating, stepping and deleting a Bullet dynamics world
-cmake_minimum_required(VERSION 2.8)
-project(libtest_project CXX)
-
-#set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+cmake_minimum_required(VERSION 3.2.3)
+project(VBF_iwb_TUM LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
-#set(CMAKE_CXX_FLAGS "-std=c++11 -Wall -Werror")
-set(CMAKE_CXX_FLAGS "-std=c++11 -g")
-message("CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
-INCLUDE_DIRECTORIES(
-${BULLET_PHYSICS_SOURCE_DIR}/src 
-)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+message(STATUS "Configuring ${PROJECT_NAME} project with ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION} Compiler")
 
-LINK_LIBRARIES(
-    OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread BulletDynamics BulletCollision LinearMath 
-)
+# set a default configure type of DEBUG
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build Type" FORCE)
+endif()
 
-IF (WIN32)
-	ADD_EXECUTABLE(vbfsim
-        test.cpp
-		${BULLET_PHYSICS_SOURCE_DIR}/build3/bullet.rc
-	)
-ELSE()
-	ADD_EXECUTABLE(vbf_test.out
-        main.cpp
-        VBF_World.cpp
-        VBF_RigidBodies.cpp
-        VBF_CommonPhysics.cpp
-        VBF_Cube.cpp
-        VBF_Sphere.cpp
-	)
-ENDIF()
+message(STATUS "Configuring project ${project} on/for ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Build Type: " ${CMAKE_BUILD_TYPE})
+add_subdirectory(vbf_source)
+add_subdirectory(vbf_exe)
+if(${WITH_UNIT_TESTS})
+    message(STATUS "configuring project with UNIT TESTS")
+    add_subdirectory(unit_tests)
+else()
+    message(STATUS "configuring project without unit tests")
+    message(STATUS "to configure with unit test, use CLI: -DWIHT_UNIT_TESTS=ON")
+endif()
 
+if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    message(STATUS "CMake configure type for project is DEBUG")
+    set(CMAKE_CXX_FLAGS "-std=c++17 -g Wall -Werror -fno-elide-constructors")
+    message(STATUS "C++ Compiler flags:  ${CMAKE_CXX_FLAGS}")
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    message(STATUS "CMake configure type is RELEASE")
+    set(CMAKE_CXX_FLAGS "-std=c++17 -o1 -Wall -Werror -fno-elide-constructors")
+    message(STATUS "C++ Compiler flags:  ${CMAKE_CXX_FLAGS}")
+endif()
+    
 
-
-
-IF (INTERNAL_ADD_POSTFIX_EXECUTABLE_NAMES)
-			SET_TARGET_PROPERTIES(AppHelloWorld PROPERTIES  DEBUG_POSTFIX "_Debug")
-			SET_TARGET_PROPERTIES(AppHelloWorld PROPERTIES  MINSIZEREL_POSTFIX "_MinsizeRel")
-			SET_TARGET_PROPERTIES(AppHelloWorld PROPERTIES  RELWITHDEBINFO_POSTFIX "_RelWithDebugInfo")
-ENDIF(INTERNAL_ADD_POSTFIX_EXECUTABLE_NAMES)
+message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
+message(STATUS "compiling the ${PROJECT_NAME} with CXX ${COMPILER_FLAGS}")
