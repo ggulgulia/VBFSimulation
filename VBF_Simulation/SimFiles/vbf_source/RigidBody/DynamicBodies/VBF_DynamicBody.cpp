@@ -3,11 +3,11 @@
 
 //user constructor
 VBF::DynamicBody::DynamicBody(std::string name, CollShape* shape, 
-                              btVector3 origin, double mass, 
+                              btVector3 origin, const double collMarg, double mass, 
                               double linFriction, double rollingFriction, 
                               double restitution, double linDamping, 
                               double angularDamping, size_t index):
-    RigidBody(name, shape, origin, index),
+    RigidBody(name, shape, origin, collMarg, index),
     m_mass(mass), m_inertia(btVector3(0.0, 0.0, 0.0))
 {
     MotionState* moSt = RigidBody::get_motion_state();

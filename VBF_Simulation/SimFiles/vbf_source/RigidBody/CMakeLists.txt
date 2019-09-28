@@ -1,15 +1,17 @@
 #add appropriate path to src code from which the lib is to be made
 cmake_minimum_required(VERSION 3.2.3)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "-std=c++14")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_FLAGS "-std=c++17")
 
 message(STATUS "Compiling RigidBody source to a library")
 
 ## set Release type specific type compiler flags
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## add extra compilation flags for linux type machines

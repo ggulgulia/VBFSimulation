@@ -3,16 +3,17 @@
 
 VBF::Kinematic_Cylinder::Kinematic_Cylinder(): KinematicBody("Default Kinematic Cylinder", 
                           new btCylinderShape(btVector3(0.5, 1.0, 0.5)),
-                          btVector3(0.0,0.0, 0.0), 23), 
+                          btVector3(0.0,0.0, 0.0), 0.004, 23), 
             m_radius(0.5), m_height(2.0){
                             //empty constructor body
             }
 
 //Kinematic_Cylinder Class Definitions
-VBF::Kinematic_Cylinder::Kinematic_Cylinder(double radius, double height, btVector3 origin, size_t index):
+VBF::Kinematic_Cylinder::Kinematic_Cylinder(double radius, double height, btVector3 origin,
+                                            const double collMarg, size_t index):
                                     KinematicBody("Kinematic_Cylinder",
                                     new btBoxShape(btVector3(radius, 0.5*height, radius)),
-                                    origin, index),
+                                    origin, collMarg, index),
                                     m_radius(radius), m_height(height){
                         
                 //empty constructor body

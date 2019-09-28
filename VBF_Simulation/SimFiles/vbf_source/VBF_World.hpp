@@ -30,12 +30,12 @@ namespace VBF{
     class World {
         
         private:
-            btWorld* m_world; /*!< member of type btWorld (bullet object) encapsulated within VBF::World */
-            btCollConfig* m_collisionConfig; /*!< Collision configuraation encapsulated in VBF::World */
-            btDispatcher_iwb* m_dispatcher;  /*!< Member of type btCollisionDispatcher (bullet object) encapsulated in VBF::World */
-            btInterface* m_interface; /*!< Member of type btInterface (bullet object) encapsulated in VBF::World */
-            btSolver* m_solver; /*!< Member of type btSolver (bullet object) encapsulated in VBF::World */
-            bool m_is_initialized; /*!< Boolean member to verify if the VBF::World object is initialized */
+            btWorld* m_world{nullptr}; /*!< member of type btWorld (bullet object) encapsulated within VBF::World */
+            btCollConfig* m_collisionConfig{nullptr}; /*!< Collision configuraation encapsulated in VBF::World */
+            btDispatcher_iwb* m_dispatcher{nullptr};  /*!< Member of type btCollisionDispatcher (bullet object) encapsulated in VBF::World */
+            btInterface* m_interface{nullptr}; /*!< Member of type btInterface (bullet object) encapsulated in VBF::World */
+            btSolver* m_solver{nullptr}; /*!< Member of type btSolver (bullet object) encapsulated in VBF::World */
+            bool m_is_initialized{false}; /*!< Boolean member to verify if the VBF::World object is initialized */
             long double m_time;
     
             /*! @brief Advances the simulation in time.
@@ -100,7 +100,7 @@ namespace VBF{
              * VBF::World::initialize_new_World() to initialize the 
              * member variables correctly. 
              */
-            World();
+            World() = default;
     
             /*! @brief User defined constructor
              *
@@ -136,8 +136,11 @@ namespace VBF{
              * copy constructor
              */
             World(const World& world) = delete;
+
+            //Implicit (compiler generated) move constructor
+            World(World&& world) = default;
     
-            void intialize_new_world();
+            void initialize_new_world();
 
             /*! @brief Initializes a VBF::World object suitable for
              * VBF::Simulation

@@ -34,8 +34,9 @@ namespace VBF{
             /*! User constructor. The fileName is same as file path. The function may throw due to 
              * several reasons. Look at the helper file LoadSTLMesh.hpp
              */
-            StaticMeshBody(const std::string &fileName, double scale=1.0, btVector3 origin = btVector3(0.0, 0.0, 0.0),
-                             size_t index=500);
+            StaticMeshBody(const std::string &fileName, double scale=1.0,
+                           btVector3 origin = btVector3(0.0, 0.0, 0.0), 
+                           const double collMarg=0.004, size_t index=500);
 
             /*! Virtual Destructor does nothing at the moment
              */

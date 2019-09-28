@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2.3)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -7,12 +7,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ## goal is to have strict compiler checks even in 
 ##debug mode 
 
-set(CMAKE_CXX_FLAGS "-std=c++14")
+set(CMAKE_CXX_FLAGS "-std=c++17")
 message(STATUS "compilation of VBF_Simulation components to library")
 if(${CMAKE_BUILD_TYPE}  STREQUAL "Debug")
-    list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    list(APPEND flags "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
+    list(APPEND flags "O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
 endif()
 
 ## set Linux Specific flags
@@ -20,8 +20,6 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     message(STATUS "Compiling VBF_Simulation library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif()
-
-message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 
 add_subdirectory(RigidBody)
 
@@ -38,7 +36,8 @@ list(APPEND
     VBF_World.cpp
     VBF_CommonPhysics.cpp
     VBF_SimLoop.hpp
-    VBF_InitializeSim.cpp
+    VBF_ReadInputData.cpp
+    VBF_ReadInputData.hpp
     VBF_InitializeSim.hpp
     RigidBody/KinematicBodies/VBF_KinematicMesh.cpp ##need to resolve circular dependency
     )
@@ -47,11 +46,11 @@ if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
     message(STATUS "Compiling VBF Simulation components to a STATIC LIBRARY")
     add_library(VBF_Simulation
                 ${_sources3}
-                  )
+               )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
 
     message(STATUS "Compiling VBF Simulation components to a SHARED LIBRARY")
-    ADD_LIBRARY(VBF_Simulation
+    add_library(VBF_Simulation
                 SHARED 
                 ${_sources3}
                   )
@@ -68,5 +67,9 @@ target_compile_options(VBF_Simulation
 #link the current library with other VBF rigid body libraries
 target_link_libraries(VBF_Simulation PUBLIC VBF_RigidBody VBF_StaticBody VBF_KinematicBody VBF_DynamicBody)
 
-#make the library available publicly
+#make the library PUBLIC
+#this enables includes of header files
+#using the angled brackets and without the
+#user being aware of the relative location 
+#of the header
 target_include_directories(VBF_Simulation PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

@@ -13,7 +13,7 @@ namespace VBF{
 
         public:
 
-            explicit Kinematic_Sphere(double radius, btVector3 origin, size_t index);         
+            explicit Kinematic_Sphere(double radius, btVector3 origin, const double collMarg, size_t index);         
             ~Kinematic_Sphere();
 
             //preventing copy semantics

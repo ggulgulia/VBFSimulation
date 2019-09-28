@@ -38,91 +38,60 @@
  */
 
 //! relevant imports
-#include <VBF_World.hpp>
 #include <VBF_CommonPhysics.hpp>
 #include <VBF_GraphicsBridge.hpp>
 #include <test_rigidBody.hpp>
 #include <VBF_InitializeSim.hpp>
+//#include <VBF_ReadInputData.hpp>
 
 
 int main(int argc, char **argv){
 
+    try{
     std::cout << "attempt to run hello world like program using modern c++ and with GUI debugDraw\n";
 
-    if(argc !=2){
-        std::cout << "Incorrect input arguments while running executable\n";
-        std::cout << "Correct format to run the simulation:\n";
-        std::cout << "<PATH TO EXECUTABLE> <PATH TO Input.txt File>\n";
-        std::cout  << "Aborting the program. Please run the simulation with correct format\n";
-        return 0;
-    }
+    //if(argc !=3){
+    //    std::cout << "Incorrect input arguments while running executable\n";
+    //    std::cout << "Correct format to run the simulation:\n";
+    //    std::cout << "<PATH TO EXECUTABLE> <PATH TO VBF MESH FILE> <PATH TO INPUT FILE>\n";
+    //    std::cout  << "Aborting the program. Please run the simulation with correct format\n";
+    //    return 0;
+    //}
     //! create a placeholder for rigid boides
     std::vector<VBF::RigidBody*> rigid_bodies;
 
-    //! create a reference ground
-    VBF::StaticBody *ground = get_ground();
-    btVector3 groundOrigin = get_rigid_body_position(ground);
-    std::cout << groundOrigin[0] << " " << groundOrigin[1] << " " << groundOrigin[2] << "\n";
-    
-    //! test different types (static, kinematic or dynamic speheres or cubes)
-    
-    //! test static sphere
-    //get_cubes<VBF::Static_Sphere>(rigid_bodies);
-    
-    //! test import stl files of kinematic and dynamic types
-    
     //! declare file names 
     
     //! fileName for kinematic rigid body
-    //
-    std::string meshPath{argv[1]};
-    std::string inputFile{argv[1]};
-    VBF::InitializeSim init(inputFile);
-    std::string file1Name{"StufeFein150x30x200.stl"};
-    std::string file2Name{"Zylinder1_7x1_0.stl"};
+    //std::string meshPath{argv[1]};
+    //std::string inputFile{argv[2]};
+    //VBF::ReadInputData init(inputFile);
+    //std::cout << "Printing inputs " << init;
+    //std::cout << "Value of deltaT " << init["deltaT"] << "\n";
 
-    std::string file1Path(meshPath + file1Name);
-    std::cout << file1Path << "\n";
-    std::string file2Path(meshPath + file2Name);
 
-    //! set scaling factor
-    static const double scale{0.1};
+    //std::string vbf_file_path(meshPath + file1Name);
+    std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
+    std::string inputFile{"../InputFile.txt"};
+    std::cout << vbf_file_path << "\n";
+    std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
-    //! set origin for the imported part
-    btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
-    btVector3 partOrigin{btVector3(5.0, 2.230, -1.5)};
-    //! import kinematic part
-    VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(file1Path, scale, meshOrigin);
+    VBF::ReadInputData inputData(inputFile);
+    std::cout << inputData << "\n";
 
-    //! initialize mass for dynamic body
-    double mass2{0.20};
-
-    //! store the imported bodies in the rigid_bodies container
-    rigid_bodies.push_back(stl_body->get_vbf_rbody());
+    VBF::InitializeSim initSim(inputFile, vbf_file_path);
     
+    
+    //! import kinematic part
+    VBF::KinematicMeshBody* stl_body = initSim.get_vbf_part();
 
     //add a cylinder like part to the simulation 
-    static const double cylHeight{1.0}, cylRad{0.25};
-    VBF::Dynamic_Cylinder* stl_body3 = new VBF::Dynamic_Cylinder(cylRad, cylHeight, partOrigin, mass2);
+    VBF::Dynamic_Cylinder* stl_body3 = initSim.get_dyn_part(); 
     rigid_bodies.push_back(stl_body3);
 
-    ////test import static mesh
-    //VBF::DynamicMeshBody* stl_body33 = new VBF::DynamicMeshBody(fileName, 0.5*scale, 1.00, btVector3(10.0, 0.0, 100.0));
-    //rigid_bodies.push_back(stl_body33->get_vbf_rbody());
-
-    ////test import kinematic cubes
-    //VBF::Kinematic_Cube* kinCube = new VBF::Kinematic_Cube(1.0, btVector3(0.0, 6.0, 0.0), 10);
-    //rigid_bodies.push_back(kinCube);
-
-    //create world for vbf simulation
-    VBF::World* vbf_world = new VBF::World();
-    vbf_world->intialize_new_world();
     
-    //CommonPhysics phy(vbf_world);
-    VBF::CommonPhysics phy(vbf_world, ground, rigid_bodies);
-    phy.initPhysics();
-    
-    //visualization bridge
+    VBF::CommonPhysics& phy = initSim.get_VBF_physics();
+    VBF::World* vbf_world = initSim.get_VBF_world(); 
     VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
     vbf_window->create_window();
     VBF_Vis vis_bridge;
@@ -198,10 +167,27 @@ int main(int argc, char **argv){
         //    vbf_world->add_rigid_bodies_to_world(part->get_rbody());
         //    }
         }while(!vbf_window->requested_exit());
-        
+      
     vbf_window->close_window();
     //stl_body->~ImportSTLSetup();
     //delete window;
+    }
+    
+    
+    catch(const std::runtime_error& e){
+        std::cerr << "RUNTIME ERROR: " << e.what() << "\n";
+        std::cerr << "Force aborting program\n";
+        exit(-1);
+    }
+    /*! Catch statement with elipsis `...` catches any exception
+    / that might not have been accounted for
+    */
+    catch(...){
+        std::cerr << "ERROR : CAUGHT AN EXCEPTION OF UNDETERMINED TYPE\n"
+                  << "FORCE EXITING THE PROGRAM\n";
+
+        return -1;
+    }
    
 return 0;
 }

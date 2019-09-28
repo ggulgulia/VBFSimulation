@@ -18,7 +18,7 @@ namespace VBF{
         public:
             Static_Sphere();
 
-            explicit Static_Sphere(double radius, btVector3 origin, size_t index);         
+            explicit Static_Sphere(double radius, btVector3 origin, const double collMarg, size_t index);         
             ~Static_Sphere();
 
             virtual std::string get_name() const noexcept override final;

@@ -7,7 +7,7 @@
 
 VBF::DynamicMeshBody::DynamicMeshBody(const std::string &fileName,
                                       double scale,  double mass,
-                                      btVector3 origin,
+                                      btVector3 origin, const double collMarg,
                                       double linFriction, double rollingFriction, 
                                       double restitution, double linDamping, 
                                       double angularDamping, size_t index):
@@ -31,13 +31,13 @@ VBF::DynamicMeshBody::DynamicMeshBody(const std::string &fileName,
     origin[0] *= scale; 
     origin[1] *= scale; 
     origin[2] *= scale;
-    double colMargin{0.01};
-    shape->setMargin(colMargin);
+    shape->setMargin(collMarg);
     shape->updateBound();
 
-    m_VBF_DynamicBody = new VBF::DynamicBody(m_filename, shape, origin, mass, 
-                              linFriction, rollingFriction, restitution, 
-                              linDamping, angularDamping, index);
+    m_VBF_DynamicBody = new VBF::DynamicBody(m_filename, shape, origin, collMarg, 
+                                             mass, linFriction, rollingFriction, 
+                                             restitution, linDamping, angularDamping, 
+                                             index);
 }
 
 

@@ -15,6 +15,7 @@
 #include <VBF_DynamicMesh.hpp>
 #include <VBF_Dynamic_Cylinder.hpp>
 
+static const double collMarg = 0.004;
 
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
@@ -34,7 +35,7 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
-VBF::Static_Ground* get_ground(){
+VBF::Static_Ground* get_ground(const double collMarg){
 
     //create a ground
     float grPos = -20;
@@ -42,7 +43,7 @@ VBF::Static_Ground* get_ground(){
     btVector3 grOrigin;
     size_t grIndex = 245;
     
-    return new VBF::Static_Ground(grNormal, grPos, grOrigin, grIndex);
+    return new VBF::Static_Ground(grNormal, grPos, grOrigin, collMarg, grIndex);
  
 }
 
@@ -61,7 +62,7 @@ void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
                
                btVector3 cubeOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                cubeIndex += j + array_size*i + array_size*k;
-               CubeType *cube = new CubeType(cubeLen, cubeOrigin,  cubeIndex);
+               CubeType *cube = new CubeType(cubeLen, cubeOrigin,  collMarg, cubeIndex);
                rigid_bodies_vector.push_back(cube);
            } 
         }
@@ -84,7 +85,7 @@ void get_cubes<VBF::Dynamic_Cube>(std::vector<VBF::RigidBody*>& rigid_bodies_vec
                
                btVector3 cubeOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                cubeIndex += j + array_size*i + array_size*k;
-               VBF::Dynamic_Cube* cube = new VBF::Dynamic_Cube(cubeLen, cubeOrigin,  cubeMass);
+               VBF::Dynamic_Cube* cube = new VBF::Dynamic_Cube(cubeLen, cubeOrigin,  collMarg, cubeMass);
                rigid_bodies_vector.push_back(cube);
            } 
         }
@@ -106,7 +107,7 @@ void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
                    
                    btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                    sphereIndex += j + array_size*i + array_size*k;
-                   SphereType *sph = new SphereType(sphereRad, sphereOrigin, sphereIndex);
+                   SphereType *sph = new SphereType(sphereRad, sphereOrigin, collMarg, sphereIndex);
                    sphere_vector.push_back(sph);
                } 
             }
@@ -128,7 +129,7 @@ void get_spheres<VBF::Dynamic_Sphere>(std::vector<VBF::RigidBody*>& sphere_vecto
                    
                    btVector3 sphereOrigin = btVector3(2.0*i, 20+2.0*k, 2.0*j);
                    sphereIndex += j + array_size*i + array_size*k;
-                   VBF::Dynamic_Sphere *sph = new VBF::Dynamic_Sphere(sphereRad, sphereOrigin, sphereMass);
+                   VBF::Dynamic_Sphere *sph = new VBF::Dynamic_Sphere(sphereRad, sphereOrigin, collMarg, sphereMass);
                    sphere_vector.push_back(sph);
                } 
             }

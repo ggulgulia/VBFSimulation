@@ -1,117 +1,134 @@
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <sstream>
-#include <utility>
+#ifndef INITIALIZE_SIM_H
+#define INITIALIZE_SIM_H
 
-/*! The purpose of of VBF::InitializeSim is to initialize VBF Simulation by reading the input file, which will contain several
- * simulation input, run time and output parameters. 
- *
- * Currently this class in not complete as the VBF::Simulation itself is under progress and the full extent of parameters
- * on which VBF Simulation will depend is not determined.
- *
- * @warning The class assumes that the parameter has a name and a value of type double. This is not true and change it by using correct 
- * implementation.
- *
- * TODO: Complete implementation as the simulation development progresses. 
- * @todo Change the private member variable from a pointer to a non-pointer object since std::vector guarantees heap memory allocation.
- */
+#include <VBF_ReadInputData.hpp>
+#include <VBF_World.hpp>
+#include <VBF_CommonPhysics.hpp>
+#include <VBF_GraphicsBridge.hpp>
+#include <test_rigidBody.hpp>
 namespace VBF{
+
     class InitializeSim{
-
+        
         private:
-            std::string m_filename; /*!< Input file name */
-            std::vector<std::pair<std::string,double>> *m_parameterList = new std::vector<std::pair<std::string, double>>(0); /*!< container that stores parameter name and value */
-             
+            ReadInputData m_inputData;
+            std::string m_path_to_VBF_part;
+            World* m_world = new World();
+            double m_timeStep{0.0025};
+            double m_scalingFactor{1.0};
+            size_t m_num_instances{10};
+            std::vector<VBF::RigidBody*> m_rigid_bodies;
+            VBF::KinematicMeshBody* m_vbf_part{nullptr};
+            VBF::Dynamic_Cylinder* m_dyn_part{nullptr};
+            VBF::StaticBody *m_ground{nullptr};
+            VBF::CommonPhysics m_vbf_phy;
+            btVector3 m_mesh_origin;
+            btVector3 m_part_origin;
+
+            double get_numeric_input_parameter(const std::string& key){
+                return m_inputData.get_numeric_value(key);
+            }
+            
+            std::string get_string_input_parameter(const std::string& key){
+                return m_inputData.get_string_value(key);
+            }
+
+            void initialize_data(){
+                
+                //lambda closure to return the numeric value held in 
+                //m_inputData map.
+                auto value_of_key = [&](auto&& key)->double {
+                    return m_inputData.get_numeric_value(key);
+                };
+                
+                
+                m_world->initialize_new_world();
+                m_world->set_gravity(btVector3(0.0, value_of_key("gravity"), 0.0));
+                m_timeStep = value_of_key("time_step");
+                m_scalingFactor = value_of_key("scaling_factor");
+                const double collMarg = value_of_key("collision_margin");
+                m_num_instances = value_of_key("num_instances");
+                m_mesh_origin = btVector3(value_of_key("kin_start_posX"), 
+                                                 value_of_key("kin_start_posY"), 
+                                                 value_of_key("kin_start_posZ"));
+                m_part_origin = btVector3(value_of_key("dyn_start_posX"),
+                                                         value_of_key("dyn_start_posY"),
+                                                         value_of_key("dyn_start_posZ"));
+                const double cylRad = value_of_key("cylinder_radius");
+                const double cylHeight = value_of_key("cylinder_height");
+                const double dyn_mass = value_of_key("dyn_mass");
+
+                m_vbf_part = new VBF::KinematicMeshBody(m_path_to_VBF_part, m_scalingFactor,
+                                                        m_mesh_origin, collMarg);
+                
+                m_dyn_part = new VBF::Dynamic_Cylinder(cylRad, cylHeight, m_part_origin, 
+                                                       collMarg, dyn_mass);
+
+                m_ground = get_ground(collMarg);
+                m_rigid_bodies.push_back(m_vbf_part->get_vbf_rbody());
+                m_rigid_bodies.push_back(m_dyn_part);
+
+                m_vbf_phy.init_physics(m_world, m_ground, m_rigid_bodies);
+            }
+
         public:
-            /*! @brief Default constructor
-             * @Details Currently the default constuctor doesn't do
-             * anything. 
-             *
-             * @todo Define proper impelementation. If in future it 
-             * seems useless, delete the default constructor.
-             */
-            InitializeSim();
 
-            /*! @brief User constructor 1
-             *
-             * @details Creates a VBF::IniitalizeSim object by reading
-             * the input file. The body of the constructor reads line
-             * by line each parameter name and its value and stores it
-             * in the memeber variable m_parameterList
-             * @param filename : string that determines path to input
-             * file.
-             */
-            explicit InitializeSim(std::string filename);
+             InitializeSim() = default;
+            ~InitializeSim() = default;
 
-            /*! @brief user constructor2
-             *
-             * @details This constructor allows user to create a 
-             * VBF::InitializeSim object by passing a parameter name 
-             * and a parameter value. Later if more parameters is 
-             * desired to be added to the object, the public member 
-             * method VBF::InitializeSim::add_parameter method could 
-             * be used.
-             * @todo Implement add_parameter method for this class.
-             *
-             * @param varName  : string name of parameter.
-             * @param varVal   : value of parameter.  
-             *
-             * @warning The method assumes that the parameter value 
-             * is double. In reality this is not true.
-             * @todo Correct the second parameter type to accept any
-             * type. 
-             */
-            explicit InitializeSim(std::string varName, double varVal);
-            
-            //move constructor
-            //InitializeSim(InitializeSim&& init);
+            InitializeSim(const std::string& inputFileName,
+                         const std::string& path_to_VBF_part):
+            m_inputData(inputFileName),
+            m_path_to_VBF_part(path_to_VBF_part)
+            {
+                try{
+                initialize_data();
+                }
+                catch(const std::exception& e){
+                    std::cerr << e.what() << "\n";
+                    abort();
+                }
+                //storage for rigid bodies
+                //std::vector<VBF::RigidBody*> rigid_bodies;
 
-            /*! @brief Destructor
-             * @details The destructor clears the contents of variable
-             * m_parameterList and releases any memory held by it.
-             */
-            ~InitializeSim();
-
-            /*! @brief Deleted copy constructor to prevent copy 
-             * semantics.
-             */
-            InitializeSim(const InitializeSim&) = delete;
-
-            /*! @brief Deleted copy assignment operator
-             */
-            const InitializeSim& operator=(const InitializeSim&) = delete;
-            
-            /*! @brief This method gives read only access to 
-             * parameter list.
-             *
-             * @details User has to ensure that the parameters for 
-             * simulation is correct before the simulation begins 
-             * otherwise entire simulation data can be corrupted. In
-             * the case of a worng parameter for VBF simulation, the 
-             * simulation has to be restarted. This is the rationale
-             * behind providing read only access to parameter list.
-             */
-            const std::vector<std::pair<std::string, double>>* get_parameter_list() const;
+                ////! create a reference ground
+                //btVector3 meshOrigin{btVector3(0.0, 0.0, 00.0)} ;
+                //VBF::KinematicMeshBody* stl_body = new VBF::KinematicMeshBody(m_path_to_VBF_part, m_scalingFactor, meshOrigin);
+                //rigid_bodies.push_back(stl_body->get_vbf_rbody());
+            }
 
 
-            /*! @brief Method passes a reference to std::ostream
-             * so that parameterlist encapsulated within 'this' object
-             * could be printed on the screen (or on a file)
-             */
-            friend std::ostream& operator<<(std::ostream& out, const InitializeSim& init ){
-    const std::vector<std::pair<std::string, double>>::iterator itr;
-    const std::vector<std::pair<std::string, double>> *paramList = init.get_parameter_list() ;
+    const double get_collisionMargin(){
+        return get_numeric_input_parameter("collision_margin");
+    }
 
-    out << "printing the paramters list that was read from input file: \n";
-    //in c++17 : for(const auto& [first, second] : *paramList){ std::cout << first << ":" << second << "\n"; }
-    for (const auto pair : *paramList){
-        std::cout << pair.first << ":" << pair.second << "\n";
-    } 
+    const double get_scalingFactor(){
+        return get_numeric_input_parameter("scaling_factor");
+    }
 
-    return out;
+    const btVector3 get_vbf_mesh_origin(){
+        return m_mesh_origin;
+    }
+
+    const btVector3 get_dyn_part_origin(){
+        return m_part_origin;
+    }
+
+    CommonPhysics& get_VBF_physics(){
+        return m_vbf_phy;
+    }
+    World* get_VBF_world(){
+        return m_world;
+    }
+
+    KinematicMeshBody* get_vbf_part(){
+        return m_vbf_part;
+    }
+
+    VBF::Dynamic_Cylinder* get_dyn_part(){
+        return m_dyn_part;
+    }
+    };
+
 }
-    };//end class definition
-
-}//end namespace VBF
+#endif /* ifndef INITIALIZE_SIM_H */
