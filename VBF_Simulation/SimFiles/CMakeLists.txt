@@ -37,13 +37,30 @@ endif()
 message(STATUS "CMAKE_BUILD_TYPE is ${CMAKE_BUILD_TYPE}")
 message(STATUS "compiling the ${PROJECT_NAME} with CXX ${COMPILER_FLAGS}")
 
+# append the path to UseDoxygenDoc.cmake file to the
+# list of CMAKE_MODULE_PATH
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+# include the UseDoxygenDoc from the above included path
 include(UseDoxygenDoc)
+
+# 'the command add_doxygen_doc' is defined in the 
+# UseDoxygenDoc.cmake file
 add_doxygen_doc(
+    #the line below instructs cmake to create a
+    # `_documentation` directory within build directory
     BUILD_DIR
-    ${CMAKE_CURRENT_BINARY_DIR}/_build
+    ${CMAKE_CURRENT_BINARY_DIR}/_documentation  
+
+    # the line below instructs cmake file
+    # to look for doxygen configuration file
+    # from the path specified
     DOXY_FILE
     ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in
+
+    # the line below tells cmake to generate a 
+    # target called `docs` which when executed
+    # generates a doxygen file
     TARGET_NAME
     docs
     COMMENT
