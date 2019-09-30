@@ -1,3 +1,6 @@
+
+/*! @file test_rigidBody.hpp */
+
 #ifndef TEST_RIGID_BODY_H
 #define TEST_RIGID_BODY_H
 
@@ -14,9 +17,29 @@
 #include <VBF_Dynamic_Sphere.hpp>
 #include <VBF_DynamicMesh.hpp>
 #include <VBF_Dynamic_Cylinder.hpp>
+    /*!
+     * @brief This file imports all the rigid body types so far
+     * created and additionally some functions are defined in this file 
+     * to assist creation of rigid body pointers on a contiguous chunk 
+     * of memory. This file mainly prevents the #includes in main
+     * file from bloating
+     * @date 2019
+     */
 
+/*! collision margin as prescribed in bullet physics engine 
+ * usage (on the internet) 
+ */
 static const double collMarg = 0.004;
 
+/*! @brief helper function that releases the memory held by a rigid body 
+ * container
+ *
+ * @details a bullet rigid body is defined by its `btCollisionShape` and
+ * `btRigidBody` parameter. This helper function is designed to clean
+ * the pointer stored in `std::vector<btCollisionShape*>` and 
+ * `std::vector<btRigidBody*>`, and both the containers need not 
+ * be of same size (see source code)
+ */
 void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btRigidBody*> &rbody,
                       std::vector<btDefaultMotionState*> &motionState){
     for(size_t i=0; i<collShape.size(); ++i){
@@ -35,11 +58,29 @@ void releaseResources(std::vector<btCollisionShape*> &collShape, std::vector<btR
     std::cout << "Successfully freed the memory\n";
 }
 
+
+/*! @brief helper function to create a datum/ground object
+ * for bullet world
+ *
+ * @detail The datum/ground is a static objct, meaning any object in
+ * the physics world colliding with the ground will react according to
+ * the laws of physics while the ground will stay unaffected
+ *
+ * @bug the ground object in the physics simulation
+ * is not visible in the graphic even though it can 
+ * be seen to be present
+ */
 VBF::Static_Ground* get_ground(const double collMarg){
 
     //create a ground
-    float grPos = -20;
-    btVector3 grNormal= btVector3(0.0, 1.0, 0.0);
+    float grPos = -20; /*! this ground position/height has been found 
+                        * to be optimal given the size of the 
+                        * vibratory bowl feeder. In short:
+                        * this has been derived through trial and error
+                        */
+    btVector3 grNormal= btVector3(0.0, 1.0, 0.0); /*! ground normal along y-direction, which is the 
+                                                   * vertical direction in bullet physics world
+                                                   */
     btVector3 grOrigin;
     size_t grIndex = 245;
     

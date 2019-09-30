@@ -1,3 +1,5 @@
+/*! @file ImportSTLSetup.hpp */
+
 #ifndef IMPORT_STL_SETUP_H
 #define IMPORT_STL_SETUP_H
 
@@ -20,6 +22,18 @@ typedef GLInstanceGraphicsShape VBF_Mesh;
 
 namespace VBF{
 
+    /*! @class ImportSTLSetup
+     * @brief Helper file to import STL trimesh data to VBF Simulation environments
+     * @bugs Two imported mesh penetrate rather than colliding with each other
+     * @date 2019
+     * @details This class assists in importing the an STL file having triangular mesh data. 
+     * The Mesh filename and file path refer to the same data and is for the book keeping
+     * purpose. 
+     *
+     * @note: Bullet is able to read only the stl files that are binary encoded. If ASCII encoded files
+     * are given, the could be easily converted to binary files using an opensource tool (gmesh for 
+     * example)
+     */
     class ImportSTLSetup{
     
         private:            /*! Private memebers of Class ImportSTLSetup */
@@ -34,17 +48,32 @@ namespace VBF{
             btVector3 m_origin;         /*! Origin of imported part*/
         public:
 
+            /*! @brief Default constructor */
+            ImportSTLSetup() = default;
+
             /*! user constructor for importing the part */
-            ImportSTLSetup(const std::string &fileName, double scale=1.0, double mass=0.1, bool isKinematic=false, btVector3 origin = btVector3(0.0, 0.0, 0.0),
-                           int width=640, int height=480);
+            ImportSTLSetup(const std::string &fileName, double scale=1.0, double mass=0.1, bool isKinematic=false, btVector3 origin = btVector3(0.0, 0.0, 0.0), int width=640, int height=480);
 
             /*! Destructor */
             virtual ~ImportSTLSetup();
 
 
+            /*! @brief returns pointer to VBF_Mesh object */
             virtual VBF_Mesh* get_mesh() const noexcept;
+
+            /*! @brief returns name of stl file from which the trimesh 
+             * data is read 
+             */
             virtual std::string get_file_name() const noexcept;
+
+            /*! @breif returns the origin of the trimesh as specified 
+             * during its import
+             */
             virtual btVector3 get_mesh_origin() const noexcept;
+
+            /*! @brief returns the pointer to the VBF::RigidBody
+             * encapsulated in the trimesh data
+             */
             virtual VBF::RigidBody* get_vbf_rbody() const noexcept;
     };
 }
