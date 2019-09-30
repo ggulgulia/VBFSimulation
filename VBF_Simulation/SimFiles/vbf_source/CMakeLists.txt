@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 ##debug mode 
 
 set(CMAKE_CXX_FLAGS "-std=c++17")
-message(STATUS "compilation of VBF_Simulation components to library")
+message(STATUS "configuring of VBF_Simulation components to library")
 if(${CMAKE_BUILD_TYPE}  STREQUAL "Debug")
     list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
@@ -17,7 +17,7 @@ endif()
 
 ## set Linux Specific flags
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    message(STATUS "Compiling VBF_Simulation library on/for LINUX")
+    message(STATUS "configuring VBF_Simulation library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif()
 
@@ -43,13 +43,13 @@ list(APPEND
     )
 if(USE_LIBRARY AND NOT BUILD_SHARED_LIBS)
 
-    message(STATUS "Compiling VBF Simulation components to a STATIC LIBRARY")
+    message(STATUS "configuring VBF Simulation components to a STATIC LIBRARY")
     add_library(VBF_Simulation
                 ${_sources3}
                )
 elseif(USE_LIBRARY AND BUILD_SHARED_LIBS)
 
-    message(STATUS "Compiling VBF Simulation components to a SHARED LIBRARY")
+    message(STATUS "configuring VBF Simulation components to a SHARED LIBRARY")
     add_library(VBF_Simulation
                 SHARED 
                 ${_sources3}

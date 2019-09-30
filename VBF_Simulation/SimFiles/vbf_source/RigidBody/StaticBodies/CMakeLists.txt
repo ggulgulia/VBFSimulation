@@ -5,7 +5,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_FLAGS "-std=c++17")
-message(STATUS "Compilation of StaticBodies sources to a library")
+message(STATUS "configuring of StaticBodies sources to a library")
 
 ## set up of build specific compiler options
 ## goal is to have strict compiler checks even 
@@ -13,15 +13,15 @@ message(STATUS "Compilation of StaticBodies sources to a library")
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     message(STATUS "CMake build type for StaticBodies library is Debug")
-    list(APPEND flags "-g" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-g" "-Wall" "-Werror" )
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     message(STATUS "CMake build type for StaticBodies library is Release")
-    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror")
 endif()
 
 #Linux/Gcc Specific compiler flags
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    message(STATUS "Compiling StaticBody library on/for LINUX")
+    message(STATUS "configuring StaticBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif()
 
