@@ -1,4 +1,3 @@
-# HelloWorld is a minimal sample creating, stepping and deleting a Bullet dynamics world
 cmake_minimum_required(VERSION 3.2.3)
 project(VBF_iwb_TUM LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
