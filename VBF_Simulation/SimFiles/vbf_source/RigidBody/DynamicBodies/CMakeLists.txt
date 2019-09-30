@@ -11,21 +11,21 @@ set(CMAKE_CXX_FLAGS "-std=c++17")
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     message(STATUS "CMake build type for DynamicBodies library is Debug")
-    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     message(STATUS "CMake build type for DynamicBodies library is Release")
-    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror")
 endif()
 
 #Linux/Gcc Specific compiler flags
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    message(STATUS "Compiling DynamicBody library on/for LINUX")
+    message(STATUS "configuring DynamicBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif()
 
 set(USE_LIBRARY ON)
 set(BUILD_SHARED_LIBS OFF)
-message(STATUS "Compile sources for VBF_DynamicBody into a libary? " ${USE_LIBRARY})
+message(STATUS "Configure sources for VBF_DynamicBody into a libary? " ${USE_LIBRARY})
 
 LINK_LIBRARIES(OpenGLSupport OpenGLWindow GL GLU glut GLEW X11 pthread 
               BulletDynamics BulletCollision LinearMath Bullet3Common)

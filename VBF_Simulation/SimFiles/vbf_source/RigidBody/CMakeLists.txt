@@ -5,18 +5,18 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-std=c++17")
 
-message(STATUS "Compiling RigidBody source to a library")
+message(STATUS "configuring RigidBody source to a library")
 
 ## set Release type specific type compiler flags
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror")
 endif()
 
 ## add extra compilation flags for linux type machines
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    message(STATUS "Compiling RigidBody library on/for LINUX")
+    message(STATUS "configuring RigidBody library on/for LINUX")
     list(APPEND flags "-Wextra" "-Wpedantic")
 endif()
 

@@ -4,9 +4,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "-std=c++17")
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors")
+    list(APPEND flags "-g" "-fPIC" "-Wall" "-Werror")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror" "-fno-elide-constructors" )
+    list(APPEND flags "-O3" "-fPIC" "-Wall" "-Werror")
 endif()
 
 add_executable(vbf_sim.out
