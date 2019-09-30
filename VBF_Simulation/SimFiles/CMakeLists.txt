@@ -25,11 +25,11 @@ endif()
 
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
     message(STATUS "CMake configure type for project is DEBUG")
-    set(CMAKE_CXX_FLAGS "-std=c++17 -g Wall -Werror -fno-elide-constructors")
+    set(CMAKE_CXX_FLAGS "-std=c++17 -g Wall -Werror -Wextra -Wpedantic -fPIC")
     message(STATUS "C++ Compiler flags:  ${CMAKE_CXX_FLAGS}")
 elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
     message(STATUS "CMake configure type is RELEASE")
-    set(CMAKE_CXX_FLAGS "-std=c++17 -o1 -Wall -Werror -fno-elide-constructors")
+    set(CMAKE_CXX_FLAGS "-std=c++17 -O3 -Wall -Werror -Wextra -Wpedantic -fPIC")
     message(STATUS "C++ Compiler flags:  ${CMAKE_CXX_FLAGS}")
 endif()
     

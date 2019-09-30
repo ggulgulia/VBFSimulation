@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2.3)
 project(VBF_iwb_TUM CXX) 
 enable_testing()
 
-set(CMAKE_CXX_FLAGS "-g -std=c++17 -Wall -Werror")
+set(CMAKE_CXX_FLAGS "-g -std=c++17 -Wall -Werror -Wextra -Wpedantic")
 
 find_package(PkgConfig REQUIRED)
 

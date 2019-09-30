@@ -30,7 +30,7 @@ namespace VBF{
             }
 
 
-            const size_t get_num_steps()const {
+            size_t get_num_steps()const {
 
                 return m_numSteps;
             }
