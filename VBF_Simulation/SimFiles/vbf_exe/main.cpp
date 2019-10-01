@@ -71,22 +71,63 @@ int main(int argc, char **argv){
 
 
     //std::string vbf_file_path(meshPath + file1Name);
+    
+    /*! if mesh file path is fed manually instead of input file
+     * specify it 
+     */
     std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
+
+    /*! file path (relaive to executable) to the input
+     * file, i.e. the file with all simulation
+     * parameters
+     */
     std::string inputFile{"../InputFile.txt"};
     std::cout << vbf_file_path << "\n";
     std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
+    /*! creating an objet `VBF::ReadInputData`
+     * that parses the input file and stores all
+     * parameter names and their respective values
+     */
     VBF::ReadInputData inputData(inputFile);
-    std::cout << inputData << "\n";
+    std::cout << inputData << "\n"; /*! overloaded `operator<<` in `VBF::ReadInputData` *\
 
+    /*! @brief Initializes the simulation using the input file 
+     * and the path (relative to executable) to the 
+     * vibratory bowl feeder
+     *
+     * @details Internally object of type `VBF::InitSim`
+     * creates the object `VBF::ReadInputData` that
+     * parses the input file and using the data from the
+     * parsed input file, the simulation is initialized
+     * NOTE : The previous object of type `VBF::ReadInputData`
+     * is not used for simulation initialization, but only for 
+     * demonstration
+     */
     VBF::InitializeSim initSim(inputFile, vbf_file_path);
     
     
-    //! import kinematic part
+    /*! @brief retrieve the encapsulated kinematic part
+     * encapsulated in the object of type `VBF::InitializeSim`
+     *
+     * @details This part of type `VBF::KinematicObject` is 
+     * the vibrating part that will be assigned a super imposed
+     * vibration, 1. linear vibration along the vertical (y) axis
+     * and 2. rotational vibration along the vertical (y) axis
+     */
     VBF::KinematicMeshBody* stl_body = initSim.get_vbf_part();
 
-    //add a cylinder like part to the simulation 
+    /*! @brief retrieve the encapsulated cylinderical
+     * dynamic part in the object of type `VBF::IniitalizeSim`
+     *
+     * @detail This is the part that moves along the vibratory
+     * bowl feeder. Currently this part is a part derived from
+     * bullet physics engine. Ideally it should be a stl part 
+     * imported using the VBF::ImportSTL data 
+     */
     VBF::Dynamic_Cylinder* stl_body3 = initSim.get_dyn_part(); 
+
+
     rigid_bodies.push_back(stl_body3);
 
     
@@ -173,15 +214,24 @@ int main(int argc, char **argv){
     //delete window;
     }
     
-    
+   /*! @brief Catches the Runtime exception occuring during simulation
+    * and prints appropriate error message on the terminal
+    *
+    * @details Runtime exception may be attributed to error during reading the file,
+    * or bad/corrupted data in input file causing bad initialization
+    * of simulation objects, etc. In such case it is apt to stop the simulation
+    * and fix the error. 
+    */
     catch(const std::runtime_error& e){
         std::cerr << "RUNTIME ERROR: " << e.what() << "\n";
         std::cerr << "Force aborting program\n";
         exit(-1);
     }
+
     /*! Catch statement with elipsis `...` catches any exception
-    / that might not have been accounted for
-    */
+     * that might not have been accounted for and stops the 
+     * simulation with a -1 return code
+     */
     catch(...){
         std::cerr << "ERROR : CAUGHT AN EXCEPTION OF UNDETERMINED TYPE\n"
                   << "FORCE EXITING THE PROGRAM\n";

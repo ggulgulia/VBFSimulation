@@ -88,15 +88,29 @@ VBF::Static_Ground* get_ground(const double collMarg){
  
 }
 
-// template functions for static and kinematic cubes
+/*! @brief templated function to return cubes of types (type parameter
+ * `cubeType`) VBF::StaticBody, VBF::KinematicBody 
+ * in a 3D cubeoid arrangement. 
+ *
+ * @warning Don't tryto create VBF::DynamicCube with this method.
+ * A separate specialized template is provided for this purpose
+ * (see the code after this function)
+ * 
+ * @note Run the simulation by calling this method and 
+ * experiment with the function parameters to see how the arrangement
+ * of the cubes will be affected.
+ */
 template<typename CubeType>
 void get_cubes(std::vector<VBF::RigidBody*>& rigid_bodies_vector){
 
     //create more objects cube objects
-    double cubeLen = 1.0;
-    size_t cubeIndex = 12;
-    size_t array_size = 5;
+    double cubeLen = 1.0;  /*! cube edge length */
+    size_t cubeIndex = 12; /*! index for book keeping */
+    size_t array_size = 5; /*! number of cubes in each of the 3 dimensions */
 
+    /*! the for loop arranges the cube in a 3D block 
+     * and inserts (pointer to memory) them in a std::vector container 
+     */
     for(size_t k=0; k<array_size; ++k){
         for (size_t i = 0; i < array_size; ++i) {
            for (size_t j = 0; j < array_size; ++j) {
@@ -134,14 +148,27 @@ void get_cubes<VBF::Dynamic_Cube>(std::vector<VBF::RigidBody*>& rigid_bodies_vec
 }
 
 
-
-//template function for static or kinematic spehere
+/*! @brief templated function to return spheres of types (type parameter
+ * `cubeType`) VBF::StaticBody, VBF::KinematicBody 
+ * in a 3D cubeoid arrangement. 
+ *
+ * @warning Don't tryto create VBF::DynamicSphere with this method.
+ * A separate specialized template is provided for this purpose
+ * (see the code after this function)
+ * 
+ * @note Run the simulation by calling this method and 
+ * experiment with the function parameters to see how the arrangement
+ * of the cubes will be affected.
+ */
 template<typename SphereType>
 void get_spheres(std::vector<VBF::RigidBody*>& sphere_vector){
     
     double sphereRad = 1.0;
     size_t sphereIndex = 44;
     size_t array_size = 5;
+    /*! the for loop arranges the spheres in a 3D block 
+     * and inserts (pointer to memory) them in a std::vector container 
+     */
        for(size_t k=0; k<array_size; ++k){ 
            for (size_t i = 0; i < array_size; ++i) {
                for (size_t j = 0; j < array_size; ++j) {

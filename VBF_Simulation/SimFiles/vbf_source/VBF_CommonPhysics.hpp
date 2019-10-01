@@ -1,4 +1,6 @@
 
+/*! @file VBF_CommonPhysics.hpp */
+
 #ifndef COMMON_PHYSICS_H
 #define COMMON_PHYSICS_H
 #include <bullet/LinearMath/btVector3.h>
@@ -20,6 +22,12 @@
  */
   namespace VBF{  
     
+
+    /*! @class CommonPhysics.hpp
+     * @brief creates and initializes the physics
+     * environment of the VBF::World. Without a physics
+     * the VBF::World will not look real
+     */
     class CommonPhysics{
         private:
                VBF::World* m_VBF_world; /*!< Private member pointer to object VBF::World */
@@ -75,10 +83,11 @@
              * constructor has not been rigorously tested.
              */
             CommonPhysics(VBF::World* vbf_world, VBF::StaticBody* ground, std::vector<VBF::RigidBody*>& vbf_rbody_vect);
-            
-            /*! @brief Constructor taking only pointer to VBF::World
-             * oobject.
-             *
+           
+             /*! @brief Constructor taking only pointer to VBF::World
+              * object.
+              *                 
+              *
              * @details This constructor initializes only the member 
              * m_VBF_world member variable of VBF::World.
              *
