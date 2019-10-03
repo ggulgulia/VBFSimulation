@@ -24,7 +24,7 @@ namespace VBF{
 
     /*! @class ImportSTLSetup
      * @brief Helper file to import STL trimesh data to VBF Simulation environments
-     * @bugs Two imported mesh penetrate rather than colliding with each other
+     * @bug Two imported mesh penetrate rather than colliding with each other
      * @date 2019
      * @details This class assists in importing the an STL file having triangular mesh data. 
      * The Mesh filename and file path refer to the same data and is for the book keeping

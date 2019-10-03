@@ -17,13 +17,6 @@
  *  Purpose of this documentation is to clarify the usage of the code that has been developed for Vibratroy Bowl Feeder (VBF) Simulation
  *  which is a part of the PhD thesis of Msc. Cosima Stocker at the chair of IWB, Department of Mechanical Engineering, 
  *  Technical University of Munich
- * 
- * \section install_sec Background
- * Orienting devices for vibratory bowl feeders are still the most widely used system for the
- * automated sorting and feeding of small parts. The design process of these orienting devices has recently been 
- * supported by simulation methods. However, this merely shifts the well-known trial-and-error-based adaption of 
- * the orienting device’s geometry into virtualworld. Yet, this does not provide optimal design and, furthermore, 
- * requires strong involvement of the developer due to manual shape variation. This paper proposes an optimization 
  * algorithm for the automated simulation-based shape optimization of orienting devices for vibratory bowl feeders. 
  * First, general formalisms to state the multiobjective optimization problem for arbitrary types of orienting 
  * devices and feeding parts are provided. Then, the implementation of the algorithm is described based on 
@@ -128,13 +121,34 @@ int main(int argc, char **argv){
     VBF::Dynamic_Cylinder* stl_body3 = initSim.get_dyn_part(); 
 
 
+    /*!@brief all rigid bodies are pushed in a container holding
+     * pointers of type `VBF::RigidBody`
+     */
     rigid_bodies.push_back(stl_body3);
 
-    
+    /*! @brief get the physics from the initialized simulation object*/
     VBF::CommonPhysics& phy = initSim.get_VBF_physics();
+    /*! @brief get the `VBF::World` from the initialized simulation object*/
     VBF::World* vbf_world = initSim.get_VBF_world(); 
+
+    /*! @brief declare a (pointer to) a new graphic window
+     * @params pointer to `VBF::World`, width and height (int) in pixels
+     * and name to be displayed in the window
+     */
     VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
+
+
+    /*! @brief This line draws the window and make the graphics
+     * appear on the screen */
     vbf_window->create_window();
+
+    /*! @bfiref some kind of visualization bridge
+     *
+     * @details The functionality of the next 5 lines of 
+     * the code is unclear due to missing documentation
+     * but all the demo examples in bullet physics follow 
+     * this patten to make the visualization work
+     */
     VBF_Vis vis_bridge;
     vis_bridge.setDynamicsWorld(vbf_world->get_world());
     vis_bridge.reshape(800, 600);
@@ -160,21 +174,36 @@ int main(int argc, char **argv){
     static int numSteps{};
     size_t no_movement_steps{200}; //200 seconds without vibration
 
-    //this loops starts the simulation but the VBF part is not
-    //vibrated for some time (defined by no_movement_steps)
+    /*! this loops starts the simulation but the VBF part is not
+     * vibrated for some time (defined by no_movement_steps)
+     */
     for(size_t i=0; i<no_movement_steps; ++i){
 
          unsigned long currTime = timer.getTimeMicroseconds();
+
+         /*! @todo try to examine what happens when 
+          * the simulation is stepped forward without the
+          * `if` statement. Remove `if` statement
+          * if not needed
+          */
          if(!vis_bridge.isIdle()){
              phy.step_simulation((currTime-prevTime)*0.001);
          }
          prevTime = currTime;
+
+         /*! render the new positions of objects in
+          * the VBF::Window
+          */
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
+         /*! @brief retrieve and print the position of the 
+          * part moving along the vibrating feeder
+          */
          btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
-        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
+         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" 
+                   << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
         
         ++numSteps;
     }
