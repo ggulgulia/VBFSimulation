@@ -1,0 +1,12 @@
+TODO List for my records so that I don't forget. This could be pushed to git repository on develop branch.
+
+1. Fix the warnings in bullet3-master build . See the bullet_build_warning.txt file
+
+2. Create the doxygen documentation 
+
+In work
+-------
+3. * The bullet physics engine  header files seems broken at "include" derictives.
+   * The default configuration in CMakeList.txt of bullet3 doesn't create a shared library when we do 'make install' (this could lead to increase in compile time and also large size of executable files)
+   
+The above two points in §3  needs repairing in each and every file else cmake to create an external code and link it with bullet (I don't know how it worked with Visual Studio, regrettably I don't have any experience with visual studio

@@ -1,8 +1,29 @@
 bullet3-master/
+<<<<<<< HEAD
+VBF_Simulation/VWF_with_complex_workpiece/
+=======
+>>>>>>> a781440a4f2ffef40f200c019679e84d7269a1a9
+**/build/*
 *.o
 *.text
 *.txt
+!CMakeLists.txt
+<<<<<<< HEAD
+!InputFile.txt
+=======
+>>>>>>> a781440a4f2ffef40f200c019679e84d7269a1a9
 *.log
 *.pdf
 *.swap
+*.swp
 *.swo
+OldCMakeLists
+<<<<<<< HEAD
+*.zip
+*.tar
+*.tarz
+**/Docs
+doc.cpp
+=======
+>>>>>>> a781440a4f2ffef40f200c019679e84d7269a1a9
+Makefile.am
