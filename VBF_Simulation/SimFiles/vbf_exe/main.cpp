@@ -17,13 +17,6 @@
  *  Purpose of this documentation is to clarify the usage of the code that has been developed for Vibratroy Bowl Feeder (VBF) Simulation
  *  which is a part of the PhD thesis of Msc. Cosima Stocker at the chair of IWB, Department of Mechanical Engineering, 
  *  Technical University of Munich
- * 
- * \section install_sec Background
- * Orienting devices for vibratory bowl feeders are still the most widely used system for the
- * automated sorting and feeding of small parts. The design process of these orienting devices has recently been 
- * supported by simulation methods. However, this merely shifts the well-known trial-and-error-based adaption of 
- * the orienting device’s geometry into virtualworld. Yet, this does not provide optimal design and, furthermore, 
- * requires strong involvement of the developer due to manual shape variation. This paper proposes an optimization 
  * algorithm for the automated simulation-based shape optimization of orienting devices for vibratory bowl feeders. 
  * First, general formalisms to state the multiobjective optimization problem for arbitrary types of orienting 
  * devices and feeding parts are provided. Then, the implementation of the algorithm is described based on 
@@ -71,29 +64,91 @@ int main(int argc, char **argv){
 
 
     //std::string vbf_file_path(meshPath + file1Name);
+    
+    /*! if mesh file path is fed manually instead of input file
+     * specify it 
+     */
     std::string vbf_file_path{"../MeshFiles/StufeFein150x30x200.stl"};
+
+    /*! file path (relaive to executable) to the input
+     * file, i.e. the file with all simulation
+     * parameters
+     */
     std::string inputFile{"../InputFile.txt"};
     std::cout << vbf_file_path << "\n";
     std::string file2Path("../MeshFiles/Zylinder1_7x1_0.stl");
 
+    /*! creating an objet `VBF::ReadInputData`
+     * that parses the input file and stores all
+     * parameter names and their respective values
+     */
     VBF::ReadInputData inputData(inputFile);
-    std::cout << inputData << "\n";
+    std::cout << inputData << "\n"; /*! overloaded `operator<<` in `VBF::ReadInputData` *\
 
+    /*! @brief Initializes the simulation using the input file 
+     * and the path (relative to executable) to the 
+     * vibratory bowl feeder
+     *
+     * @details Internally object of type `VBF::InitSim`
+     * creates the object `VBF::ReadInputData` that
+     * parses the input file and using the data from the
+     * parsed input file, the simulation is initialized
+     * NOTE : The previous object of type `VBF::ReadInputData`
+     * is not used for simulation initialization, but only for 
+     * demonstration
+     */
     VBF::InitializeSim initSim(inputFile, vbf_file_path);
     
     
-    //! import kinematic part
+    /*! @brief retrieve the encapsulated kinematic part
+     * encapsulated in the object of type `VBF::InitializeSim`
+     *
+     * @details This part of type `VBF::KinematicObject` is 
+     * the vibrating part that will be assigned a super imposed
+     * vibration, 1. linear vibration along the vertical (y) axis
+     * and 2. rotational vibration along the vertical (y) axis
+     */
     VBF::KinematicMeshBody* stl_body = initSim.get_vbf_part();
 
-    //add a cylinder like part to the simulation 
+    /*! @brief retrieve the encapsulated cylinderical
+     * dynamic part in the object of type `VBF::IniitalizeSim`
+     *
+     * @detail This is the part that moves along the vibratory
+     * bowl feeder. Currently this part is a part derived from
+     * bullet physics engine. Ideally it should be a stl part 
+     * imported using the VBF::ImportSTL data 
+     */
     VBF::Dynamic_Cylinder* stl_body3 = initSim.get_dyn_part(); 
+
+
+    /*!@brief all rigid bodies are pushed in a container holding
+     * pointers of type `VBF::RigidBody`
+     */
     rigid_bodies.push_back(stl_body3);
 
-    
+    /*! @brief get the physics from the initialized simulation object*/
     VBF::CommonPhysics& phy = initSim.get_VBF_physics();
+    /*! @brief get the `VBF::World` from the initialized simulation object*/
     VBF::World* vbf_world = initSim.get_VBF_world(); 
+
+    /*! @brief declare a (pointer to) a new graphic window
+     * @params pointer to `VBF::World`, width and height (int) in pixels
+     * and name to be displayed in the window
+     */
     VBF::Window* vbf_window = new VBF::Window(vbf_world, 800, 600, "Hello VBF World");
+
+
+    /*! @brief This line draws the window and make the graphics
+     * appear on the screen */
     vbf_window->create_window();
+
+    /*! @bfiref some kind of visualization bridge
+     *
+     * @details The functionality of the next 5 lines of 
+     * the code is unclear due to missing documentation
+     * but all the demo examples in bullet physics follow 
+     * this patten to make the visualization work
+     */
     VBF_Vis vis_bridge;
     vis_bridge.setDynamicsWorld(vbf_world->get_world());
     vis_bridge.reshape(800, 600);
@@ -119,21 +174,36 @@ int main(int argc, char **argv){
     static int numSteps{};
     size_t no_movement_steps{200}; //200 seconds without vibration
 
-    //this loops starts the simulation but the VBF part is not
-    //vibrated for some time (defined by no_movement_steps)
+    /*! this loops starts the simulation but the VBF part is not
+     * vibrated for some time (defined by no_movement_steps)
+     */
     for(size_t i=0; i<no_movement_steps; ++i){
 
          unsigned long currTime = timer.getTimeMicroseconds();
+
+         /*! @todo try to examine what happens when 
+          * the simulation is stepped forward without the
+          * `if` statement. Remove `if` statement
+          * if not needed
+          */
          if(!vis_bridge.isIdle()){
              phy.step_simulation((currTime-prevTime)*0.001);
          }
          prevTime = currTime;
+
+         /*! render the new positions of objects in
+          * the VBF::Window
+          */
          vbf_window->start_rendering();
          vis_bridge.renderme();
          phy.debugDraw(2);
          vbf_window->end_rendering();
+         /*! @brief retrieve and print the position of the 
+          * part moving along the vibrating feeder
+          */
          btVector3 position1 = get_rigid_body_position(stl_vbf_rbody);
-        std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
+         std::cout << "Time:" <<currTime <<" s, Vy:" <<  Vy <<  " x:" 
+                   << position1[0] << " y:" << position1[1] << " z:" << position1[2] << "\n";
         
         ++numSteps;
     }
@@ -173,15 +243,24 @@ int main(int argc, char **argv){
     //delete window;
     }
     
-    
+   /*! @brief Catches the Runtime exception occuring during simulation
+    * and prints appropriate error message on the terminal
+    *
+    * @details Runtime exception may be attributed to error during reading the file,
+    * or bad/corrupted data in input file causing bad initialization
+    * of simulation objects, etc. In such case it is apt to stop the simulation
+    * and fix the error. 
+    */
     catch(const std::runtime_error& e){
         std::cerr << "RUNTIME ERROR: " << e.what() << "\n";
         std::cerr << "Force aborting program\n";
         exit(-1);
     }
+
     /*! Catch statement with elipsis `...` catches any exception
-    / that might not have been accounted for
-    */
+     * that might not have been accounted for and stops the 
+     * simulation with a -1 return code
+     */
     catch(...){
         std::cerr << "ERROR : CAUGHT AN EXCEPTION OF UNDETERMINED TYPE\n"
                   << "FORCE EXITING THE PROGRAM\n";

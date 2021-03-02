@@ -7,7 +7,7 @@
 #include <valarray> //for sin/cos functions
 
 
-//forward declaration of function
+/*! forward declaration of function  */
 btGImpactMeshShape* triMeshToRigidBody(const VBF_Mesh*const mesh);
 
 VBF::ImportSTLSetup::ImportSTLSetup(const std::string &fileName,
@@ -66,7 +66,8 @@ btVector3 VBF::ImportSTLSetup::get_mesh_origin()const noexcept {return m_origin;
 VBF::RigidBody* VBF::ImportSTLSetup::get_vbf_rbody() const noexcept {return m_VBF_rbody;}
 
 
-//internal routine to convert tri mesh data to a sensible bullet rigid body
+/*! internal routine to convert tri mesh data to a sensible bullet rigid body
+ */
 btGImpactMeshShape* triMeshToRigidBody(const VBF_Mesh*const mesh){
 
     btTriangleMesh* trimeshData = new btTriangleMesh();
